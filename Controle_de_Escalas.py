@@ -205,15 +205,16 @@ class Tela:
         self.comb["values"] = vetor_num
         self.comb.place(x=10, y=90)
 
-        self.int_var = tk.IntVar()
+        self.int_var_sem = tk.IntVar()
+        self.int_var_fer = tk.IntVar()
 
         self.lbl_cont_final_semana = tk.Label(self.janela_criar_escala, text="Contará os finais de semana?")
         self.lbl_cont_final_semana.place(x=10, y=130)
 
-        self.rbtn_cont_final_semanas = tk.Radiobutton(self.janela_criar_escala, text="Sim", variable=self.int_var, value=1)
+        self.rbtn_cont_final_semanas = tk.Radiobutton(self.janela_criar_escala, text="Sim", variable=self.int_var_sem, value=1)
         self.rbtn_cont_final_semanas.place(x=10, y=150)
         
-        self.rbtn_cont_final_semanan = tk.Radiobutton(self.janela_criar_escala, text="Não", variable=self.int_var, value=2)
+        self.rbtn_cont_final_semanan = tk.Radiobutton(self.janela_criar_escala, text="Não", variable=self.int_var_sem, value=2)
         self.rbtn_cont_final_semanan.place(x=90, y=150)
 
 
@@ -221,10 +222,10 @@ class Tela:
         self.lbl_cont_ferias = tk.Label(self.janela_criar_escala, text="Contará as Férias?")
         self.lbl_cont_ferias.place(x=10, y=190)
 
-        self.rbtn_cont_feriass= tk.Radiobutton(self.janela_criar_escala, text="Sim", variable=self.int_var, value=3)
+        self.rbtn_cont_feriass= tk.Radiobutton(self.janela_criar_escala, text="Sim", variable=self.int_var_fer, value=1)
         self.rbtn_cont_feriass.place(x=10, y=210)
         
-        self.rbtn_cont_feriasn = tk.Radiobutton(self.janela_criar_escala, text="Não", variable=self.int_var, value=4)
+        self.rbtn_cont_feriasn = tk.Radiobutton(self.janela_criar_escala, text="Não", variable=self.int_var_fer, value=2)
         self.rbtn_cont_feriasn.place(x=90, y=210)
 
 
