@@ -9,11 +9,13 @@ class Tela:
         self.janelaprincipal.title("Exemplo")
         self.janelaprincipal.geometry("600x400")
 
-        mes = 2
+        mes = 6
         ano = 2023
         dia = 1
-        dias_de_escala = 30
-        cor_escolhida = "#FFFACD"
+        dias_de_escala = 11
+        cor_escolhida_escala = "#FFFACD"
+        cor_escolhida_ferias = "#FF7F50"
+        vetor_dias_corridos_na_escala = []
 
         cal = Calendar(self.janelaprincipal, font="Arial 14", locale='pt_BR', cursor="hand1", selectmode="none", background='#008000', foreground='white')
 
@@ -23,11 +25,17 @@ class Tela:
         date = cal.datetime.today()
 
         escala_ecolha_dia = cal.datetime(ano, mes, dia)
+        #print(escala_ecolha_dia)
 
+        #pegando todos os dias escolhidos na escala para comparar depois com as ferias
+        for dias in range(1, dias_de_escala+1):
+            dias_corridos_na_escala = cal.datetime(ano, mes, dias)
+            #print(dias_corridos_na_escala)
+            vetor_dias_corridos_na_escala.append(dias_corridos_na_escala)
 
         for i in range(0, dias_de_escala):
         
-            cal.calevent_create(escala_ecolha_dia + cal.timedelta(days=i), 'Reminder 1', 'reminder')
+            cal.calevent_create(escala_ecolha_dia + cal.timedelta(days=i), 'Reminder 1', 'escala')
 
         feriados= holidays.Brazil()
 
@@ -40,14 +48,17 @@ class Tela:
             ano = str(feriado).split("-")[0]
 
             feriados = cal.datetime(year=int(ano), month=int(mes), day=int(dia))
+            #print(feriados)
+            if feriados in vetor_dias_corridos_na_escala:
+                print(feriados)
             
-            cal.calevent_create(feriados , 'Reminder 1', 'reminder 2')
-
+            cal.calevent_create(feriados , 'Reminder 1', 'Ferias')
             vetor_ferias.append(int(dia))
+            
         
 
-        cal.tag_config('reminder 2', background='#FF7F50', foreground='white')
-        cal.tag_config('reminder', background=cor_escolhida, foreground='black')
+        cal.tag_config('Ferias', background=cor_escolhida_ferias, foreground='white')
+        cal.tag_config('escala', background=cor_escolhida_escala, foreground='black')
 
         cal.pack(fill="both", expand=True)
 
