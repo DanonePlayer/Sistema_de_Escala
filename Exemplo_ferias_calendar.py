@@ -54,10 +54,10 @@ class Tela:
             
         
         for i in range(0, dias_de_escala):
-            cal.calevent_create(escala_ecolha_dia + cal.timedelta(days=i), 'Reminder 1', 'escala')
+            cal.calevent_create(escala_ecolha_dia + cal.timedelta(days=i), 'escalas', 'escala')
 
         for feriados1 in vetor_feriados:
-            cal.calevent_create(feriados1 , 'Reminder 1', 'Ferias')
+            cal.calevent_create(feriados1 , 'Ferias', 'Ferias')
 
 
         cal.tag_config('Ferias', background=cor_escolhida_ferias, foreground='white')
