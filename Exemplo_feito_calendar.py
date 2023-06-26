@@ -33,14 +33,10 @@ class Tela:
             #print(dias_corridos_na_escala)
             vetor_dias_corridos_na_escala.append(dias_corridos_na_escala)
 
-        for i in range(0, dias_de_escala):
-        
-            cal.calevent_create(escala_ecolha_dia + cal.timedelta(days=i), 'Reminder 1', 'escala')
-
         feriados= holidays.Brazil()
 
         ano_feriado = str(date).split("-")[0]
-        vetor_ferias = []
+        vetor_feriados = []
         for feriado in feriados[f"{ano_feriado}-01-01": f'{ano_feriado}-12-31']:
 
             dia = str(feriado).split("-")[2]
@@ -49,13 +45,20 @@ class Tela:
 
             feriados = cal.datetime(year=int(ano), month=int(mes), day=int(dia))
             #print(feriados)
-            if feriados in vetor_dias_corridos_na_escala:
-                print(feriados)
             
-            cal.calevent_create(feriados , 'Reminder 1', 'Ferias')
-            vetor_ferias.append(int(dia))
+            vetor_feriados.append(feriados)
+
+            if feriados in vetor_dias_corridos_na_escala:
+                dias_de_escala += 1
+        
             
         
+        for i in range(0, dias_de_escala):
+            cal.calevent_create(escala_ecolha_dia + cal.timedelta(days=i), 'Reminder 1', 'escala')
+
+        for feriados1 in vetor_feriados:
+            cal.calevent_create(feriados1 , 'Reminder 1', 'Ferias')
+
 
         cal.tag_config('Ferias', background=cor_escolhida_ferias, foreground='white')
         cal.tag_config('escala', background=cor_escolhida_escala, foreground='black')
