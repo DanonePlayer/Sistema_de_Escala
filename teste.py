@@ -22,14 +22,19 @@ DIAS = [
     'Domingo'
 ]
 
-data = date(year=2023, month=6, day=29)
+
+data = date(year=2023, month=7, day=2)
 print(data)
 
 indice_da_semana = data.weekday()
-print(indice_da_semana)
+print(indice_da_semana+1)
+
 
 dia_da_semana = DIAS[indice_da_semana]
 print(dia_da_semana)
 
 numero_do_dia_da_semana = data.isoweekday()
-print(numero_do_dia_da_semana)
+#print(numero_do_dia_da_semana)
+
+if(numero_do_dia_da_semana == 6 or numero_do_dia_da_semana == 7 ):
+    print("Final de semana")
