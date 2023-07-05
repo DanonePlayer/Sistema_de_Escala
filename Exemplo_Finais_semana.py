@@ -62,11 +62,7 @@ class Tela:
 
         cal.pack(fill="both", expand=True)
 
-        import datetime
-        from workalendar.america import Brazil
 
-        cal = Brazil()
-        cal.holidays(2019)
 
 
 janela = tk.Tk()
