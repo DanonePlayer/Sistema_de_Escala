@@ -55,3 +55,18 @@ def consultar(consultar):
         return valores
     except Error as error:
         print(error)
+
+def consultar_usuarios(consultar):
+    try:
+        con = conexao_banco()
+        cursor = con.cursor()
+        cursor.execute(consultar)
+        dados = cursor.fetchall()
+        lista = []
+        for tupla in dados:
+            for valores in tupla:
+                lista.append(valores)
+        #dados = " ".join("".join(var) for var in dados)
+        return lista
+    except Error as error:
+        print(error)
