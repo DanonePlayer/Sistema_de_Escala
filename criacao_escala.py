@@ -50,6 +50,7 @@ class Tela:
         
 
         self.Tipo_escala = []
+        self.colaboradores = []
 
 
 
@@ -138,9 +139,12 @@ class Tela:
         self.lbl_programar.place(x=20, y=10)
         #Exemplos de colaboradores
         
-        colaboradores = ["jardeson", "Maria"]
+        query = 'SELECT usuario_id, nome_completo, nome_usuario FROM usuario;'
+        dados = bd.consultar(query)
+        for tupla in dados:
+            self.colaboradores.append(tupla[1])
 
-        self.cbx_usuario = ttk.Combobox(self.frm_janela2_c, values=colaboradores, state="readonly", font="30", width=28, height=5, )
+        self.cbx_usuario = ttk.Combobox(self.frm_janela2_c, values=self.colaboradores, state="readonly", font="30", width=28, height=5, )
 
         self.cbx_usuario.place(x=20, y=30)
         self.cbx_usuario.current(0)
@@ -177,11 +181,11 @@ class Tela:
         print(self.cbx_usuario.get())
         print(self.cbx_tipo_escala.get())
         print(self.cal_escolha.selection_get()) 
-        query = 'SELECT nome_usuario, nome_escala FROM escala, usuario;'
+        query = 'SELECT usuario_id, escala_id FROM escala, usuario WHERE nome_escala, nome_completo;'
         dados = bd.consultar(query)
         data_inicio = self.cal_escolha.selection_get()
 
-        query = f'INSERT INTO usuario_escala ("usuario_escala_id", "usuario_id", "escala_id", "data_inicio") VALUES ("{nome_escala}", {dias_escala}, {feriados}, {data_inicio});'
+        query = f'INSERT INTO usuario_escala ("usuario_id", "escala_id", "data_inicio") VALUES ("{nome_escala}", {dias_escala}, {feriados}, {data_inicio});'
         bd.inserir(query)
         self.janela2.destroy()
 
