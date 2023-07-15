@@ -1,7 +1,8 @@
-import tkinter
 import tkinter as tk
 from tkinter import PhotoImage, ttk, messagebox,RAISED, RIDGE
 from tkinter import ttk
+from PIL import Image, ImageTk
+
 ##from tkcalendar import Calendar, DateEntry
 ##import holidays
 
@@ -21,10 +22,14 @@ class Screens:
         self.left_frm = tk.Frame(self.login_screen)
         self.left_frm.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=20, pady=20)
 
-        self.img_pf = tk.PhotoImage(file="images/image 1.png", height=425, width=336)
+        #self.img_pf = tk.PhotoImage(file="images/image 1.png", height=425, width=336)
+        self.img_pf = ImageTk.PhotoImage(Image.open(f"images/image 1.png"))
 
-        self.left_lbl = tk.Label(self.left_frm, image=self.img_pf)
+        self.left_lbl = tk.Label(self.left_frm, image=self.img_pf, height=425, width=336)
         self.left_lbl.pack(side=tk.LEFT, pady=10, padx=50)
+
+        self.left_lbl.configure(image=self.img_pf)
+        self.left_lbl.image=self.img_pf
 
         self.right_frm = tk.Frame(self.login_screen, width=421, height=542)
         self.right_frm.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=20, pady=20)
@@ -43,14 +48,21 @@ class Screens:
         self.entry_senha.insert(0, "Senha")
         self.entry_senha.pack(side=tk.TOP, pady=20, padx=20)
 
-        self.bttn_login = tk.Button(self.right_lbl, font=('Inter', 24, 'bold'), fg='#FFFFFF', text="ENTRAR", bg='#6A6666')
+        self.bttn_login = tk.Button(self.right_lbl, font=('Inter', 24, 'bold'), fg='#FFFFFF', text="ENTRAR", bg='#6A6666',command=self.enter)
         self.bttn_login.pack(side=tk.BOTTOM, pady=20, padx=100)
 
         self.bttn_help = tk.Button(self.right_lbl, font=('Inter', 20, 'bold'), fg='#6A6666', text=" Problemas de Login? ", bg='#94939B', borderwidth=0)
         self.bttn_help.pack(fill=tk.BOTH)
         self.bttn_help.config()
 
-
+    def enter(self):
+        self.MainScreen()
+    def MainScreen(self):
+        self.login_screen.withdraw()
+        self.main_screen = tk.Toplevel()
+        self.main_screen.title("Main Screen")
+        self.main_screen.geometry('1253x588')
+        self.main_screen.configure(bg='#D9D9D9')
 
 
 
