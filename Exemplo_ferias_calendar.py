@@ -9,7 +9,7 @@ class Tela:
         self.janelaprincipal.title("Exemplo")
         self.janelaprincipal.geometry("600x400")
 
-        mes = 6
+        mes = 9
         ano = 2023
         dia = 1
         dias_de_escala = 11
