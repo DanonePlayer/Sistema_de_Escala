@@ -2,6 +2,8 @@ import tkinter
 import tkinter as tk
 from tkinter import PhotoImage, ttk, messagebox,RAISED, RIDGE
 from tkinter import ttk
+from PIL import Image, ImageTk
+
 ##from tkcalendar import Calendar, DateEntry
 ##import holidays
 
@@ -21,10 +23,14 @@ class Screens:
         self.left_frm = tk.Frame(self.login_screen)
         self.left_frm.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=20, pady=20)
 
-        self.img_pf = tk.PhotoImage(file="images/image 1.png", height=425, width=336)
+        #self.img_pf = tk.PhotoImage(file="images/image 1.png", height=425, width=336)
+        self.img_pf = ImageTk.PhotoImage(Image.open(f"images/image 1.png"))
 
-        self.left_lbl = tk.Label(self.left_frm, image=self.img_pf)
+        self.left_lbl = tk.Label(self.left_frm, image=self.img_pf, height=425, width=336)
         self.left_lbl.pack(side=tk.LEFT, pady=10, padx=50)
+
+        self.left_lbl.configure(image=self.img_pf)
+        self.left_lbl.image=self.img_pf
 
         self.right_frm = tk.Frame(self.login_screen, width=421, height=542)
         self.right_frm.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=20, pady=20)
