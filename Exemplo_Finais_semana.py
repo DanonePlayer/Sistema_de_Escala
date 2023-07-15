@@ -27,7 +27,9 @@ class Tela:
         vetor_dias_corridos_na_escala = []
         vetor_finais_semana = []
         
-        for i in range(dia_escolha, dias_de_escala):
+        sas = dias_de_escala*2
+
+        for i in range(dia_escolha, sas):
     
             data = datetime(year=ano_escolha, month=mes_escolha, day=i)
             # print(data)
@@ -45,7 +47,7 @@ class Tela:
             if(numero_do_dia_da_semana == 6 or numero_do_dia_da_semana == 7 ):
                 # print("Final de semana")
                 vetor_finais_semana.append(data)
-                #dias_de_escala += 1
+                dias_de_escala += 1
 
         cal = Calendar(self.janelaprincipal, font="Arial 14", locale='pt_BR', cursor="hand1", selectmode="none", background='#008000', foreground='white')
 
