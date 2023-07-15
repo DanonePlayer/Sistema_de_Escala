@@ -49,8 +49,7 @@ class Tela:
         # w.place(x=10, y=150)
         
 
-        self.Tipo_p = []
-        self.Tipo_p.append("Escolha a escala")
+        self.Tipo_escala = []
 
 
 
@@ -125,8 +124,6 @@ class Tela:
 
 
     def Nova_programacao(self, event):
-        self.vetes = []
-        #APRENDENDO
         #print(self.text1.get())
 
         self.janela2 = tk.Toplevel()
@@ -141,16 +138,16 @@ class Tela:
         self.lbl_programar.place(x=20, y=10)
         #Exemplos de colaboradores
         
-        colaboradores = ["Busque por um colaborador", "jardeson", "Maria"]
+        colaboradores = ["jardeson", "Maria"]
 
-        self.cbx_programar = ttk.Combobox(self.frm_janela2_c, values=colaboradores, state="readonly", font="30", width=28, height=5, )
+        self.cbx_usuario = ttk.Combobox(self.frm_janela2_c, values=colaboradores, state="readonly", font="30", width=28, height=5, )
 
-        self.cbx_programar.place(x=20, y=30)
-        self.cbx_programar.current(0)
+        self.cbx_usuario.place(x=20, y=30)
+        self.cbx_usuario.current(0)
 
 
-        self.lbl_Tipo_p = tk.Label(self.frm_janela2_c, text="Tipo:")
-        self.lbl_Tipo_p.place(x=20, y=60)
+        self.lbl_Tipo_escala = tk.Label(self.frm_janela2_c, text="Tipo:")
+        self.lbl_Tipo_escala.place(x=20, y=60)
 
         self.string_Var_comb_tipo_p = tk.StringVar()
 
@@ -159,12 +156,11 @@ class Tela:
 
         for tupla in dados:
             for escala in tupla:
-                self.Tipo_p.append(escala)
+                self.Tipo_escala.append(escala)
 
-        self.cbx_tipo_p = ttk.Combobox(self.frm_janela2_c, values=self.Tipo_p, state="readonly", font="30", width=28, height=5, textvariable=self.string_Var_comb_tipo_p)
-        self.cbx_tipo_p.place(x=20, y=80)
-        
-        self.cbx_tipo_p.current(0)
+        self.cbx_tipo_escala = ttk.Combobox(self.frm_janela2_c, values=self.Tipo_escala, state="readonly", font="30", width=28, height=5, textvariable=self.string_Var_comb_tipo_p)
+        self.cbx_tipo_escala.place(x=20, y=80)
+        self.cbx_tipo_escala.current(0)
 
         
         self.lbl_Periodo = tk.Label(self.frm_janela2_c, text="Periodo:")
@@ -178,7 +174,15 @@ class Tela:
         self.btn_ok.place(x=100, y=350)
 
     def ok(self):
-        self.vetes.append(self.cal_escolha.selection_get())
+        print(self.cbx_usuario.get())
+        print(self.cbx_tipo_escala.get())
+        print(self.cal_escolha.selection_get()) 
+        query = 'SELECT nome_usuario, nome_escala FROM escala, usuario;'
+        dados = bd.consultar(query)
+        data_inicio = self.cal_escolha.selection_get()
+
+        query = f'INSERT INTO usuario_escala ("usuario_escala_id", "usuario_id", "escala_id", "data_inicio") VALUES ("{nome_escala}", {dias_escala}, {feriados}, {data_inicio});'
+        bd.inserir(query)
         self.janela2.destroy()
 
 
