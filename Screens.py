@@ -1,4 +1,3 @@
-import tkinter
 import tkinter as tk
 from tkinter import PhotoImage, ttk, messagebox,RAISED, RIDGE
 from tkinter import ttk
