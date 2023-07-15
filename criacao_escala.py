@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from tkcalendar import Calendar, DateEntry
 import holidays
+import bd_sistemas_de_escala as bd
 
 
 
@@ -49,6 +50,7 @@ class Tela:
         
 
         self.Tipo_p = []
+        self.Tipo_p.append("Escolha a escala")
 
 
 
@@ -110,17 +112,14 @@ class Tela:
 
 
     def button_criar_escala(self):
-        if self.Tipo_p != []:
-            if (f"{self.entry_nome_escala.get()} - {self.string_Var_comb.get()}") in self.Tipo_p:
-                print("replica")
-                self.janela_criar_escala.destroy()
-            else:
-
-                self.Tipo_p.append(f"{self.entry_nome_escala.get()} - {self.string_Var_comb.get()}")
-                self.janela_criar_escala.destroy()
-        else:
-            self.Tipo_p.append(f"{self.entry_nome_escala.get()} - {self.string_Var_comb.get()}")
-            self.janela_criar_escala.destroy()
+        nome_escala = self.entry_nome_escala.get()
+        dias_escala = self.string_Var_comb.get()
+        feriados = self.int_var_fer.get()
+        finais_semana = self.int_var_sem.get()
+        # print(nome_escala, dias_escala, feriados, finais_semana)
+        query = f'INSERT INTO escala ("nome_escala", "dias_escala", "feriados", "finais_semana") VALUES ("{nome_escala}", {dias_escala}, {feriados}, {finais_semana});'
+        bd.inserir(query)
+        self.janela_criar_escala.destroy()
 
 
 
@@ -141,6 +140,7 @@ class Tela:
         self.lbl_programar = tk.Label(self.frm_janela2_c, text="Para quem:")
         self.lbl_programar.place(x=20, y=10)
         #Exemplos de colaboradores
+        
         colaboradores = ["Busque por um colaborador", "jardeson", "Maria"]
 
         self.cbx_programar = ttk.Combobox(self.frm_janela2_c, values=colaboradores, state="readonly", font="30", width=28, height=5, )
@@ -151,27 +151,20 @@ class Tela:
 
         self.lbl_Tipo_p = tk.Label(self.frm_janela2_c, text="Tipo:")
         self.lbl_Tipo_p.place(x=20, y=60)
-        #Exemplos de Tipos
-        Tipo_p = []
+
         self.string_Var_comb_tipo_p = tk.StringVar()
-        if self.Tipo_p != []:
-            for Tips in self.Tipo_p:
-                Tipo_p.append(str(Tips).split("-")[0])
-                print(self.Tipo_p)
-                print(Tipo_p)
-                self.cbx_tipo_p = ttk.Combobox(self.frm_janela2_c, values=Tipo_p, state="readonly", font="30", width=28, height=5, textvariable=self.string_Var_comb_tipo_p)
-        else:
-            self.cbx_tipo_p = ttk.Combobox(self.frm_janela2_c, values=Tipo_p, state="readonly", font="30", width=28, height=5, textvariable=self.string_Var_comb_tipo_p)
 
-            
+        query = 'SELECT nome_escala FROM escala;'
+        dados = bd.consultar(query)
 
-        
+        for tupla in dados:
+            for escala in tupla:
+                self.Tipo_p.append(escala)
 
+        self.cbx_tipo_p = ttk.Combobox(self.frm_janela2_c, values=self.Tipo_p, state="readonly", font="30", width=28, height=5, textvariable=self.string_Var_comb_tipo_p)
         self.cbx_tipo_p.place(x=20, y=80)
-
-        if self.cbx_tipo_p.get() != "":
-
-            self.cbx_tipo_p.current(0)
+        
+        self.cbx_tipo_p.current(0)
 
         
         self.lbl_Periodo = tk.Label(self.frm_janela2_c, text="Periodo:")
