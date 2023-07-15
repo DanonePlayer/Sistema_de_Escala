@@ -17,7 +17,7 @@ class Screens:
         self.top_frm.pack(fill=tk.X, padx=20, pady=20)
 
         self.top_lbl = tk.Label(self.top_frm, text = "BEM VINDO", font=('Inter',28,'bold'), fg='#0B0B0B')
-        self.top_lbl.pack(side=tk.LEFT, pady=10, padx=50,)
+        self.top_lbl.pack(side=tk.LEFT, pady=10, padx=50)
 
         self.left_frm = tk.Frame(self.login_screen)
         self.left_frm.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=20, pady=20)
@@ -58,12 +58,28 @@ class Screens:
     def enter(self):
         self.MainScreen()
     def MainScreen(self):
-        self.login_screen.withdraw()
-        self.main_screen = tk.Toplevel()
+        self.login_screen.destroy()
+        self.main_screen = tk.Tk()
         self.main_screen.title("Main Screen")
         self.main_screen.geometry('1253x588')
         self.main_screen.configure(bg='#D9D9D9')
 
+        self.main_frame = tk.Frame(self.main_screen,width=1253,height=588,bg='#94939B')
+        self.main_frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=20)
+
+        self.right_frm_2 = tk.Frame(self.main_frame, bg='#565656', width=830, height=516)
+        self.right_frm_2.pack(fill=tk.BOTH, padx=20, pady=20, side=tk.RIGHT)
+
+        self.left_frm_2 = tk.Frame(self.main_frame,bg='#94939B')
+        self.left_frm_2.pack(fill=tk.BOTH, padx=20, pady=20,side=tk.LEFT,expand=True)
+
+        self.top_lbl_02 = tk.Label(self.left_frm_2, text='CONTROLE DE ESCALAS',font=('Inter',18,'bold'),fg='#FFF', bg='#94939B')
+        self.top_lbl_02.pack(side=tk.TOP)
+
+        self.img_pf_02 = ImageTk.PhotoImage(Image.open(f"images/image 1.png"))
+
+        self.left_lbl_02 = tk.Label(self.left_frm_2, image=self.img_pf_02, height=425, width=336)
+        self.left_lbl_02.pack(side=tk.TOP)
 
 
 
