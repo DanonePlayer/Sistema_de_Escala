@@ -48,14 +48,21 @@ class Screens:
         self.entry_senha.insert(0, "Senha")
         self.entry_senha.pack(side=tk.TOP, pady=20, padx=20)
 
-        self.bttn_login = tk.Button(self.right_lbl, font=('Inter', 24, 'bold'), fg='#FFFFFF', text="ENTRAR", bg='#6A6666')
+        self.bttn_login = tk.Button(self.right_lbl, font=('Inter', 24, 'bold'), fg='#FFFFFF', text="ENTRAR", bg='#6A6666',command=self.enter)
         self.bttn_login.pack(side=tk.BOTTOM, pady=20, padx=100)
 
         self.bttn_help = tk.Button(self.right_lbl, font=('Inter', 20, 'bold'), fg='#6A6666', text=" Problemas de Login? ", bg='#94939B', borderwidth=0)
         self.bttn_help.pack(fill=tk.BOTH)
         self.bttn_help.config()
 
-
+    def enter(self):
+        self.MainScreen()
+    def MainScreen(self):
+        self.login_screen.withdraw()
+        self.main_screen = tk.Toplevel()
+        self.main_screen.title("Main Screen")
+        self.main_screen.geometry('1253x588')
+        self.main_screen.configure(bg='#D9D9D9')
 
 
 
