@@ -234,14 +234,14 @@ class Tela:
         self.cbx_escala_es.place(x=20, y=80)
         self.cbx_escala_es.current(0)
 
-        self.btn_verifica = tk.Button(self.janela_verifica_escala, text='Gerar', command=self.pesquisar_verifica)
+        self.btn_verifica = tk.Button(self.janela_verifica_escala, text='Gerar', command=self.Aplica_Calendario)
         self.btn_verifica.place(x=100, y=150)
 
         self.verifica_cal = Calendar(self.janela_verifica_escala, font="Arial 14", locale='pt_BR', cursor="hand1", selectmode="none", background='#008000', foreground='white')
         self.verifica_cal.place(x=200, y=150)
 
 
-    def pesquisar_verifica(self):
+    def Aplica_Calendario(self):
         # print(self.cbx_usuario_es.get())
         # print(self.cbx_escala_es.get())
         query = f'SELECT usuario_id, escala_id FROM escala, usuario WHERE nome_completo like "{self.cbx_usuario_es.get()}" and nome_escala like "{self.cbx_escala_es.get()}";'
@@ -356,7 +356,7 @@ class Tela:
 
         self.verifica_cal.tag_config('Ferias', background=cor_escolhida_ferias, foreground='white')
         self.verifica_cal.tag_config('escala', background=cor_escolhida_escala, foreground='black')
-        self.verifica_cal.tag_config("final_semana", background="#dbd6d1", foreground='black')
+        self.verifica_cal.tag_config("final_semana", background="#cccccc", foreground='black')
 
         
 
