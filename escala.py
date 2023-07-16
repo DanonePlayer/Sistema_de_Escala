@@ -259,22 +259,26 @@ class Tela:
             cor_escolhida_ferias = "#FF7F50"
             vetor_dias_corridos_na_escala = []
             vetor_finais_semana = []
+            dia_cont = dia_escolha
 
-            procura_final_semana = dia_escolha + dias_de_escala*2
+            procura_final_semana = dia_escolha + dias_de_escala
             
             for i in range(dia_escolha, procura_final_semana):
-
-                data_ = datetime(ano_escolha, mes_escolha, i)
+                if i:
+                    dia_cont += 1
+                data_ = datetime(ano_escolha, mes_escolha, dia_cont)
                 # monthrange retorna o último dia do mês, basta setá-lo na data e pronto
                 last_date = data_.replace(day=monthrange(data_.year, data_.month)[1])
-                print(last_date.day)
-                print(i)
-                if i == last_date.day:
+                # print(last_date.day)
+                
+                if dia_cont == last_date.day:
                     month +=1
-                    #fazer um calculo aqui para o dia voltar para 1
+                    dia_cont = 1
+
+                    #fazer um calculo aqui para o dia voltar para 1, porem continuar
                 year=ano_escolha
                 month=mes_escolha
-                day=i
+                day= dia_cont
 
                 data = datetime(year, month, day)
                 # print(data)   
@@ -294,6 +298,7 @@ class Tela:
                     # print("Final de semana")
                     vetor_finais_semana.append(data)
                     dias_de_escala += 1
+                    # print(vetor_finais_semana)
 
             #data atual =  date = cal.datetime.today()
             date = self.verifica_cal.datetime.today()
