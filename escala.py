@@ -4,6 +4,7 @@ from tkcalendar import Calendar, DateEntry
 import holidays
 import bd_sistemas_de_escala as bd
 from datetime import datetime
+from calendar import monthrange
 
 
 class Tela:
@@ -262,8 +263,15 @@ class Tela:
             procura_final_semana = dia_escolha + dias_de_escala*2
             
             for i in range(dia_escolha, procura_final_semana):
+
                 data = datetime(year=ano_escolha, month=mes_escolha, day=i)
-                print(data)
+                # print(data)   
+                # monthrange retorna o último dia do mês, basta setá-lo na data e pronto
+                last_date = data.replace(day=monthrange(data.year, data.month)[1])
+                print(last_date.day)
+                print(i)
+                if i == last_date.day:
+                    mes_escolha +=1
 
                 indice_da_semana = data.weekday()
                 # print(indice_da_semana)
