@@ -237,9 +237,9 @@ class Tela:
         self.btn_verifica = tk.Button(self.janela_verifica_escala, text='Gerar', command=self.pesquisar_verifica)
         self.btn_verifica.place(x=100, y=150)
 
-        
+        self.verifica_cal = Calendar(self.janela_verifica_escala, font="Arial 14", locale='pt_BR', cursor="hand1", selectmode="none", background='#008000', foreground='white')
+        self.verifica_cal.place(x=200, y=150)
 
-        # print(dia_escolha, ano_escolha, mes_escolha, dias_de_escala)
 
     def pesquisar_verifica(self):
         # print(self.cbx_usuario_es.get())
@@ -268,6 +268,8 @@ class Tela:
             query = f'SELECT data_inicio FROM usuario_escala WHERE usuario_escala_id = {self.id_usu_escala};'
             dados = bd.consultar(query)
 
+
+
         DIAS = [
         'Segunda-feira',
         'Terça-feira',
@@ -277,6 +279,7 @@ class Tela:
         'Sábado',
         'Domingo'
         ]
+
         mes_escolha = 7
         ano_escolha = 2023
         dia_escolha = 1
@@ -308,18 +311,15 @@ class Tela:
                 vetor_finais_semana.append(data)
                 dias_de_escala += 1
 
-        cal = Calendar(self.janela_verifica_escala, font="Arial 14", locale='pt_BR', cursor="hand1", selectmode="none", background='#008000', foreground='white')
-        cal.place(x=200, y=150)
-
         #data atual =  date = cal.datetime.today()
-        date = cal.datetime.today()
+        date = self.verifica_cal.datetime.today()
 
-        escala_ecolha_dia = cal.datetime(ano_escolha, mes_escolha, dia_escolha)
+        escala_ecolha_dia = self.verifica_cal.datetime(ano_escolha, mes_escolha, dia_escolha)
         #print(escala_ecolha_dia)
 
         #pegando todos os dias escolhidos na escala para comparar depois com as ferias
         for dias in range(1, dias_de_escala+1):
-            dias_corridos_na_escala = cal.datetime(ano_escolha, mes_escolha, dias)
+            dias_corridos_na_escala = self.verifica_cal.datetime(ano_escolha, mes_escolha, dias)
             #print(dias_corridos_na_escala)
             vetor_dias_corridos_na_escala.append(dias_corridos_na_escala)
 
@@ -333,7 +333,7 @@ class Tela:
             mes = str(feriado).split("-")[1]
             ano = str(feriado).split("-")[0]
 
-            feriados = cal.datetime(year=int(ano), month=int(mes), day=int(dia))
+            feriados = self.verifica_cal.datetime(year=int(ano), month=int(mes), day=int(dia))
             #print(feriados)
             
             vetor_feriados.append(feriados)
@@ -344,19 +344,23 @@ class Tela:
             #     dias_de_escala += 1
         
         for i in range(0, dias_de_escala):
-            cal.calevent_create(escala_ecolha_dia + cal.timedelta(days=i), 'escalas', 'escala')
+            self.verifica_cal.calevent_create(escala_ecolha_dia + self.verifica_cal.timedelta(days=i), 'escalas', 'escala')
 
         for feriados1 in vetor_feriados:
-            cal.calevent_create(feriados1 , 'Ferias', 'Ferias')
+            self.verifica_cal.calevent_create(feriados1 , 'Ferias', 'Ferias')
 
         for final_semana in vetor_finais_semana:
-            cal.calevent_create(final_semana, "final_semana", "final_semana")
+            self.verifica_cal.calevent_create(final_semana, "final_semana", "final_semana")
         
 
 
-        cal.tag_config('Ferias', background=cor_escolhida_ferias, foreground='white')
-        cal.tag_config('escala', background=cor_escolhida_escala, foreground='black')
-        cal.tag_config("final_semana", background="#dbd6d1", foreground='black')
+        self.verifica_cal.tag_config('Ferias', background=cor_escolhida_ferias, foreground='white')
+        self.verifica_cal.tag_config('escala', background=cor_escolhida_escala, foreground='black')
+        self.verifica_cal.tag_config("final_semana", background="#dbd6d1", foreground='black')
+
+        
+
+        # print(dia_escolha, ano_escolha, mes_escolha, dias_de_escala)
 
 
 janela = tk.Tk()
