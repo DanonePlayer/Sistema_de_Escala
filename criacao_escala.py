@@ -342,19 +342,21 @@ class Tela:
         for tupla in dados:
             for id in tupla:
                 ids.append(id)
-        usuario_id = ids[0]
-        escala_id = ids[1]
+        self.usuario_id = ids[0]
+        self.escala_id = ids[1]
 
-        query = f"SELECT usuario_escala_id from usuario_escala WHERE usuario_id = {usuario_id} and escala_id = {escala_id};"
+        query = f"SELECT usuario_escala_id from usuario_escala WHERE usuario_id = {self.usuario_id} and escala_id = {self.escala_id};"
         dados = bd.consultar(query)
-
-        id_usu_escala = []
+            
+        self.id_usu_escala = 0
 
         for tupla in dados:
             for id in tupla:
-                id_usu_escala.append(id)
-
-        print(id_usu_escala)
+                self.id_usu_escala = id
+        if self.id_usu_escala != 0:
+            print(self.id_usu_escala)
+            query = f'SELECT data_inicio FROM usuario_escala WHERE usuario_escala_id = {self.id_usu_escala};'
+            dados = bd.consultar(query)
 
 
 janela = tk.Tk()
