@@ -205,15 +205,6 @@ class Tela:
         self.janela_verifica_escala = tk.Toplevel()
         self.janela_verifica_escala.title("Exemplo")
         self.janela_verifica_escala.geometry("600x400")
-        DIAS = [
-        'Segunda-feira',
-        'Terça-feira',
-        'Quarta-feira',
-        'Quinta-Feira',
-        'Sexta-feira',
-        'Sábado',
-        'Domingo'
-        ]
         
         query = f'SELECT nome_completo FROM usuario;'
         dados = bd.consultar(query)
@@ -246,6 +237,46 @@ class Tela:
         self.btn_verifica = tk.Button(self.janela_verifica_escala, text='Gerar', command=self.pesquisar_verifica)
         self.btn_verifica.place(x=100, y=150)
 
+        
+
+        # print(dia_escolha, ano_escolha, mes_escolha, dias_de_escala)
+
+    def pesquisar_verifica(self):
+        # print(self.cbx_usuario_es.get())
+        # print(self.cbx_escala_es.get())
+        query = f'SELECT usuario_id, escala_id FROM escala, usuario WHERE nome_completo like "{self.cbx_usuario_es.get()}" and nome_escala like "{self.cbx_escala_es.get()}";'
+        dados = bd.consultar(query)
+
+        ids = []
+
+        for tupla in dados:
+            for id in tupla:
+                ids.append(id)
+        self.usuario_id = ids[0]
+        self.escala_id = ids[1]
+
+        query = f"SELECT usuario_escala_id from usuario_escala WHERE usuario_id = {self.usuario_id} and escala_id = {self.escala_id};"
+        dados = bd.consultar(query)
+            
+        self.id_usu_escala = 0
+
+        for tupla in dados:
+            for id in tupla:
+                self.id_usu_escala = id
+        if self.id_usu_escala != 0:
+            print(self.id_usu_escala)
+            query = f'SELECT data_inicio FROM usuario_escala WHERE usuario_escala_id = {self.id_usu_escala};'
+            dados = bd.consultar(query)
+
+        DIAS = [
+        'Segunda-feira',
+        'Terça-feira',
+        'Quarta-feira',
+        'Quinta-Feira',
+        'Sexta-feira',
+        'Sábado',
+        'Domingo'
+        ]
         mes_escolha = 7
         ano_escolha = 2023
         dia_escolha = 1
@@ -326,37 +357,6 @@ class Tela:
         cal.tag_config('Ferias', background=cor_escolhida_ferias, foreground='white')
         cal.tag_config('escala', background=cor_escolhida_escala, foreground='black')
         cal.tag_config("final_semana", background="#dbd6d1", foreground='black')
-
-        
-
-        # print(dia_escolha, ano_escolha, mes_escolha, dias_de_escala)
-
-    def pesquisar_verifica(self):
-        # print(self.cbx_usuario_es.get())
-        # print(self.cbx_escala_es.get())
-        query = f'SELECT usuario_id, escala_id FROM escala, usuario WHERE nome_completo like "{self.cbx_usuario_es.get()}" and nome_escala like "{self.cbx_escala_es.get()}";'
-        dados = bd.consultar(query)
-
-        ids = []
-
-        for tupla in dados:
-            for id in tupla:
-                ids.append(id)
-        self.usuario_id = ids[0]
-        self.escala_id = ids[1]
-
-        query = f"SELECT usuario_escala_id from usuario_escala WHERE usuario_id = {self.usuario_id} and escala_id = {self.escala_id};"
-        dados = bd.consultar(query)
-            
-        self.id_usu_escala = 0
-
-        for tupla in dados:
-            for id in tupla:
-                self.id_usu_escala = id
-        if self.id_usu_escala != 0:
-            print(self.id_usu_escala)
-            query = f'SELECT data_inicio FROM usuario_escala WHERE usuario_escala_id = {self.id_usu_escala};'
-            dados = bd.consultar(query)
 
 
 janela = tk.Tk()
