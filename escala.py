@@ -1,12 +1,9 @@
 import tkinter as tk
-from tkinter import ttk
+from tkinter import ttk, messagebox
 from tkcalendar import Calendar, DateEntry
 import holidays
 import bd_sistemas_de_escala as bd
 from datetime import datetime
-
-
-
 
 
 class Tela:
@@ -16,16 +13,12 @@ class Tela:
         self.janelaprincipal.geometry("400x200")
         # self.janelaprincipal["bg"] = "gray"
 
-
         self.frm_cima = tk.Frame(self.janelaprincipal, width=400, height=400)
         self.frm_cima.grid(column=0, row=0, pady=25)
-
-
 
         self.lbl_criar_escala = tk.Label(self.frm_cima, text="Criar Escala", font=("Arial",14), bg="#3CB371", fg="white", width=20, height=1)
         self.lbl_criar_escala.place(x=10, y=10)
         self.lbl_criar_escala.bind("<Button-1>", self.criar_escala) 
-
 
         self.lbl_novaprog = tk.Label(self.frm_cima, text="+ Nova programação", font=("Arial",14), bg="#3CB371", fg="white", width=20, height=1)
         self.lbl_novaprog.place(x=10, y=50)
@@ -34,14 +27,9 @@ class Tela:
         self.imgicon = tk.PhotoImage(file="Images/a.png", height=222)
         self.janelaprincipal.iconphoto(False, self.imgicon)
 
-
         self.lbl_verifica_escala = tk.Label(self.frm_cima, text="Verificar Escalas", font=("Arial",14), bg="#3CB371", fg="white", width=20, height=1)
         self.lbl_verifica_escala.place(x=10, y=90)
         self.lbl_verifica_escala.bind("<Button-1>", self.verificar_escala)
-
-
-
-
 
         # #APRENDENDO
         # self.text1 = tk.StringVar()
@@ -55,35 +43,21 @@ class Tela:
         self.colaboradores = []
 
 
-
-
-
     def criar_escala(self, event):
         self.janela_criar_escala = tk.Toplevel()
         self.janela_criar_escala.title("Criar Escala")
         self.janela_criar_escala.grab_set()
         self.janela_criar_escala.geometry("600x400")
 
-
         self.lbl_nome_escala = tk.Label(self.janela_criar_escala, text="Nome da Escala:")
         self.lbl_nome_escala.place(x=10, y=10)
-
         self.entry_nome_escala = tk.Entry(self.janela_criar_escala, borderwidth=2)
         self.entry_nome_escala.place(x=10, y=30)
 
-
-
         self.lbl_dias = tk.Label(self.janela_criar_escala, text="Quantos dias:")
         self.lbl_dias.place(x=10, y=70)
-
-        vetor_num = []
-        for nums in range(1, 360):
-            vetor_num.append(nums)
-
-        self.string_Var_comb = tk.StringVar()
-        self.comb = ttk.Combobox(self.janela_criar_escala, textvariable=self.string_Var_comb)
-        self.comb["values"] = vetor_num
-        self.comb.place(x=10, y=90)
+        self.entry_dias = tk.Entry(self.janela_criar_escala, borderwidth=2)
+        self.entry_dias.place(x=10, y=90)
 
         self.int_var_sem = tk.IntVar()
         self.int_var_fer = tk.IntVar()
@@ -97,9 +71,7 @@ class Tela:
         self.rbtn_cont_final_semanan = tk.Radiobutton(self.janela_criar_escala, text="Não", variable=self.int_var_sem, value=2)
         self.rbtn_cont_final_semanan.place(x=90, y=150)
 
-
-
-        self.lbl_cont_ferias = tk.Label(self.janela_criar_escala, text="Contará as Férias?")
+        self.lbl_cont_ferias = tk.Label(self.janela_criar_escala, text="Contará os feriados?")
         self.lbl_cont_ferias.place(x=10, y=190)
 
         self.rbtn_cont_feriass= tk.Radiobutton(self.janela_criar_escala, text="Sim", variable=self.int_var_fer, value=1)
@@ -112,19 +84,17 @@ class Tela:
         self.btn_ok = tk.Button(self.janela_criar_escala, text='Criar', command=self.button_criar_escala)
         self.btn_ok.place(x=100, y=350)
 
-
     def button_criar_escala(self):
         nome_escala = self.entry_nome_escala.get()
-        dias_escala = self.string_Var_comb.get()
+        dias_escala = self.entry_dias.get()
         feriados = self.int_var_fer.get()
         finais_semana = self.int_var_sem.get()
-        # print(nome_escala, dias_escala, feriados, finais_semana)
-        query = f'INSERT INTO escala ("nome_escala", "dias_escala", "feriados", "finais_semana") VALUES ("{nome_escala}", {dias_escala}, {feriados}, {finais_semana});'
-        bd.inserir(query)
-        self.janela_criar_escala.destroy()
-
-
-
+        if dias_escala.isnumeric() and int(dias_escala) <= 360:
+            query = f'INSERT INTO escala ("nome_escala", "dias_escala", "feriados", "finais_semana") VALUES ("{nome_escala}", {dias_escala}, {feriados}, {finais_semana});'
+            bd.inserir(query)
+            self.janela_criar_escala.destroy()
+        else:
+            messagebox.showinfo("Campo quantidade de dias errado", 'Entrada do campo "quantos dias?" inválida')
 
     def Nova_programacao(self, event):
         #print(self.text1.get())
@@ -150,7 +120,6 @@ class Tela:
 
         self.cbx_usuario.place(x=20, y=30)
         self.cbx_usuario.current(0)
-
 
         self.lbl_Tipo_escala = tk.Label(self.frm_janela2_c, text="Tipo:")
         self.lbl_Tipo_escala.place(x=20, y=60)
@@ -234,7 +203,7 @@ class Tela:
         self.cbx_escala_es.place(x=20, y=80)
         self.cbx_escala_es.current(0)
 
-        self.btn_verifica = tk.Button(self.janela_verifica_escala, text='Gerar', command=self.Aplica_Calendario)
+        self.btn_verifica = tk.Button(self.janela_verifica_escala, text='Verificar', command=self.Aplica_Calendario)
         self.btn_verifica.place(x=100, y=150)
 
         self.verifica_cal = Calendar(self.janela_verifica_escala, font="Arial 14", locale='pt_BR', cursor="hand1", selectmode="none", background='#008000', foreground='white')

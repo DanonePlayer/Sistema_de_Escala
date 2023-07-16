@@ -2,7 +2,6 @@ import tkinter as tk
 from tkinter import ttk, messagebox
 import bd_sistemas_de_escala as bd
 import bcrypt
-import os
 
 
 class Usuario:
