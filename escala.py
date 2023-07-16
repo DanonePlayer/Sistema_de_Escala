@@ -254,7 +254,7 @@ class Tela:
             mes_escolha = int(data_escala[1])
             ano_escolha = int(data_escala[2])
             dia_escolha = int(data_escala[0])
-            dias_de_escala = 11
+            dias_de_escala = 19
             cor_escolhida_escala = "#FFFACD"
             cor_escolhida_ferias = "#FF7F50"
             vetor_dias_corridos_na_escala = []
