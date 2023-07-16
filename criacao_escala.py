@@ -3,6 +3,8 @@ from tkinter import ttk
 from tkcalendar import Calendar, DateEntry
 import holidays
 import bd_sistemas_de_escala as bd
+from datetime import datetime
+
 
 
 
@@ -35,7 +37,7 @@ class Tela:
 
         self.lbl_verifica_escala = tk.Label(self.frm_cima, text="Verificar Escalas", font=("Arial",14), bg="#3CB371", fg="white", width=20, height=1)
         self.lbl_verifica_escala.place(x=10, y=90)
-        self.lbl_verifica_escala.bind("<Button-1>", "self.verifica_escala")
+        self.lbl_verifica_escala.bind("<Button-1>", self.verificar_escala)
 
 
 
@@ -199,7 +201,148 @@ class Tela:
         self.janela2.destroy()
 
 
+    def verificar_escala(self, event):
+        self.janela_verifica_escala = tk.Toplevel()
+        self.janela_verifica_escala.title("Exemplo")
+        self.janela_verifica_escala.geometry("600x400")
+        DIAS = [
+        'Segunda-feira',
+        'Terça-feira',
+        'Quarta-feira',
+        'Quinta-Feira',
+        'Sexta-feira',
+        'Sábado',
+        'Domingo'
+        ]
+        
+        query = f'SELECT nome_completo FROM usuario;'
+        dados = bd.consultar(query)
 
+        usu = []
+
+        for tupla in dados:
+            for usuario in tupla:
+                usu.append(usuario)
+        print(usu)
+
+        self.cbx_usuario_es = ttk.Combobox(self.janela_verifica_escala, values=usu, state="readonly", font="30", width=28, height=5, )
+        self.cbx_usuario_es.place(x=20, y=30)
+        self.cbx_usuario_es.current(0)
+
+        query = f'SELECT nome_escala FROM escala;'
+        dados = bd.consultar(query)
+
+        escala = []
+
+        for tupla in dados:
+            for usuario in tupla:
+                escala.append(usuario)
+        print(escala)
+
+        self.cbx_escala_es = ttk.Combobox(self.janela_verifica_escala, values=escala, state="readonly", font="30", width=28, height=5, )
+        self.cbx_escala_es.place(x=20, y=80)
+        self.cbx_escala_es.current(0)
+
+        self.btn_verifica = tk.Button(self.janela_verifica_escala, text='Gerar', command=self.pesquisar_verifica)
+        self.btn_verifica.place(x=100, y=150)
+
+        mes_escolha = 7
+        ano_escolha = 2023
+        dia_escolha = 1
+        dias_de_escala = 11
+        cor_escolhida_escala = "#FFFACD"
+        cor_escolhida_ferias = "#FF7F50"
+        vetor_dias_corridos_na_escala = []
+        vetor_finais_semana = []
+        
+        sas = dias_de_escala*2
+
+        for i in range(dia_escolha, sas):
+    
+            data = datetime(year=ano_escolha, month=mes_escolha, day=i)
+            # print(data)
+
+            indice_da_semana = data.weekday()
+            # print(indice_da_semana)
+
+
+            dia_da_semana = DIAS[indice_da_semana]
+            # print(dia_da_semana)
+
+            numero_do_dia_da_semana = data.isoweekday()
+            #print(numero_do_dia_da_semana)
+
+            if(numero_do_dia_da_semana == 6 or numero_do_dia_da_semana == 7 ):
+                # print("Final de semana")
+                vetor_finais_semana.append(data)
+                dias_de_escala += 1
+
+        cal = Calendar(self.janela_verifica_escala, font="Arial 14", locale='pt_BR', cursor="hand1", selectmode="none", background='#008000', foreground='white')
+        cal.place(x=200, y=150)
+
+        #data atual =  date = cal.datetime.today()
+        date = cal.datetime.today()
+
+        escala_ecolha_dia = cal.datetime(ano_escolha, mes_escolha, dia_escolha)
+        #print(escala_ecolha_dia)
+
+        #pegando todos os dias escolhidos na escala para comparar depois com as ferias
+        for dias in range(1, dias_de_escala+1):
+            dias_corridos_na_escala = cal.datetime(ano_escolha, mes_escolha, dias)
+            #print(dias_corridos_na_escala)
+            vetor_dias_corridos_na_escala.append(dias_corridos_na_escala)
+
+        feriados= holidays.Brazil()
+
+        ano_feriado = str(date).split("-")[0]
+        vetor_feriados = []
+        for feriado in feriados[f"{ano_feriado}-01-01": f'{ano_feriado}-12-31']:
+
+            dia = str(feriado).split("-")[2]
+            mes = str(feriado).split("-")[1]
+            ano = str(feriado).split("-")[0]
+
+            feriados = cal.datetime(year=int(ano), month=int(mes), day=int(dia))
+            #print(feriados)
+            
+            vetor_feriados.append(feriados)
+
+            print(vetor_finais_semana)
+
+            # if feriados in vetor_dias_corridos_na_escala:
+            #     dias_de_escala += 1
+        
+        for i in range(0, dias_de_escala):
+            cal.calevent_create(escala_ecolha_dia + cal.timedelta(days=i), 'escalas', 'escala')
+
+        for feriados1 in vetor_feriados:
+            cal.calevent_create(feriados1 , 'Ferias', 'Ferias')
+
+        for final_semana in vetor_finais_semana:
+            cal.calevent_create(final_semana, "final_semana", "final_semana")
+        
+
+
+        cal.tag_config('Ferias', background=cor_escolhida_ferias, foreground='white')
+        cal.tag_config('escala', background=cor_escolhida_escala, foreground='black')
+        cal.tag_config("final_semana", background="#dbd6d1", foreground='black')
+
+        
+
+        # print(dia_escolha, ano_escolha, mes_escolha, dias_de_escala)
+
+    def pesquisar_verifica(self):
+        print(self.cbx_usuario_es.get())
+        print(self.cbx_escala_es.get())
+        # query = f'SELECT nome_escala FROM escala;'
+        # dados = bd.consultar(query)
+
+        # escala = []
+
+        # for tupla in dados:
+        #     for usuario in tupla:
+        #         escala.append(usuario)
+        # print(escala)
 
 
 
