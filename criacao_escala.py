@@ -332,9 +332,9 @@ class Tela:
         # print(dia_escolha, ano_escolha, mes_escolha, dias_de_escala)
 
     def pesquisar_verifica(self):
-        print(self.cbx_usuario_es.get())
-        print(self.cbx_escala_es.get())
-        query = f'SELECT escala_id, usuario_id FROM escala, usuario WHERE nome_completo like "{self.cbx_usuario_es.get()}" and nome_escala like "{self.cbx_escala_es.get()}";'
+        # print(self.cbx_usuario_es.get())
+        # print(self.cbx_escala_es.get())
+        query = f'SELECT usuario_id, escala_id FROM escala, usuario WHERE nome_completo like "{self.cbx_usuario_es.get()}" and nome_escala like "{self.cbx_escala_es.get()}";'
         dados = bd.consultar(query)
 
         ids = []
@@ -342,8 +342,13 @@ class Tela:
         for tupla in dados:
             for id in tupla:
                 ids.append(id)
-        print(ids)
+        usuario_id = ids[0]
+        escala_id = ids[1]
 
+        query = f"SELECT usuario_escala_id from usuario_escala WHERE usuario_id = {usuario_id} and escala_id = {escala_id};"
+        dados = bd.consultar(query)
+
+        print(dados)
 
 
 janela = tk.Tk()
