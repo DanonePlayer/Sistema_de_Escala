@@ -200,7 +200,10 @@ class Usuario:
             self.cbx_tipo_usuario.current(lista[4])
 
             self.btn_conf_edit = tk.Button(self.frm_edit, text="Confirmar", command=self.confirmar_editar_usuario)
-            self.btn_conf_edit.grid(column=0, row=6, columnspan=2, pady=10)
+            self.btn_conf_edit.grid(column=1, row=6, pady=10)
+
+            self.btn_conf_edit = tk.Button(self.frm_edit, text="Cancelar", command=self.edit_usuario.destroy)
+            self.btn_conf_edit.grid(column=2, row=6, pady=10)
 
     def confirmar_editar_usuario(self):
         selecionado = self.tvw_usuario.selection()
