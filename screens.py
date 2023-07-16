@@ -148,6 +148,72 @@ class Screens:
         self.roster_screen.resizable(False, False)
         self.roster_screen.protocol("WM_DELETE_WINDOW", self.voltar_roster)
 
+        self.big_frame = tk.Frame(self.roster_screen, bg='#94939B')
+        self.big_frame.pack(fill=tk.BOTH, expand=True, padx=20,pady=20)
+
+        self.center_frame_02 = tk.Frame(self.big_frame, bg='#94939B')
+        self.center_frame_02.pack(fill=tk.BOTH, expand=True, padx=10,pady=20,side=tk.LEFT)
+
+        self.top_frame_02 = tk.Frame(self.center_frame_02)
+        self.top_frame_02.grid(row=0, column=0, pady=20, padx=10)
+
+        self.top_lbl_04 = tk.Label(self.top_frame_02, text='CALENDARIO DE ESCALAS', font=('Inter', 12, 'bold'),fg='#0B0B0B', bg='#94939B')
+        self.top_lbl_04.pack(side=tk.LEFT, pady=20, padx=20)
+
+        self.middle_frame = tk.Frame(self.center_frame_02, bg='#D9D9D9')
+        self.middle_frame.grid(row=1, column=0, pady=20, padx=10)
+
+        combo_var = tk.StringVar()
+        self.combo_box = ttk.Combobox(self.middle_frame, textvariable=combo_var,values=["Opção 1", "Opção 2", "Opção 3"])
+        self.combo_box.pack(pady=20, padx=20, side=tk.LEFT)
+
+        self.middle_label = tk.Label(self.middle_frame, text='DIAS', font=('Inter', 10, 'bold'), fg='#FFF',bg='#94939B')
+        self.middle_label.pack(side=tk.LEFT, pady=10, padx=10)
+
+        self.entry_dias = tk.Entry(self.middle_frame)
+        self.entry_dias.pack(side=tk.LEFT, pady=10, padx=10)
+
+        self.bttn_edit = tk.Button(self.middle_frame, text='EDITAR', font=('Inter', 10, 'bold'), fg='#FFF',bg='#FF7F50')
+        self.bttn_edit.pack(side=tk.LEFT, pady=10, padx=10)
+
+        self.calendar_frame_02 = tk.Frame(self.center_frame_02)
+        self.calendar_frame_02.grid(row=2, column=0, pady=10, padx=10)
+
+        self.calendar_lbl = tk.Label(self.calendar_frame_02, bg='#94939B', width=70, height=15) ##Coloque o calendario aqui, pode aumentar a resolução da tela se achar que precisa de mais espaço
+        self.calendar_lbl.pack(pady=10, padx=40)
+
+        self.bottom_frame_02 = tk.Frame(self.center_frame_02)
+        self.bottom_frame_02.grid(row=3, column=0)
+
+        self.bttn_voltar = tk.Button(self.bottom_frame_02, text='VOLTAR', font=('Inter', 10, 'bold'), fg='#605F5F',bg='#FFF',command=self.voltar_roster)
+        self.bttn_voltar.pack(side=tk.LEFT)
+
+        self.frame_right = tk.Frame(self.big_frame,bg='#94939B')
+        self.frame_right.pack(fill=tk.BOTH, expand=True, padx=20, pady=20,side=tk.RIGHT)
+
+        self.entry_pesquisa = tk.Entry(self.frame_right,width=60,font=('Inter', 10 , 'bold'), fg='#94939B')
+        self.entry_pesquisa.grid(row=0,column=0,sticky='NW',padx=5,pady=10)
+        self.entry_pesquisa.insert(0, "Pesquisar")
+
+        self.frame_right.grid_columnconfigure(1, minsize=20)
+
+        self.bttn_pesquisa = tk.Button(self.frame_right,width=3,height=0)
+        self.bttn_pesquisa.grid(row=0, column=0,padx=5,sticky='NE',pady=10)
+
+        self.tree = ttk.Treeview(self.frame_right, columns=("ID", "Nome"), show="headings")
+        self.tree.heading("ID", text="ID")
+        self.tree.heading("Nome", text="Nome")
+        self.tree.grid(row=1, column=0,sticky='NSEW', padx=5, pady=10,columnspan=True)
+
+        self.scrollbar = ttk.Scrollbar(self.frame_right, orient="vertical", command=self.tree.yview)
+        self.scrollbar.grid(row=1, column=0,sticky='NSE',padx=5, pady=10)
+
+        self.tree.configure(yscrollcommand=self.scrollbar.set)
+
+        self.btt_add = tk.Button(self.frame_right,text='ADICIONAR',font=('Inter', 10, 'bold'), fg='#070707',bg='#D9D9D9',width=19,height=5)
+        self.btt_add.grid(row=2,column=0,sticky='NSEW',pady=50,padx=50)
+
+
     def CalendarScreen(self):
         self.calendar_screen = tk.Tk()
         self.calendar_screen.title("Calendario")
@@ -157,7 +223,7 @@ class Screens:
         self.calendar_screen.protocol("WM_DELETE_WINDOW", self.voltar_calendar)
 
         self.center_frame = tk.Frame(self.calendar_screen, width=1253, height=588, bg='#94939B')
-        self.center_frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=20,)
+        self.center_frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=20)
 
         self.calendar_frame = tk.Frame(self.center_frame,bg='#D9D9D9',width=906,height=449) ## Usem esse frame para colocar o calendario principal
         self.calendar_frame.pack(side=tk.TOP,padx=20, pady=20,fill=tk.BOTH)
@@ -168,7 +234,7 @@ class Screens:
         self.buttons_frame= tk.Frame(self.center_frame)
         self.buttons_frame.pack(side=tk.BOTTOM,padx=20, pady=20)
 
-        self.bttn_back = tk.Button(self.buttons_frame,text='VOLTAR',font=('Inter',14,'bold'), fg='#605F5F', bg='#FFF', command=self.voltar_calendar)
+        self.bttn_back = tk.Button(self.buttons_frame,text='VOLTAR',font=('Inter',10,'bold'), fg='#605F5F', bg='#FFF', command=self.voltar_calendar)
         self.bttn_back.pack(side=tk.BOTTOM,pady=20,padx=20)
 
 
