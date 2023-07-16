@@ -50,6 +50,7 @@ class Tela:
         
 
         self.Tipo_escala = []
+        self.colaboradores = []
 
 
 
@@ -138,9 +139,12 @@ class Tela:
         self.lbl_programar.place(x=20, y=10)
         #Exemplos de colaboradores
         
-        colaboradores = ["jardeson", "Maria"]
+        query = 'SELECT usuario_id, nome_completo, nome_usuario FROM usuario;'
+        dados = bd.consultar(query)
+        for tupla in dados:
+            self.colaboradores.append(tupla[1])
 
-        self.cbx_usuario = ttk.Combobox(self.frm_janela2_c, values=colaboradores, state="readonly", font="30", width=28, height=5, )
+        self.cbx_usuario = ttk.Combobox(self.frm_janela2_c, values=self.colaboradores, state="readonly", font="30", width=28, height=5, )
 
         self.cbx_usuario.place(x=20, y=30)
         self.cbx_usuario.current(0)
@@ -166,7 +170,8 @@ class Tela:
         self.lbl_Periodo = tk.Label(self.frm_janela2_c, text="Periodo:")
         self.lbl_Periodo.place(x=20, y=110)
         #Exemplos de Periodos
-        self.cal_escolha = Calendar(self.frm_janela2_c)
+
+        self.cal_escolha = Calendar(self.frm_janela2_c, locale='pt_BR', date_pattern='dd/MM/yyyy')
         self.cal_escolha.place(x=40, y=150)
 
 
@@ -174,14 +179,22 @@ class Tela:
         self.btn_ok.place(x=100, y=350)
 
     def ok(self):
-        print(self.cbx_usuario.get())
-        print(self.cbx_tipo_escala.get())
-        print(self.cal_escolha.selection_get()) 
-        query = 'SELECT nome_usuario, nome_escala FROM escala, usuario;'
+        # print(self.cbx_usuario.get())
+        # print(self.cbx_tipo_escala.get())
+        # print(self.cal_escolha.selection_get()) 
+        query = f'SELECT usuario_id, escala_id FROM escala, usuario WHERE nome_escala LIKE "{self.cbx_tipo_escala.get()}" and nome_completo LIKE "{self.cbx_usuario.get()}";'
         dados = bd.consultar(query)
-        data_inicio = self.cal_escolha.selection_get()
 
-        query = f'INSERT INTO usuario_escala ("usuario_escala_id", "usuario_id", "escala_id", "data_inicio") VALUES ("{nome_escala}", {dias_escala}, {feriados}, {data_inicio});'
+        ids = []
+
+        for tupla in dados:
+            for id in tupla:
+                ids.append(id)
+
+        usuario_id = ids[0]
+        escala_id = ids[1]
+        data_inicio = self.cal_escolha.get_date()
+        query = f'INSERT INTO usuario_escala ("usuario_id", "escala_id", "data_inicio") VALUES ("{usuario_id}", {escala_id}, "{data_inicio}");'
         bd.inserir(query)
         self.janela2.destroy()
 
