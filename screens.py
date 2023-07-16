@@ -91,6 +91,7 @@ class Screens:
         self.img_user = ImageTk.PhotoImage(Image.open((f'Images/user_icon.png')))
         self.img_roster = ImageTk.PhotoImage(Image.open((f'Images/roster_icon.png')))
 
+
         self.top_frame = tk.Frame(self.right_frm_2,bg='#D9D9D9')
         self.top_frame.pack(side=tk.TOP,padx=10,pady=10,fill=tk.BOTH,expand=True)
 
