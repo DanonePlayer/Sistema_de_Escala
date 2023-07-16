@@ -3,7 +3,7 @@ from tkinter import PhotoImage, ttk, messagebox,RAISED, RIDGE
 from tkinter import ttk
 from PIL import Image, ImageTk
 
-##from tkcalendar import Calendar, DateEntry
+from tkcalendar import Calendar, DateEntry
 ##import holidays
 
 class Screens:
@@ -13,19 +13,19 @@ class Screens:
         self.login_screen.geometry('961x573')
         self.login_screen.configure(bg='#D9D9D9')
 
-        self.top_frm = tk.Frame(self.login_screen, height=100, width=100)
+        self.top_frm = tk.Frame(self.login_screen, height=100, width=100, bg='#94939B')
         self.top_frm.pack(fill=tk.X, padx=20, pady=20)
 
-        self.top_lbl = tk.Label(self.top_frm, text = "BEM VINDO", font=('Inter',28,'bold'), fg='#0B0B0B')
+        self.top_lbl = tk.Label(self.top_frm, text = "BEM VINDO", font=('Inter',28,'bold'), fg='#0B0B0B', bg='#94939B')
         self.top_lbl.pack(side=tk.LEFT, pady=10, padx=50)
 
-        self.left_frm = tk.Frame(self.login_screen)
+        self.left_frm = tk.Frame(self.login_screen,bg='#D9D9D9')
         self.left_frm.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=20, pady=20)
 
         #self.img_pf = tk.PhotoImage(file="images/image 1.png", height=425, width=336)
         self.img_pf = ImageTk.PhotoImage(Image.open(f"images/image 1.png"))
 
-        self.left_lbl = tk.Label(self.left_frm, image=self.img_pf, height=425, width=336)
+        self.left_lbl = tk.Label(self.left_frm, image=self.img_pf, height=425, width=336, bg='#D9D9D9')
         self.left_lbl.pack(side=tk.LEFT, pady=10, padx=50)
 
         self.left_lbl.configure(image=self.img_pf)
@@ -68,19 +68,64 @@ class Screens:
         self.main_frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=20)
 
         self.right_frm_2 = tk.Frame(self.main_frame, bg='#565656', width=830, height=516)
-        self.right_frm_2.pack(fill=tk.BOTH, padx=20, pady=20, side=tk.RIGHT)
+        self.right_frm_2.pack(fill=tk.BOTH, expand=True, padx=20, pady=20, side=tk.RIGHT)
 
         self.left_frm_2 = tk.Frame(self.main_frame,bg='#94939B')
-        self.left_frm_2.pack(fill=tk.BOTH, padx=20, pady=20,side=tk.LEFT,expand=True)
+        self.left_frm_2.pack(padx=20, pady=20,side=tk.LEFT)
 
         self.top_lbl_02 = tk.Label(self.left_frm_2, text='CONTROLE DE ESCALAS',font=('Inter',18,'bold'),fg='#FFF', bg='#94939B')
         self.top_lbl_02.pack(side=tk.TOP)
 
         self.img_pf_02 = ImageTk.PhotoImage(Image.open(f"images/image 1.png"))
 
-        self.left_lbl_02 = tk.Label(self.left_frm_2, image=self.img_pf_02, height=425, width=336)
+        self.left_lbl_02 = tk.Label(self.left_frm_2, image=self.img_pf_02, height=425, width=336, bg='#94939B')
         self.left_lbl_02.pack(side=tk.TOP)
 
+        self.img_calendar = ImageTk.PhotoImage(Image.open((f'Images/calendar_icon.png')))
+
+        self.top_frame = tk.Frame(self.right_frm_2,bg='#D9D9D9')
+        self.top_frame.pack(side=tk.TOP,padx=10,pady=10,fill=tk.BOTH,expand=True)
+
+        self.bottom_frame = tk.Frame(self.right_frm_2, bg='#D9D9D9')
+        self.bottom_frame.pack(side=tk.BOTTOM,padx=10,pady=10,fill=tk.BOTH,expand=True)
+
+        self.bttn_calendar = tk.Button(self.top_frame, bg='#6E716E', command=self.calendar)
+        self.bttn_calendar.pack(side=tk.LEFT, padx=10, pady=10, expand=True, fill=tk.BOTH)
+
+        self.bttn_raltorio = tk.Button(self.top_frame, bg='#6E716E')
+        self.bttn_raltorio.pack(side=tk.LEFT, padx=10, pady=10, expand=True, fill=tk.BOTH)
+
+        self.bttn_usuario = tk.Button(self.top_frame, bg='#6E716E')
+        self.bttn_usuario.pack(side=tk.LEFT, padx=10, pady=10, expand=True, fill=tk.BOTH)
+
+        self.bttn_escalas = tk.Button(self.bottom_frame, bg='#6E716E', command=self.roster)
+        self.bttn_escalas.pack(side=tk.LEFT, padx=10, pady=10, expand=True, fill=tk.BOTH)
+
+        self.bttn_criar = tk.Button(self.bottom_frame, bg='#6E716E')
+        self.bttn_criar.pack(side=tk.LEFT, padx=10, pady=10, expand=True, fill=tk.BOTH)
+
+        self.bttn_hist = tk.Button(self.bottom_frame, bg='#6E716E')
+        self.bttn_hist.pack(side=tk.LEFT, padx=10, pady=10, expand=True, fill=tk.BOTH)
+
+    def roster(self):
+        self.RosterScreen()
+
+    def calendar(self):
+        self.CalendarScreen()
+
+    def RosterScreen(self):
+        self.main_screen.destroy()
+        self.roster_screen = tk.Tk()
+        self.roster_screen.title("Escalas")
+        self.roster_screen.geometry('1253x588')
+        self.roster_screen.configure(bg='#D9D9D9')
+
+    def CalendarScreen(self):
+        self.main_screen.destroy()
+        self.calendar_screen = tk.Tk()
+        self.calendar_screen.title("Calendario")
+        self.calendar_screen.geometry('1253x588')
+        self.calendar_screen.configure(bg='#D9D9D9')
 
 
 janela = tk.Tk()
