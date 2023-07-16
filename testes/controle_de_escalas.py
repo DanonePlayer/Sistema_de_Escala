@@ -28,7 +28,7 @@ class Tela:
         self.lbl_novaprog.place(x=10, y=50)
         self.lbl_novaprog.bind("<Button-1>", self.Nova_programacao)
 
-        self.imgicon = tk.PhotoImage(file="a.png", height=222)
+        self.imgicon = tk.PhotoImage(file="../Images/a.png", height=222)
         self.janelaprincipal.iconphoto(False, self.imgicon)
 
 
@@ -67,19 +67,11 @@ class Tela:
         self.entry_nome_escala = tk.Entry(self.janela_criar_escala, borderwidth=2)
         self.entry_nome_escala.place(x=10, y=30)
 
-
-
         self.lbl_dias = tk.Label(self.janela_criar_escala, text="Quantos dias:")
         self.lbl_dias.place(x=10, y=70)
 
-        vetor_num = []
-        for nums in range(1, 360):
-            vetor_num.append(nums)
-
-        self.string_Var_comb = tk.StringVar()
-        self.comb = ttk.Combobox(self.janela_criar_escala, textvariable=self.string_Var_comb)
-        self.comb["values"] = vetor_num
-        self.comb.place(x=10, y=90)
+        self.entry_dias = tk.Entry(self.janela_criar_escala, borderwidth=2)
+        self.entry_dias.place(x=10, y=90)
 
         self.int_var_sem = tk.IntVar()
         self.int_var_fer = tk.IntVar()
@@ -115,7 +107,6 @@ class Tela:
                 print("replica")
                 self.janela_criar_escala.destroy()
             else:
-
                 self.Tipo_p.append(f"{self.entry_nome_escala.get()} - {self.string_Var_comb.get()}")
                 self.janela_criar_escala.destroy()
         else:
