@@ -88,6 +88,8 @@ class Screens:
         self.left_lbl_02.pack(side=tk.TOP,padx=10,pady=10)
 
         self.img_calendar = ImageTk.PhotoImage(Image.open((f'Images/calendar_icon.png')))
+        self.img_user = ImageTk.PhotoImage(Image.open((f'Images/user_icon.png')))
+        self.img_roster = ImageTk.PhotoImage(Image.open((f'Images/roster_icon.png')))
 
         self.top_frame = tk.Frame(self.right_frm_2,bg='#D9D9D9')
         self.top_frame.pack(side=tk.TOP,padx=10,pady=10,fill=tk.BOTH,expand=True)
@@ -95,16 +97,16 @@ class Screens:
         self.bottom_frame = tk.Frame(self.right_frm_2, bg='#D9D9D9')
         self.bottom_frame.pack(side=tk.BOTTOM,padx=10,pady=10,fill=tk.BOTH,expand=True)
 
-        self.bttn_calendar = tk.Button(self.top_frame, bg='#6E716E', command=self.calendar)
+        self.bttn_calendar = tk.Button(self.top_frame, bg='#6E716E', command=self.calendar,image=self.img_calendar)
         self.bttn_calendar.pack(side=tk.LEFT, padx=10, pady=10, expand=True, fill=tk.BOTH)
 
         self.bttn_raltorio = tk.Button(self.top_frame, bg='#6E716E')
         self.bttn_raltorio.pack(side=tk.LEFT, padx=10, pady=10, expand=True, fill=tk.BOTH)
 
-        self.bttn_usuario = tk.Button(self.top_frame, bg='#6E716E', command=self.user)
+        self.bttn_usuario = tk.Button(self.top_frame, bg='#6E716E', command=self.user, image=self.img_user)
         self.bttn_usuario.pack(side=tk.LEFT, padx=10, pady=10, expand=True, fill=tk.BOTH)
 
-        self.bttn_escalas = tk.Button(self.bottom_frame, bg='#6E716E', command=self.roster)
+        self.bttn_escalas = tk.Button(self.bottom_frame, bg='#6E716E', command=self.roster, image=self.img_roster)
         self.bttn_escalas.pack(side=tk.LEFT, padx=10, pady=10, expand=True, fill=tk.BOTH)
 
         self.bttn_criar = tk.Button(self.bottom_frame, bg='#6E716E')
