@@ -57,9 +57,10 @@ class Screens:
         self.bttn_help.config()
 
     def enter(self):
-        self.MainScreen()
-    def MainScreen(self):
         self.login_screen.destroy()
+        self.MainScreen()
+
+    def MainScreen(self):
         self.main_screen = tk.Tk()
         self.main_screen.title("Main Screen")
         self.main_screen.geometry('1253x588')
@@ -120,14 +121,16 @@ class Screens:
         self.RosterScreen()
 
     def calendar(self):
+        self.main_screen.destroy()
         self.CalendarScreen()
+
     def user(self):
         self.UserScreen()
     def crud_user(self):
         self.CrudScreen()
     def voltar_main(self):
         self.calendar_screen.destroy()
-        self.main_screen.deiconify()
+        self.MainScreen()
 
     def RosterScreen(self):
         self.main_screen.destroy()
@@ -138,7 +141,6 @@ class Screens:
         self.roster_screen.resizable(False, False)
 
     def CalendarScreen(self):
-        self.main_screen.withdraw()
         self.calendar_screen = tk.Tk()
         self.calendar_screen.title("Calendario")
         self.calendar_screen.geometry('1253x588')
