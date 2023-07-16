@@ -95,7 +95,7 @@ class Screens:
         self.bttn_raltorio = tk.Button(self.top_frame, bg='#6E716E')
         self.bttn_raltorio.pack(side=tk.LEFT, padx=10, pady=10, expand=True, fill=tk.BOTH)
 
-        self.bttn_usuario = tk.Button(self.top_frame, bg='#6E716E')
+        self.bttn_usuario = tk.Button(self.top_frame, bg='#6E716E', command=self.user)
         self.bttn_usuario.pack(side=tk.LEFT, padx=10, pady=10, expand=True, fill=tk.BOTH)
 
         self.bttn_escalas = tk.Button(self.bottom_frame, bg='#6E716E', command=self.roster)
@@ -112,6 +112,10 @@ class Screens:
 
     def calendar(self):
         self.CalendarScreen()
+    def user(self):
+        self.UserScreen()
+    def crud_user(self):
+        self.CrudScreen()
 
     def RosterScreen(self):
         self.main_screen.destroy()
@@ -127,6 +131,18 @@ class Screens:
         self.calendar_screen.geometry('1253x588')
         self.calendar_screen.configure(bg='#D9D9D9')
 
+    def UserScreen(self):
+        self.main_screen.destroy()
+        self.user_screen = tk.Tk()
+        self.user_screen.title("Usuarios")
+        self.user_screen.geometry('560x591')
+        self.user_screen.configure(bg='#D9D9D9')
+    def CrudScreen(self):
+        self.user_screen.destroy()
+        self.crud_user = tk.Tk()
+        self.crud_user.title("Cadastrar usuario")
+        self.crud_user.geometry('462x676')
+        self.crud_user.configure(bg='#D9D9D9')
 
 janela = tk.Tk()
 Screens(janela)
