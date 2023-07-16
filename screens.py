@@ -114,6 +114,8 @@ class Screens:
         self.CalendarScreen()
     def user(self):
         self.UserScreen()
+    def crud_user(self):
+        self.CrudScreen()
 
     def RosterScreen(self):
         self.main_screen.destroy()
