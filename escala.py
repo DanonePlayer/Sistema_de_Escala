@@ -264,14 +264,21 @@ class Tela:
             
             for i in range(dia_escolha, procura_final_semana):
 
-                data = datetime(year=ano_escolha, month=mes_escolha, day=i)
-                # print(data)   
+                data_ = datetime(ano_escolha, mes_escolha, i)
                 # monthrange retorna o último dia do mês, basta setá-lo na data e pronto
-                last_date = data.replace(day=monthrange(data.year, data.month)[1])
+                last_date = data_.replace(day=monthrange(data_.year, data_.month)[1])
                 print(last_date.day)
                 print(i)
                 if i == last_date.day:
-                    mes_escolha +=1
+                    month +=1
+                    #fazer um calculo aqui para o dia voltar para 1
+                year=ano_escolha
+                month=mes_escolha
+                day=i
+
+                data = datetime(year, month, day)
+                # print(data)   
+
 
                 indice_da_semana = data.weekday()
                 # print(indice_da_semana)
