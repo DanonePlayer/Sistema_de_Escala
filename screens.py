@@ -185,7 +185,7 @@ class Screens:
         self.bottom_frame_02 = tk.Frame(self.center_frame_02)
         self.bottom_frame_02.grid(row=3, column=0)
 
-        self.bttn_voltar = tk.Button(self.bottom_frame_02, text='VOLTAR', font=('Inter', 10, 'bold'), fg='#605F5F',bg='#FFF')
+        self.bttn_voltar = tk.Button(self.bottom_frame_02, text='VOLTAR', font=('Inter', 10, 'bold'), fg='#605F5F',bg='#FFF',command=self.voltar_roster)
         self.bttn_voltar.pack(side=tk.LEFT)
 
         self.frame_right = tk.Frame(self.big_frame,bg='#94939B')
