@@ -17,7 +17,7 @@ class Tela:
         self.frm_cima = tk.Frame(self.janelaprincipal, width=400, height=400)
         self.frm_cima.grid(column=0, row=0, pady=25)
 
-        self.lbl_escalas = tk.Label(self.frm_cima, text="Criar Escala", font=("Arial", 14), bg="#3CB371",
+        self.lbl_escalas = tk.Label(self.frm_cima, text="Escalas", font=("Arial", 14), bg="#3CB371",
                                          fg="white", width=20, height=1)
         self.lbl_escalas.place(x=10, y=10)
         self.lbl_escalas.bind("<Button-1>", self.escalas)
