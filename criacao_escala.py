@@ -334,15 +334,15 @@ class Tela:
     def pesquisar_verifica(self):
         print(self.cbx_usuario_es.get())
         print(self.cbx_escala_es.get())
-        # query = f'SELECT nome_escala FROM escala;'
-        # dados = bd.consultar(query)
+        query = f'SELECT escala_id, usuario_id FROM escala, usuario WHERE nome_completo like "{self.cbx_usuario_es.get()}" and nome_escala like "{self.cbx_escala_es.get()}";'
+        dados = bd.consultar(query)
 
-        # escala = []
+        ids = []
 
-        # for tupla in dados:
-        #     for usuario in tupla:
-        #         escala.append(usuario)
-        # print(escala)
+        for tupla in dados:
+            for id in tupla:
+                ids.append(id)
+        print(ids)
 
 
 
