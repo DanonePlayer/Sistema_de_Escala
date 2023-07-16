@@ -191,24 +191,27 @@ class Screens:
         self.frame_right = tk.Frame(self.big_frame,bg='#94939B')
         self.frame_right.pack(fill=tk.BOTH, expand=True, padx=20, pady=20,side=tk.RIGHT)
 
-        self.entry_pesquisa = tk.Entry(self.frame_right,width=60)
-        self.entry_pesquisa.grid(row=0,column=0,sticky='NW',padx=50,pady=10)
+        self.entry_pesquisa = tk.Entry(self.frame_right,width=60,font=('Inter', 10 , 'bold'), fg='#94939B')
+        self.entry_pesquisa.grid(row=0,column=0,sticky='NW',padx=5,pady=10)
+        self.entry_pesquisa.insert(0, "Pesquisar")
 
         self.frame_right.grid_columnconfigure(1, minsize=20)
 
         self.bttn_pesquisa = tk.Button(self.frame_right,width=3,height=0)
-        self.bttn_pesquisa.grid(row=0, column=0,padx=50,sticky='NE',pady=10)
+        self.bttn_pesquisa.grid(row=0, column=0,padx=5,sticky='NE',pady=10)
 
         self.tree = ttk.Treeview(self.frame_right, columns=("ID", "Nome"), show="headings")
         self.tree.heading("ID", text="ID")
         self.tree.heading("Nome", text="Nome")
-        self.tree.grid(row=1, column=0,sticky='NSEW', padx=50, pady=30)
+        self.tree.grid(row=1, column=0,sticky='NSEW', padx=5, pady=10,columnspan=True)
 
         self.scrollbar = ttk.Scrollbar(self.frame_right, orient="vertical", command=self.tree.yview)
-        self.scrollbar.grid(row=1, column=1,sticky='ns')
+        self.scrollbar.grid(row=1, column=0,sticky='NSE',padx=5, pady=10)
 
         self.tree.configure(yscrollcommand=self.scrollbar.set)
 
+        self.btt_add = tk.Button(self.frame_right,text='ADICIONAR',font=('Inter', 10, 'bold'), fg='#070707',bg='#D9D9D9',width=19,height=5)
+        self.btt_add.grid(row=2,column=0,sticky='NSEW',pady=50,padx=50)
 
 
     def CalendarScreen(self):
@@ -231,7 +234,7 @@ class Screens:
         self.buttons_frame= tk.Frame(self.center_frame)
         self.buttons_frame.pack(side=tk.BOTTOM,padx=20, pady=20)
 
-        self.bttn_back = tk.Button(self.buttons_frame,text='VOLTAR',font=('Inter',14,'bold'), fg='#605F5F', bg='#FFF', command=self.voltar_calendar)
+        self.bttn_back = tk.Button(self.buttons_frame,text='VOLTAR',font=('Inter',10,'bold'), fg='#605F5F', bg='#FFF', command=self.voltar_calendar)
         self.bttn_back.pack(side=tk.BOTTOM,pady=20,padx=20)
 
 
