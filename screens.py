@@ -118,6 +118,7 @@ class Screens:
         self.bttn_hist.pack(side=tk.LEFT, padx=10, pady=10, expand=True, fill=tk.BOTH)
 
     def roster(self):
+        self.main_screen.destroy()
         self.RosterScreen()
 
     def calendar(self):
@@ -125,20 +126,27 @@ class Screens:
         self.CalendarScreen()
 
     def user(self):
+        self.main_screen.destroy()
         self.UserScreen()
     def crud_user(self):
         self.CrudScreen()
-    def voltar_main(self):
+    def voltar_calendar(self):
         self.calendar_screen.destroy()
+        self.MainScreen()
+    def voltar_roster(self):
+        self.roster_screen.destroy()
+        self.MainScreen()
+    def voltar_user(self):
+        self.user_screen.destroy()
         self.MainScreen()
 
     def RosterScreen(self):
-        self.main_screen.destroy()
         self.roster_screen = tk.Tk()
         self.roster_screen.title("Escalas")
         self.roster_screen.geometry('1253x588')
         self.roster_screen.configure(bg='#D9D9D9')
         self.roster_screen.resizable(False, False)
+        self.roster_screen.protocol("WM_DELETE_WINDOW", self.voltar_roster)
 
     def CalendarScreen(self):
         self.calendar_screen = tk.Tk()
@@ -146,6 +154,7 @@ class Screens:
         self.calendar_screen.geometry('1253x588')
         self.calendar_screen.configure(bg='#D9D9D9')
         self.calendar_screen.resizable(False, False)
+        self.calendar_screen.protocol("WM_DELETE_WINDOW", self.voltar_calendar)
 
         self.center_frame = tk.Frame(self.calendar_screen, width=1253, height=588, bg='#94939B')
         self.center_frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=20,)
@@ -159,22 +168,21 @@ class Screens:
         self.buttons_frame= tk.Frame(self.center_frame)
         self.buttons_frame.pack(side=tk.BOTTOM,padx=20, pady=20)
 
-        self.bttn_back = tk.Button(self.buttons_frame,text='VOLTAR',font=('Inter',14,'bold'), fg='#605F5F', bg='#FFF', command=self.voltar_main)
+        self.bttn_back = tk.Button(self.buttons_frame,text='VOLTAR',font=('Inter',14,'bold'), fg='#605F5F', bg='#FFF', command=self.voltar_calendar)
         self.bttn_back.pack(side=tk.BOTTOM,pady=20,padx=20)
 
 
 
     def UserScreen(self):
-        self.main_screen.destroy()
         self.user_screen = tk.Tk()
         self.user_screen.title("Usuarios")
         self.user_screen.geometry('560x591')
         self.user_screen.configure(bg='#D9D9D9')
         self.user_screen.resizable(False, False)
+        self.user_screen.protocol("WM_DELETE_WINDOW", self.voltar_user)
 
 
     def CrudScreen(self):
-        self.user_screen.destroy()
         self.crud_user = tk.Tk()
         self.crud_user.title("Cadastrar usuario")
         self.crud_user.geometry('462x676')
