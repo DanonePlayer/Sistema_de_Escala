@@ -348,7 +348,13 @@ class Tela:
         query = f"SELECT usuario_escala_id from usuario_escala WHERE usuario_id = {usuario_id} and escala_id = {escala_id};"
         dados = bd.consultar(query)
 
-        print(dados)
+        id_usu_escala = []
+
+        for tupla in dados:
+            for id in tupla:
+                id_usu_escala.append(id)
+
+        print(id_usu_escala)
 
 
 janela = tk.Tk()
