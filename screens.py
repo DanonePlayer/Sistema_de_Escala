@@ -12,6 +12,7 @@ class Screens:
         self.login_screen.title("Login")
         self.login_screen.geometry('961x573')
         self.login_screen.configure(bg='#D9D9D9')
+        self.login_screen.resizable(False, False)
 
         self.top_frm = tk.Frame(self.login_screen, height=100, width=100, bg='#94939B')
         self.top_frm.pack(fill=tk.X, padx=20, pady=20)
@@ -63,6 +64,7 @@ class Screens:
         self.main_screen.title("Main Screen")
         self.main_screen.geometry('1253x588')
         self.main_screen.configure(bg='#D9D9D9')
+        self.main_screen.resizable(False, False)
 
         self.main_frame = tk.Frame(self.main_screen,width=1253,height=588,bg='#94939B')
         self.main_frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=20)
@@ -76,10 +78,14 @@ class Screens:
         self.top_lbl_02 = tk.Label(self.left_frm_2, text='CONTROLE DE ESCALAS',font=('Inter',18,'bold'),fg='#FFF', bg='#94939B')
         self.top_lbl_02.pack(side=tk.TOP)
 
+        self.top_lbl_03 = tk.Label(self.left_frm_2, text='VERSÃO 1.0', font=('Inter', 10, 'bold'), fg='#FFF',bg='#94939B')
+        self.top_lbl_03.pack(side=tk.TOP,padx=10)
+
+
         self.img_pf_02 = ImageTk.PhotoImage(Image.open(f"images/image 1.png"))
 
         self.left_lbl_02 = tk.Label(self.left_frm_2, image=self.img_pf_02, height=425, width=336, bg='#94939B')
-        self.left_lbl_02.pack(side=tk.TOP)
+        self.left_lbl_02.pack(side=tk.TOP,padx=10,pady=10)
 
         self.img_calendar = ImageTk.PhotoImage(Image.open((f'Images/calendar_icon.png')))
 
@@ -116,6 +122,9 @@ class Screens:
         self.UserScreen()
     def crud_user(self):
         self.CrudScreen()
+    def voltar_main(self):
+        self.calendar_screen.destroy()
+        self.main_screen.deiconify()
 
     def RosterScreen(self):
         self.main_screen.destroy()
@@ -123,13 +132,32 @@ class Screens:
         self.roster_screen.title("Escalas")
         self.roster_screen.geometry('1253x588')
         self.roster_screen.configure(bg='#D9D9D9')
+        self.roster_screen.resizable(False, False)
 
     def CalendarScreen(self):
-        self.main_screen.destroy()
+        self.main_screen.withdraw()
         self.calendar_screen = tk.Tk()
         self.calendar_screen.title("Calendario")
         self.calendar_screen.geometry('1253x588')
         self.calendar_screen.configure(bg='#D9D9D9')
+        self.calendar_screen.resizable(False, False)
+
+        self.center_frame = tk.Frame(self.calendar_screen, width=1253, height=588, bg='#94939B')
+        self.center_frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=20,)
+
+        self.calendar_frame = tk.Frame(self.center_frame,bg='#D9D9D9',width=906,height=449) ## Usem esse frame para colocar o calendario principal
+        self.calendar_frame.pack(side=tk.TOP,padx=20, pady=20,fill=tk.BOTH)
+
+        self.lbl_text = tk.Label(self.calendar_frame,text='CALENDARIO GERAL DE ESCALAS', font=('Inter',18,'bold'), fg='#0B0B0B', bg='#94939B')
+        self.lbl_text.pack(side=tk.TOP)
+
+        self.buttons_frame= tk.Frame(self.center_frame)
+        self.buttons_frame.pack(side=tk.BOTTOM,padx=20, pady=20)
+
+        self.bttn_back = tk.Button(self.buttons_frame,text='VOLTAR',font=('Inter',14,'bold'), fg='#605F5F', bg='#FFF', command=self.voltar_main)
+        self.bttn_back.pack(side=tk.BOTTOM,pady=20,padx=20)
+
+
 
     def UserScreen(self):
         self.main_screen.destroy()
@@ -137,12 +165,16 @@ class Screens:
         self.user_screen.title("Usuarios")
         self.user_screen.geometry('560x591')
         self.user_screen.configure(bg='#D9D9D9')
+        self.user_screen.resizable(False, False)
+
+
     def CrudScreen(self):
         self.user_screen.destroy()
         self.crud_user = tk.Tk()
         self.crud_user.title("Cadastrar usuario")
         self.crud_user.geometry('462x676')
         self.crud_user.configure(bg='#D9D9D9')
+        self.crud_user.resizable(False, False)
 
 janela = tk.Tk()
 Screens(janela)
