@@ -135,6 +135,12 @@ class Screens:
         self.user_screen.title("Usuarios")
         self.user_screen.geometry('560x591')
         self.user_screen.configure(bg='#D9D9D9')
+    def CrudScreen(self):
+        self.user_screen.destroy()
+        self.crud_user = tk.Tk()
+        self.crud_user.title("Cadastrar usuario")
+        self.crud_user.geometry('462x676')
+        self.crud_user.configure(bg='#D9D9D9')
 
 janela = tk.Tk()
 Screens(janela)
