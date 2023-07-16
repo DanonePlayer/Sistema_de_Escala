@@ -194,10 +194,7 @@ class Tela:
         usuario_id = ids[0]
         escala_id = ids[1]
         data_inicio = self.cal_escolha.get_date()
-        print(data_inicio)
-
-
-        query = f'INSERT INTO usuario_escala ("usuario_id", "escala_id", "data_inicio") VALUES ("{usuario_id}", {escala_id}, {data_inicio});'
+        query = f'INSERT INTO usuario_escala ("usuario_id", "escala_id", "data_inicio") VALUES ("{usuario_id}", {escala_id}, "{data_inicio}");'
         bd.inserir(query)
         self.janela2.destroy()
 
