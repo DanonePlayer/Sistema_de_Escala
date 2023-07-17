@@ -126,7 +126,7 @@ class Tela:
         self.rbtn_cont_final_semanas = tk.Radiobutton(self.janela_criar_escala, text="Sim", variable=self.int_var_sem, value=1)
         self.rbtn_cont_final_semanas.place(x=10, y=150)
         
-        self.rbtn_cont_final_semanan = tk.Radiobutton(self.janela_criar_escala, text="Não", variable=self.int_var_sem, value=2)
+        self.rbtn_cont_final_semanan = tk.Radiobutton(self.janela_criar_escala, text="Não", variable=self.int_var_sem, value=0)
         self.rbtn_cont_final_semanan.place(x=90, y=150)
 
         self.lbl_cont_ferias = tk.Label(self.janela_criar_escala, text="Contará os feriados?")
@@ -135,7 +135,7 @@ class Tela:
         self.rbtn_cont_feriass= tk.Radiobutton(self.janela_criar_escala, text="Sim", variable=self.int_var_fer, value=1)
         self.rbtn_cont_feriass.place(x=10, y=210)
         
-        self.rbtn_cont_feriasn = tk.Radiobutton(self.janela_criar_escala, text="Não", variable=self.int_var_fer, value=2)
+        self.rbtn_cont_feriasn = tk.Radiobutton(self.janela_criar_escala, text="Não", variable=self.int_var_fer, value=0)
         self.rbtn_cont_feriasn.place(x=90, y=210)
 
 
@@ -413,7 +413,7 @@ class Tela:
         # print(self.cbx_usuario_es.get())
         # print(self.cbx_escala_es.get())
 
-        query = f'''SELECT eu.escala_id
+        query = f'''SELECT eu.usuario_escala_id
         FROM usuario_escala eu
         JOIN usuario u ON u.usuario_id = eu.usuario_id
         JOIN escala e ON e.escala_id = eu.escala_id
@@ -426,6 +426,7 @@ class Tela:
         for tupla in dados:
             for id in tupla:
                 self.id_usu_escala = id
+        # print(self.id_usu_escala)
         if self.id_usu_escala != 0:
             # print(self.id_usu_escala)
             query = f'SELECT data_inicio FROM usuario_escala WHERE usuario_escala_id = {self.id_usu_escala};'
@@ -449,10 +450,19 @@ class Tela:
             'Domingo'
             ]
 
+            query = f'''SELECT e.dias_escala
+            FROM usuario_escala ue
+            JOIN escala e ON ue.escala_id = e.escala_id
+            WHERE ue.usuario_escala_id = {self.id_usu_escala}'''
+            dados = bd.consultar(query)
+            dados = dados[0]
+            for dias_de_escala in dados:
+                pass
+            print(dias_de_escala)
+
             mes_escolha = int(data_escala[1])
             ano_escolha = int(data_escala[2])
             dia_escolha = int(data_escala[0])
-            dias_de_escala = 19
             cor_escolhida_escala = "#FFFACD"
             cor_escolhida_ferias = "#FF7F50"
             vetor_dias_corridos_na_escala = []
@@ -475,7 +485,7 @@ class Tela:
                     if Ultimo_dia_ano.day > year:
                         year +=1
 
-                print(year, month, day)
+                # print(year, month, day)
                 data_ = datetime(year, month, day)
                 # monthrange retorna o último dia do mês, basta setá-lo na data e pronto
                 Ultimo_dia_mes = data_.replace(day=monthrange(data_.year, data_.month)[1])
