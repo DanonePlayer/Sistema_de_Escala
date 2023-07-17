@@ -437,7 +437,7 @@ class Tela:
             data_escala = str(data_escala)
             data_escala = data_escala.split("/")
 
-            # print(data)
+            
 
             DIAS = [
             'Segunda-feira',
@@ -464,6 +464,7 @@ class Tela:
             
             year = ano_escolha
             month = mes_escolha
+
             while procura_final_semana > 0:
                 day = dia_cont
                 
