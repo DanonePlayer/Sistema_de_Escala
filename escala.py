@@ -458,25 +458,28 @@ class Tela:
             vetor_dias_corridos_na_escala = []
             vetor_finais_semana = []
             dia_cont = dia_escolha
+            cont = 0
 
             procura_final_semana = dia_escolha + dias_de_escala
             
+            year = ano_escolha
+            month = mes_escolha
             for i in range(dia_escolha, procura_final_semana):
-                if i:
-                    dia_cont += 1
-                data_ = datetime(ano_escolha, mes_escolha, dia_cont)
-                # monthrange retorna o último dia do mês, basta setá-lo na data e pronto
-                last_date = data_.replace(day=monthrange(data_.year, data_.month)[1])
-                # print(last_date.day)
-                
-                if dia_cont == last_date.day:
-                    month +=1
-                    dia_cont = 1
 
-                    #fazer um calculo aqui para o dia voltar para 1, porem continuar
-                year=ano_escolha
-                month=mes_escolha
-                day= dia_cont
+                day = dia_cont
+                
+                if cont > 0:
+                    if dia_cont == Ultimo_dia.day:
+                        month += 1
+                        dia_cont = 1
+                        
+                data_ = datetime(year, month, day)
+                # monthrange retorna o último dia do mês, basta setá-lo na data e pronto
+                Ultimo_dia = data_.replace(day=monthrange(data_.year, data_.month)[1])
+
+
+
+
 
                 data = datetime(year, month, day)
                 # print(data)   
@@ -491,12 +494,17 @@ class Tela:
 
                 numero_do_dia_da_semana = data.isoweekday()
                 #print(numero_do_dia_da_semana)
-
+                
                 if(numero_do_dia_da_semana == 6 or numero_do_dia_da_semana == 7 ):
                     # print("Final de semana")
                     vetor_finais_semana.append(data)
                     dias_de_escala += 1
-                    # print(vetor_finais_semana)
+                    print(data)
+                    
+
+                dia_cont += 1
+                cont +=1
+
 
             #data atual =  date = cal.datetime.today()
             date = self.verifica_cal.datetime.today()
