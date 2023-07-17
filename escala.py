@@ -460,25 +460,28 @@ class Tela:
             dia_cont = dia_escolha
             cont = 0
 
-            procura_final_semana = dia_escolha + dias_de_escala
+            procura_final_semana = dias_de_escala
             
             year = ano_escolha
             month = mes_escolha
-            for i in range(dia_escolha, procura_final_semana):
-
+            while procura_final_semana > 0:
                 day = dia_cont
                 
                 if cont > 0:
-                    if dia_cont == Ultimo_dia.day:
+                    if dia_cont == Ultimo_dia_mes.day:
                         month += 1
                         dia_cont = 1
-                        
+                    if Ultimo_dia_ano.day > year:
+                        year +=1
+
+                print(year, month, day)
                 data_ = datetime(year, month, day)
                 # monthrange retorna o último dia do mês, basta setá-lo na data e pronto
-                Ultimo_dia = data_.replace(day=monthrange(data_.year, data_.month)[1])
+                Ultimo_dia_mes = data_.replace(day=monthrange(data_.year, data_.month)[1])
 
-
-
+                data_ = datetime(year, 12, day)
+                # monthrange retorna o último dia do mês, basta setá-lo na data e pronto
+                Ultimo_dia_ano = data_.replace(day=monthrange(data_.year, data_.month)[1])
 
 
                 data = datetime(year, month, day)
@@ -493,17 +496,21 @@ class Tela:
                 # print(dia_da_semana)
 
                 numero_do_dia_da_semana = data.isoweekday()
-                #print(numero_do_dia_da_semana)
-                
+                # print(numero_do_dia_da_semana)
+            
                 if(numero_do_dia_da_semana == 6 or numero_do_dia_da_semana == 7 ):
                     # print("Final de semana")
                     vetor_finais_semana.append(data)
                     dias_de_escala += 1
-                    print(data)
+                    procura_final_semana +=1
+                    # print(data)
+
+                
                     
 
                 dia_cont += 1
                 cont +=1
+                procura_final_semana -=1
 
 
             #data atual =  date = cal.datetime.today()
