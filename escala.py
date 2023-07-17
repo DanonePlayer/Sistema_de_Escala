@@ -17,14 +17,9 @@ class Tela:
         self.frm_cima = tk.Frame(self.janelaprincipal, width=400, height=400)
         self.frm_cima.grid(column=0, row=0, pady=25)
 
-        self.lbl_escalas = tk.Label(self.frm_cima, text="Escalas", font=("Arial", 14), bg="#3CB371",
-                                         fg="white", width=20, height=1)
+        self.lbl_escalas = tk.Label(self.frm_cima, text="Escalas", font=("Arial", 14), bg="#3CB371", fg="white", width=20, height=1)
         self.lbl_escalas.place(x=10, y=10)
-        self.lbl_escalas.bind("<Button-1>", self.escalas)
-
-        # self.lbl_criar_escala = tk.Label(self.frm_cima, text="Criar Escala", font=("Arial",14), bg="#3CB371", fg="white", width=20, height=1)
-        # self.lbl_criar_escala.place(x=10, y=10)
-        # self.lbl_criar_escala.bind("<Button-1>", self.criar_escala)
+        self.lbl_escalas.bind("<Button-1>", self.Cria_tipo_escalas)
 
         self.lbl_novaprog = tk.Label(self.frm_cima, text="+ Nova programação", font=("Arial",14), bg="#3CB371", fg="white", width=20, height=1)
         self.lbl_novaprog.place(x=10, y=50)
@@ -49,7 +44,7 @@ class Tela:
         self.colaboradores = []
 
 
-    def escalas(self, event):
+    def Cria_tipo_escalas(self, event):
         self.janela_escala = tk.Toplevel()
         self.janela_escala.title("Escala")
         self.janela_escala.grab_set()
@@ -345,14 +340,15 @@ class Tela:
         self.cal_escolha.place(x=40, y=150)
 
 
-        self.btn_ok = tk.Button(self.frm_janela2_c, text='OK', command=self.ok)
+        self.btn_ok = tk.Button(self.frm_janela2_c, text='Criar', command=self.Criar)
         self.btn_ok.place(x=100, y=350)
 
-    def ok(self):
+    def Criar(self):
         # print(self.cbx_usuario.get())
         # print(self.cbx_tipo_escala.get())
         # print(self.cal_escolha.selection_get()) 
-        query = f'SELECT usuario_id, escala_id FROM escala, usuario WHERE nome_escala LIKE "{self.cbx_tipo_escala.get()}" and nome_completo LIKE "{self.cbx_usuario.get()}";'
+        query = f'''SELECT usuario_id, escala_id FROM escala, usuario 
+        WHERE nome_escala LIKE "{self.cbx_tipo_escala.get()}" and nome_completo LIKE "{self.cbx_usuario.get()}";'''
         dados = bd.consultar(query)
 
         ids = []
@@ -382,7 +378,7 @@ class Tela:
         for tupla in dados:
             for usuario in tupla:
                 usu.append(usuario)
-        print(usu)
+        # print(usu)
 
         self.cbx_usuario_es = ttk.Combobox(self.janela_verifica_escala, values=usu, state="readonly", font="30", width=28, height=5, )
         self.cbx_usuario_es.place(x=20, y=30)
@@ -410,9 +406,6 @@ class Tela:
 
 
     def Aplica_Calendario(self):
-        # print(self.cbx_usuario_es.get())
-        # print(self.cbx_escala_es.get())
-
         query = f'''SELECT eu.usuario_escala_id
         FROM usuario_escala eu
         JOIN usuario u ON u.usuario_id = eu.usuario_id
@@ -438,8 +431,6 @@ class Tela:
             data_escala = str(data_escala)
             data_escala = data_escala.split("/")
 
-            
-
             DIAS = [
             'Segunda-feira',
             'Terça-feira',
@@ -458,7 +449,16 @@ class Tela:
             dados = dados[0]
             for dias_de_escala in dados:
                 pass
-            print(dias_de_escala)
+            # print(dias_de_escala)
+
+
+            query = f'''SELECT e.finais_semana, e.feriados
+            FROM usuario_escala ue
+            JOIN escala e ON ue.escala_id = e.escala_id
+            WHERE ue.usuario_escala_id = {self.id_usu_escala}'''
+            dados = bd.consultar(query)
+            for contar_finais_semana, conta_feriados in dados:
+                pass
 
             mes_escolha = int(data_escala[1])
             ano_escolha = int(data_escala[2])
@@ -468,60 +468,58 @@ class Tela:
             vetor_dias_corridos_na_escala = []
             vetor_finais_semana = []
             dia_cont = dia_escolha
-            cont = 0
 
             procura_final_semana = dias_de_escala
             
             year = ano_escolha
             month = mes_escolha
 
-            while procura_final_semana > 0:
-                day = dia_cont
+            if contar_finais_semana == 0:
+                while procura_final_semana > 0:
+                    day = dia_cont
+                    # print(dia_cont)
+
+                    # print(year, month, day)
+                    data_ = datetime(year, month, day)
+                    # monthrange retorna o último dia do mês, basta setá-lo na data e pronto
+                    Ultimo_dia_mes = data_.replace(day=monthrange(data_.year, data_.month)[1])
+
+                    data_ = datetime(year, 12, day)
+                    # monthrange retorna o último dia do mês, basta setá-lo na data e pronto
+                    Ultimo_dia_ano = data_.replace(day=monthrange(data_.year, data_.month)[1])
+
+
+                    data = datetime(year, month, day)
+                    # print(data)   
+
+
+                    indice_da_semana = data.weekday()
+                    # print(indice_da_semana)
+
+
+                    dia_da_semana = DIAS[indice_da_semana]
+                    # print(dia_da_semana)
+
+                    numero_do_dia_da_semana = data.isoweekday()
+                    # print(numero_do_dia_da_semana)
                 
-                if cont > 0:
-                    if dia_cont == Ultimo_dia_mes.day:
-                        month += 1
-                        dia_cont = 1
-                    if Ultimo_dia_ano.day > year:
-                        year +=1
+                    if(numero_do_dia_da_semana == 6 or numero_do_dia_da_semana == 7 ):
+                        # print("Final de semana")
+                        vetor_finais_semana.append(data)
+                        dias_de_escala += 1
+                        procura_final_semana +=1
+                        # print(data)
 
-                # print(year, month, day)
-                data_ = datetime(year, month, day)
-                # monthrange retorna o último dia do mês, basta setá-lo na data e pronto
-                Ultimo_dia_mes = data_.replace(day=monthrange(data_.year, data_.month)[1])
+                    if dia_cont == 28 or dia_cont == 29 or dia_cont == 30 or dia_cont == 31 or dia_cont == 32:
+                        if dia_cont == Ultimo_dia_mes.day:
+                            month += 1
+                            dia_cont = 0
+                        if Ultimo_dia_ano.day > year:
+                            year +=1
+                        
 
-                data_ = datetime(year, 12, day)
-                # monthrange retorna o último dia do mês, basta setá-lo na data e pronto
-                Ultimo_dia_ano = data_.replace(day=monthrange(data_.year, data_.month)[1])
-
-
-                data = datetime(year, month, day)
-                # print(data)   
-
-
-                indice_da_semana = data.weekday()
-                # print(indice_da_semana)
-
-
-                dia_da_semana = DIAS[indice_da_semana]
-                # print(dia_da_semana)
-
-                numero_do_dia_da_semana = data.isoweekday()
-                # print(numero_do_dia_da_semana)
-            
-                if(numero_do_dia_da_semana == 6 or numero_do_dia_da_semana == 7 ):
-                    # print("Final de semana")
-                    vetor_finais_semana.append(data)
-                    dias_de_escala += 1
-                    procura_final_semana +=1
-                    # print(data)
-
-                
-                    
-
-                dia_cont += 1
-                cont +=1
-                procura_final_semana -=1
+                    dia_cont += 1
+                    procura_final_semana -=1
 
 
             #data atual =  date = cal.datetime.today()
@@ -531,10 +529,24 @@ class Tela:
             #print(escala_ecolha_dia)
 
             #pegando todos os dias escolhidos na escala para comparar depois com as ferias
-            for dias in range(1, dias_de_escala+1):
-                dias_corridos_na_escala = self.verifica_cal.datetime(ano_escolha, mes_escolha, dias)
+            dias = 0
+            aux_dias_de_escala = dias_de_escala
+            while dias < aux_dias_de_escala:
+                # print(dia_escolha + dias)
+                data_ = datetime(ano_escolha, mes_escolha, dia_escolha + dias)
+                # monthrange retorna o último dia do mês, basta setá-lo na data e pronto
+                Ultimo_dia_mes = data_.replace(day=monthrange(data_.year, data_.month)[1])
+                if dia_escolha + dias == Ultimo_dia_mes.day:
+                    mes_escolha += 1
+                    dia_escolha = 1
+
+                dias_corridos_na_escala = self.verifica_cal.datetime(ano_escolha, mes_escolha, dia_escolha + dias)
                 #print(dias_corridos_na_escala)
                 vetor_dias_corridos_na_escala.append(dias_corridos_na_escala)
+
+                aux_dias_de_escala -=1
+                dias +=1
+
 
             feriados= holidays.Brazil()
 
@@ -551,16 +563,20 @@ class Tela:
                 
                 vetor_feriados.append(feriados)
 
-                # print(vetor_finais_semana)
-
-                # if feriados in vetor_dias_corridos_na_escala:
-                #     dias_de_escala += 1
+                if conta_feriados == 0:
+                    if feriados in vetor_dias_corridos_na_escala:
+                        dias_de_escala += 1
             
+            for feriados1 in vetor_feriados:
+                self.verifica_cal.calevent_create(feriados1 , 'Ferias', 'Ferias')
+
+
             for i in range(0, dias_de_escala):
                 self.verifica_cal.calevent_create(escala_ecolha_dia + self.verifica_cal.timedelta(days=i), 'escalas', 'escala')
 
-            for feriados1 in vetor_feriados:
-                self.verifica_cal.calevent_create(feriados1 , 'Ferias', 'Ferias')
+            if conta_feriados == 0:
+                for feriados1 in vetor_feriados:
+                    self.verifica_cal.calevent_create(feriados1 , 'Ferias', 'Ferias')
 
             for final_semana in vetor_finais_semana:
                 self.verifica_cal.calevent_create(final_semana, "final_semana", "final_semana")
@@ -570,7 +586,6 @@ class Tela:
             self.verifica_cal.tag_config('Ferias', background=cor_escolhida_ferias, foreground='white')
             self.verifica_cal.tag_config('escala', background=cor_escolhida_escala, foreground='black')
             self.verifica_cal.tag_config("final_semana", background="#cccccc", foreground='black')
-
             
 
             # print(dia_escolha, ano_escolha, mes_escolha, dias_de_escala)
