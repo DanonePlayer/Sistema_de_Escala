@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
-from tkcalendar import Calendar, DateEntry
+from tkcalendar import Calendar
 import holidays
 import bd_sistemas_de_escala as bd
 from datetime import datetime
@@ -209,7 +209,7 @@ class Tela:
             self.rbtn_cont_final_semanas.place(x=10, y=150)
 
             self.rbtn_cont_final_semanan = tk.Radiobutton(self.edit_escala, text="Não",
-                                                          variable=self.int_var_sem, value=2)
+                                                          variable=self.int_var_sem, value=0)
             self.rbtn_cont_final_semanan.place(x=90, y=150)
 
             if lista[3] == "1":
@@ -225,7 +225,7 @@ class Tela:
             self.rbtn_cont_feriass.place(x=10, y=210)
 
             self.rbtn_cont_feriasn = tk.Radiobutton(self.edit_escala, text="Não", variable=self.int_var_fer,
-                                                    value=2)
+                                                    value=0)
             self.rbtn_cont_feriasn.place(x=90, y=210)
 
             if lista[4] == "1":
