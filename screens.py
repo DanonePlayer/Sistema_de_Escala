@@ -183,7 +183,7 @@ class Screens:
         self.entry_dias = tk.Entry(self.middle_frame)
         self.entry_dias.pack(side=tk.LEFT, pady=10, padx=10)
 
-        self.bttn_edit = tk.Button(self.middle_frame, text='EDITAR', font=('Inter', 10, 'bold'), fg='#FFF',bg='#FF7F50')
+        self.bttn_edit = tk.Button(self.middle_frame, text='EDITAR', font=('Inter', 10, 'bold'), fg='#FFF',bg='#FF7F50',command='')
         self.bttn_edit.pack(side=tk.LEFT, pady=10, padx=10)
 
         self.calendar_frame_02 = tk.Frame(self.center_frame_02)
@@ -207,7 +207,7 @@ class Screens:
 
         self.frame_right.grid_columnconfigure(1, minsize=20)
 
-        self.bttn_pesquisa = tk.Button(self.frame_right,width=3,height=0)
+        self.bttn_pesquisa = tk.Button(self.frame_right,width=3,height=0,command='')
         self.bttn_pesquisa.grid(row=0, column=0,padx=5,sticky='NE',pady=10)
 
         self.tree = ttk.Treeview(self.frame_right, columns=("ID", "Nome"), show="headings")
@@ -220,7 +220,7 @@ class Screens:
 
         self.tree.configure(yscrollcommand=self.scrollbar.set)
 
-        self.btt_add = tk.Button(self.frame_right,text='ADICIONAR',font=('Inter', 10, 'bold'), fg='#070707',bg='#D9D9D9',width=19,height=5)
+        self.btt_add = tk.Button(self.frame_right,text='ADICIONAR',font=('Inter', 10, 'bold'), fg='#070707',bg='#D9D9D9',width=19,height=5,command='')
         self.btt_add.grid(row=2,column=0,sticky='NSEW',pady=50,padx=50)
 
 
@@ -328,10 +328,10 @@ class Screens:
         self.frame_button = tk.Frame(self.center_frame_03,bg='#94939B')
         self.frame_button.pack(fill=tk.BOTH, expand=True, padx=10, pady=10,side=tk.BOTTOM)
 
-        self.bttn_criar_02 = tk.Button(self.frame_button, text='CRIAR', font=('Inter', 18, 'bold'), fg='#FFF',bg='#1B731A')
+        self.bttn_criar_02 = tk.Button(self.frame_button, text='CRIAR', font=('Inter', 18, 'bold'), fg='#FFF',bg='#1B731A',command='')
         self.bttn_criar_02.pack(side=tk.LEFT,pady=5,padx=10)
 
-        self.bttn_clean = tk.Button(self.frame_button, text='LIMPAR', font=('Inter', 18, 'bold'), fg='#605F5F',bg='#FFFFFF')
+        self.bttn_clean = tk.Button(self.frame_button, text='LIMPAR', font=('Inter', 18, 'bold'), fg='#605F5F',bg='#FFFFFF',command='')
         self.bttn_clean.pack(side=tk.RIGHT,pady=5,padx=10)
 
 
