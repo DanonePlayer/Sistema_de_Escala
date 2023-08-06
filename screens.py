@@ -52,7 +52,7 @@ class Screens:
         self.bttn_login = tk.Button(self.right_lbl, font=('Inter', 24, 'bold'), fg='#FFFFFF', text="ENTRAR", bg='#6A6666',command=self.enter)
         self.bttn_login.pack(side=tk.BOTTOM, pady=20, padx=100)
 
-        self.bttn_help = tk.Button(self.right_lbl, font=('Inter', 20, 'bold'), fg='#6A6666', text=" Problemas de Login? ", bg='#94939B', borderwidth=0)
+        self.bttn_help = tk.Button(self.right_lbl, font=('Inter', 20, 'bold'), fg='#6A6666', text=" Problemas de Login? ", bg='#94939B', borderwidth=0,command='')
         self.bttn_help.pack(fill=tk.BOTH)
         self.bttn_help.config()
 
@@ -92,6 +92,8 @@ class Screens:
         self.img_user = ImageTk.PhotoImage(Image.open((f'Images/user_icon.png')))
         self.img_roster = ImageTk.PhotoImage(Image.open((f'Images/roster_icon.png')))
         self.img_roster_02 = ImageTk.PhotoImage(Image.open(f'Images/roster_icon_02.png'))
+        self.img_reports = ImageTk.PhotoImage(Image.open((f'Images/chart-bar.png')))
+        self.img_edit = ImageTk.PhotoImage(Image.open((f'Images/calendar-minus.png')))
 
 
         self.top_frame = tk.Frame(self.right_frm_2,bg='#D9D9D9')
@@ -103,7 +105,7 @@ class Screens:
         self.bttn_calendar = tk.Button(self.top_frame, bg='#6E716E', command=self.calendar,image=self.img_calendar)
         self.bttn_calendar.pack(side=tk.LEFT, padx=10, pady=10, expand=True, fill=tk.BOTH)
 
-        self.bttn_raltorio = tk.Button(self.top_frame, bg='#6E716E')
+        self.bttn_raltorio = tk.Button(self.top_frame, bg='#6E716E', image=self.img_reports)
         self.bttn_raltorio.pack(side=tk.LEFT, padx=10, pady=10, expand=True, fill=tk.BOTH)
 
         self.bttn_usuario = tk.Button(self.top_frame, bg='#6E716E', command=self.user, image=self.img_user)
@@ -115,7 +117,7 @@ class Screens:
         self.bttn_criar = tk.Button(self.bottom_frame, bg='#6E716E',command=self.create,image=self.img_roster_02)
         self.bttn_criar.pack(side=tk.LEFT, padx=10, pady=10, expand=True, fill=tk.BOTH)
 
-        self.bttn_hist = tk.Button(self.bottom_frame, bg='#6E716E')
+        self.bttn_hist = tk.Button(self.bottom_frame, bg='#6E716E', image=self.img_edit)
         self.bttn_hist.pack(side=tk.LEFT, padx=10, pady=10, expand=True, fill=tk.BOTH)
 
     def roster(self):
