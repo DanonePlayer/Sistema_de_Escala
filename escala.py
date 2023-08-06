@@ -41,7 +41,6 @@ class Tela:
         
 
         self.Tipo_escala = []
-        self.colaboradores = []
 
 
     def Cria_tipo_escalas(self, event):
@@ -307,10 +306,10 @@ class Tela:
         
         query = 'SELECT usuario_id, nome_completo, nome_usuario FROM usuario;'
         dados = bd.consultar(query)
+        colaboradores = []
         for tupla in dados:
-            self.colaboradores.append(tupla[1])
-
-        self.cbx_usuario = ttk.Combobox(self.frm_janela2_c, values=self.colaboradores, state="readonly", font="30", width=28, height=5, )
+            colaboradores.append(tupla[1])
+        self.cbx_usuario = ttk.Combobox(self.frm_janela2_c, values=colaboradores, state="readonly", font="30", width=28, height=5, )
 
         self.cbx_usuario.place(x=20, y=30)
         self.cbx_usuario.current(0)
