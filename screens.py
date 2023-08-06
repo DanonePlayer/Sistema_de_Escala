@@ -96,10 +96,10 @@ class Screens:
         self.img_edit = ImageTk.PhotoImage(Image.open((f'Images/calendar-minus.png')))
 
 
-        self.top_frame = tk.Frame(self.right_frm_2,bg='#D9D9D9')
+        self.top_frame = tk.Frame(self.right_frm_2,bg='#565656')
         self.top_frame.pack(side=tk.TOP,padx=10,pady=10,fill=tk.BOTH,expand=True)
 
-        self.bottom_frame = tk.Frame(self.right_frm_2, bg='#D9D9D9')
+        self.bottom_frame = tk.Frame(self.right_frm_2, bg='#565656')
         self.bottom_frame.pack(side=tk.BOTTOM,padx=10,pady=10,fill=tk.BOTH,expand=True)
 
         self.bttn_calendar = tk.Button(self.top_frame, bg='#6E716E', command=self.calendar,image=self.img_calendar)
@@ -247,16 +247,47 @@ class Screens:
         self.bttn_back = tk.Button(self.buttons_frame,text='VOLTAR',font=('Inter',10,'bold'), fg='#605F5F', bg='#FFF', command=self.voltar_calendar)
         self.bttn_back.pack(side=tk.BOTTOM,pady=20,padx=20)
 
-
-
     def UserScreen(self):
         self.user_screen = tk.Tk()
         self.user_screen.title("Usuarios")
-        self.user_screen.geometry('560x591')
+        self.user_screen.geometry('600x620')
         self.user_screen.configure(bg='#D9D9D9')
         self.user_screen.resizable(False, False)
         self.user_screen.protocol("WM_DELETE_WINDOW", self.voltar_user)
 
+        self.frm = tk.Frame(self.user_screen, bg='#94939B')
+        self.frm.grid(column=0, row=0, pady=10, padx=10)
+        self.frm.grid_columnconfigure(0, weight=1)
+
+        self.frame_tvw_usuario = tk.Frame(self.frm, bg='#94939B')
+        self.frame_tvw_usuario.pack(pady=10, padx=10,expand=True, fill=tk.BOTH)
+
+        self.tvw_usuario = ttk.Treeview(self.frame_tvw_usuario, columns=('id', 'nome', 'nome de usuario', 'tipo'),show='headings')
+        self.tvw_usuario.column('id', width=40)
+        self.tvw_usuario.column('nome', width=250)
+        self.tvw_usuario.column('nome de usuario', width=150)
+        self.tvw_usuario.column('tipo', width=100)
+        self.tvw_usuario.heading('id', text='Id')
+        self.tvw_usuario.heading('nome', text='Nome')
+        self.tvw_usuario.heading('nome de usuario', text='Nome de Usuário')
+        self.tvw_usuario.heading('tipo', text='Super usuário')
+        self.tvw_usuario.pack(side=tk.LEFT,fill=tk.BOTH)
+
+        self.scr_usuario = ttk.Scrollbar(self.frame_tvw_usuario, command=self.tvw_usuario.yview)
+        self.scr_usuario.pack(side=tk.LEFT, fill=tk.BOTH)
+        self.tvw_usuario.configure(yscroll=self.scr_usuario.set)
+
+        self.frame_tvw_button = tk.Frame(self.frm, bg='#94939B')
+        self.frame_tvw_button.pack(side=tk.BOTTOM)
+
+        self.btn_cadastrar_usuario = tk.Button(self.frame_tvw_button, text="Criar Usuário", font=("Arial", 10), bg="#3CB371",fg="white", width=20, height=1,borderwidth=0,command='')
+        self.btn_cadastrar_usuario.grid(row=0,column=0,padx=10,pady=10)
+
+        self.btn_editar_usuario = tk.Button(self.frame_tvw_button, text="Editar Usuário", font=("Arial", 10), bg="Orange", fg="white",width=20, height=1,borderwidth=0,command='')
+        self.btn_editar_usuario.grid(row=0,column=1,padx=10,pady=10)
+
+        self.btn_excluir_usuario = tk.Button(self.frame_tvw_button, text="Excluir Usuário", font=("Arial", 10), bg="#E1523F",fg="white", width=20, height=1,borderwidth=0,command='')
+        self.btn_excluir_usuario.grid(row=0,column=2,padx=10,pady=10)
 
     def CrudScreen(self):
         self.crud_user = tk.Tk()
