@@ -44,7 +44,7 @@ class Tela:
 
         self.janela2 = tk.Toplevel()
         self.janela2.grab_set()
-        self.janela2.title("Nova Programação")
+        self.janela2.title("Atribuir Escala")
         self.janela2.geometry("500x400")
         self.frm_janela2_c = tk.Frame(self.janela2, width=500, height=400)
         self.frm_janela2_c.grid(column=0, row=0)
@@ -89,10 +89,10 @@ class Tela:
         self.cal_escolha.place(x=40, y=150)
 
 
-        self.btn_ok = tk.Button(self.frm_janela2_c, text='Criar', command=self.Criar)
+        self.btn_ok = tk.Button(self.frm_janela2_c, text='Atribuir', command=self.Atribuir)
         self.btn_ok.place(x=100, y=350)
 
-    def Criar(self):
+    def Atribuir(self):
         # print(self.cbx_usuario.get())
         # print(self.cbx_tipo_escala.get())
         # print(self.cal_escolha.selection_get()) 
