@@ -21,9 +21,9 @@ class Tela:
         self.lbl_escalas.place(x=10, y=10)
         self.lbl_escalas.bind("<Button-1>", self.escalas)
 
-        self.lbl_novaprog = tk.Label(self.frm_cima, text="+ Nova programação", font=("Arial",14), bg="#3CB371", fg="white", width=20, height=1)
+        self.lbl_novaprog = tk.Label(self.frm_cima, text="Atribuir Escala", font=("Arial",14), bg="#3CB371", fg="white", width=20, height=1)
         self.lbl_novaprog.place(x=10, y=50)
-        self.lbl_novaprog.bind("<Button-1>", self.Nova_programacao)
+        self.lbl_novaprog.bind("<Button-1>", self.Atribuir_Escala)
 
         self.imgicon = tk.PhotoImage(file="Images/a.png", height=222)
         self.janelaprincipal.iconphoto(False, self.imgicon)
@@ -38,6 +38,8 @@ class Tela:
         # w.config(bg="Green", fg="WHITE")
         # w["menu"].config(bg="RED")
         # w.place(x=10, y=150)
+
+        self.Tipo_escala = []
 
 
 
@@ -308,12 +310,12 @@ class Tela:
             self.atualizar_tvw_escala()
         self.janelaprincipal.deiconify()
 
-    def Nova_programacao(self, event):
+    def Atribuir_Escala(self, event):
         #print(self.text1.get())
 
         self.janela2 = tk.Toplevel()
         self.janela2.grab_set()
-        self.janela2.title("Nova Programação")
+        self.janela2.title("Atribuir Escala")
         self.janela2.geometry("500x400")
         self.frm_janela2_c = tk.Frame(self.janela2, width=500, height=400)
         self.frm_janela2_c.grid(column=0, row=0)
@@ -358,10 +360,10 @@ class Tela:
         self.cal_escolha.place(x=40, y=150)
 
 
-        self.btn_ok = tk.Button(self.frm_janela2_c, text='Criar', command=self.Criar)
+        self.btn_ok = tk.Button(self.frm_janela2_c, text='Atribuir', command=self.Atribuir)
         self.btn_ok.place(x=100, y=350)
 
-    def Criar(self):
+    def Atribuir(self):
         # print(self.cbx_usuario.get())
         # print(self.cbx_tipo_escala.get())
         # print(self.cal_escolha.selection_get()) 
