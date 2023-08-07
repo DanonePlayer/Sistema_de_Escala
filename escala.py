@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
-from tkcalendar import Calendar
+from tkcalendar import Calendar, DateEntry
 import holidays
 import bd_sistemas_de_escala as bd
 from datetime import datetime
@@ -17,9 +17,13 @@ class Tela:
         self.frm_cima = tk.Frame(self.janelaprincipal, width=400, height=400)
         self.frm_cima.grid(column=0, row=0, pady=25)
 
-        self.lbl_novaprog = tk.Label(self.frm_cima, text="Atribuir Escala", font=("Arial",14), bg="#3CB371", fg="white", width=20, height=1)
+        self.lbl_escalas = tk.Label(self.frm_cima, text="Escalas", font=("Arial", 14), bg="#3CB371", fg="white", width=20, height=1)
+        self.lbl_escalas.place(x=10, y=10)
+        self.lbl_escalas.bind("<Button-1>", self.escalas)
+
+        self.lbl_novaprog = tk.Label(self.frm_cima, text="+ Nova programação", font=("Arial",14), bg="#3CB371", fg="white", width=20, height=1)
         self.lbl_novaprog.place(x=10, y=50)
-        self.lbl_novaprog.bind("<Button-1>", self.Atribuir_Escala)
+        self.lbl_novaprog.bind("<Button-1>", self.Nova_programacao)
 
         self.imgicon = tk.PhotoImage(file="Images/a.png", height=222)
         self.janelaprincipal.iconphoto(False, self.imgicon)
@@ -34,17 +38,282 @@ class Tela:
         # w.config(bg="Green", fg="WHITE")
         # w["menu"].config(bg="RED")
         # w.place(x=10, y=150)
-        
-
-        self.Tipo_escala = []
 
 
-    def Atribuir_Escala(self, event):
+
+
+
+    def escalas(self, event):
+        self.janela_escala = tk.Toplevel()
+        self.janela_escala.title("Escalas")
+        self.janela_escala.grab_set()
+        self.janela_escala.geometry("1000x400")
+        self.frm = tk.Frame(self.janela_escala, width=1000, height=400)
+        self.frm.grid(column=0, row=0, pady=25)
+
+        self.frame_tvw_usuario = tk.Frame(self.frm)
+        self.frame_tvw_usuario.place(x=10, y=10)
+        self.tvw_escala = ttk.Treeview(self.frame_tvw_usuario, columns=('id', 'nome escala', 'tipo de escala', 'data inicio', 'data fim', 'dias da escala'),
+                                        show='headings')
+        self.tvw_escala.column('id', width=40)
+        self.tvw_escala.column('nome escala', width=350)
+        self.tvw_escala.column('tipo de escala', width=250)
+        self.tvw_escala.column('data inicio', width=100)
+        self.tvw_escala.column('data fim', width=100)
+        self.tvw_escala.column('dias da escala', width=100)
+        self.tvw_escala.heading('id', text='Id')
+        self.tvw_escala.heading('nome escala', text='Nome da Escala')
+        self.tvw_escala.heading('tipo de escala', text='Tipo de Escala')
+        self.tvw_escala.heading('data inicio', text='Data de início')
+        self.tvw_escala.heading('data fim', text='Data de fim')
+        self.tvw_escala.heading('dias da escala', text='Dias da escala')
+        self.tvw_escala.pack(side=tk.LEFT)
+        self.atualizar_tvw_escala()
+
+        self.scr_escala = ttk.Scrollbar(self.frame_tvw_usuario, command=self.tvw_escala.yview)
+        self.scr_escala.pack(side=tk.LEFT, fill=tk.BOTH)
+        self.tvw_escala.configure(yscroll=self.scr_escala.set)
+
+        self.lbl_cadastrar_usuario = tk.Label(self.frm, text="Criar Escala", font=("Arial", 14), bg="#3CB371",
+                                              fg="white", width=17, height=1)
+        self.lbl_cadastrar_usuario.place(x=10, y=250)
+        self.lbl_cadastrar_usuario.bind("<Button-1>", self.criar_escala)
+
+        self.lbl_editar_usuario = tk.Label(self.frm, text="Editar Escala", font=("Arial", 14), bg="Orange",
+                                           fg="white", width=17, height=1)
+        self.lbl_editar_usuario.place(x=220, y=250)
+        self.lbl_editar_usuario.bind("<Button-1>", self.editar_escala)
+
+        self.lbl_excluir_usuario = tk.Label(self.frm, text="Excluir Escala", font=("Arial", 14), bg="Red",
+                                            fg="white", width=17, height=1)
+        self.lbl_excluir_usuario.place(x=440, y=250)
+        self.lbl_excluir_usuario.bind("<Button-1>", self.excluir_escala)
+
+    def atualizar_tvw_escala(self):
+        for i in self.tvw_escala.get_children():
+            self.tvw_escala.delete(i)
+        query = 'SELECT escala_id, nome_escala, nome_tipo_escala, data_inicio_escala, data_fim_escala, dias_escala FROM tipo_escala as te, escala as e WHERE te.tipo_escala_id = e.tipo_escala_id;'
+        dados = bd.consultar(query)
+        for tupla in dados:
+            self.tvw_escala.insert('', tk.END, values=tupla)
+
+    def criar_escala(self, event):
+        self.janela_criar_escala = tk.Toplevel()
+        self.janela_criar_escala.title("Criar Escala")
+        self.janela_criar_escala.grab_set()
+        self.janela_criar_escala.geometry("600x400")
+
+        self.lbl_nome_escala = tk.Label(self.janela_criar_escala, text="Nome da Escala:")
+        self.lbl_nome_escala.place(x=10, y=10)
+        self.entry_nome_escala = tk.Entry(self.janela_criar_escala, borderwidth=2)
+        self.entry_nome_escala.place(x=10, y=30)
+
+        self.string_Var_comb_tipo_p = tk.StringVar()
+
+        self.lbl_tipo_escala = tk.Label(self.janela_criar_escala, text="Tipo de Escala:")
+        self.lbl_tipo_escala.place(x=10, y=50)
+        query = 'SELECT nome_tipo_escala FROM tipo_escala;'
+        dados = bd.consultar(query)
+
+        self.tipo_escala = []
+        for tupla in dados:
+            for tipo_escala in tupla:
+                self.tipo_escala.append(tipo_escala)
+
+        self.cbx_tipo_escala = ttk.Combobox(self.janela_criar_escala, values=self.tipo_escala, state="readonly", font="30",
+                                            width=28, height=5, textvariable=self.string_Var_comb_tipo_p)
+        self.cbx_tipo_escala.place(x=20, y=80)
+        self.cbx_tipo_escala.current(0)
+
+        self.data_inicio = tk.StringVar()
+        self.data_fim = tk.StringVar()
+
+        self.lbl_data_inicio = tk.Label(self.janela_criar_escala, text="Data de início da escala")
+        self.lbl_data_inicio.place(x=10, y=130)
+
+        self.cal_data_inicio = DateEntry(self.janela_criar_escala, locale='pt_BR', date_pattern='dd/MM/yyyy')
+        self.cal_data_inicio.place(x=10, y=150)
+
+        #print(self.cal_data_inicio.get_date())
+
+        self.lbl_data_fim = tk.Label(self.janela_criar_escala, text="Data de início da escala")
+        self.lbl_data_fim.place(x=10, y=190)
+
+        self.cal_data_fim = DateEntry(self.janela_criar_escala, locale='pt_BR', date_pattern='dd/MM/yyyy')
+        self.cal_data_fim.place(x=10, y=210)
+
+        self.lbl_dias = tk.Label(self.janela_criar_escala, text="Quantos dias:")
+        self.lbl_dias.place(x=10, y=250)
+        self.entry_dias = tk.Entry(self.janela_criar_escala, borderwidth=2)
+        self.entry_dias.place(x=10, y=270)
+
+        self.btn_ok = tk.Button(self.janela_criar_escala, width=15, text='Criar', command=self.button_criar_escala)
+        self.btn_ok.place(x=10, y=300)
+
+    def button_criar_escala(self):
+        nome_escala = self.entry_nome_escala.get()
+        tipo_escala = self.cbx_tipo_escala.get()
+        data_inicio = self.cal_data_inicio.get_date().strftime('%d/%m/%Y')
+        data_fim = self.cal_data_fim.get_date().strftime('%d/%m/%Y')
+        dias = self.entry_dias.get()
+
+        if nome_escala == "":
+            messagebox.showinfo("Insira um nome completo", "O campo nome da escala está incorreto!")
+            self.edit_escala.deiconify()
+        elif tipo_escala == "":
+            messagebox.showinfo("Insira os dias", "O campo tipo escala está vazio!")
+            self.edit_escala.deiconify()
+        elif data_inicio == "":
+            messagebox.showinfo("Selecione um tipo", "Nenhuma seleção na data de inicio!")
+            self.edit_escala.deiconify()
+        elif data_fim == "":
+            messagebox.showinfo("Selecione um tipo", "Nenhuma seleção na data de fim!")
+            self.edit_escala.deiconify()
+        else:
+            query = 'SELECT nome_escala FROM escala;'
+            valores = bd.consultar_usuarios(query)
+            confirmar = False
+            for i in valores:
+                if nome_escala == i:
+                    confirmar = True
+                    break
+            if not confirmar:
+                query = f"SELECT tipo_escala_id FROM tipo_escala WHERE '{tipo_escala}' LIKE nome_tipo_escala;"
+                dados = bd.consultar_usuarios(query)
+                query = f'INSERT INTO escala ("nome_escala", "tipo_escala_id", "data_inicio_escala", "data_fim_escala", "dias_escala") VALUES ("{nome_escala}", {dados[0]}, "{data_inicio}", "{data_fim}", {dias});'
+                bd.inserir(query)
+                self.atualizar_tvw_escala()
+                messagebox.showinfo("SUCESSO!", "Escala criada com sucesso!")
+                self.janela_criar_escala.destroy()
+                self.janela_escala.deiconify()
+            else:
+                messagebox.showinfo("Nome de escala já cadastrado", "O Nome da escala já está cadastrado")
+                self.janela_criar_escala.deiconify()
+
+    def editar_escala(self, event):
+        selecionado = self.tvw_escala.selection()
+        lista = self.tvw_escala.item(selecionado, "values")
+        if selecionado != ():
+            self.edit_escala = tk.Toplevel()
+            self.edit_escala.title("Editar Escala")
+            self.edit_escala.grab_set()
+            self.edit_escala.geometry("600x400")
+
+            self.lbl_nome_escala = tk.Label(self.edit_escala, text="Nome da Escala:")
+            self.lbl_nome_escala.place(x=10, y=10)
+            self.entry_nome_escala = tk.Entry(self.edit_escala, borderwidth=2)
+            self.entry_nome_escala.place(x=10, y=30)
+            self.entry_nome_escala.insert(0, lista[1])
+
+            self.lbl_tipo_escala = tk.Label(self.edit_escala, text="Tipo de Escala:")
+            self.lbl_tipo_escala.place(x=10, y=50)
+            query = 'SELECT nome_tipo_escala FROM tipo_escala;'
+            dados = bd.consultar(query)
+
+            self.string_Var_comb_tipo_p = tk.StringVar()
+            self.tipo_escala = []
+
+            self.tipo_escala.clear()
+            for tupla in dados:
+                for tipo_escala in tupla:
+                    self.tipo_escala.append(tipo_escala)
+
+            self.cbx_tipo_escala = ttk.Combobox(self.edit_escala, values=self.tipo_escala, state="readonly",
+                                                font="30",
+                                                width=28, height=5, textvariable=self.string_Var_comb_tipo_p)
+            self.cbx_tipo_escala.place(x=20, y=80)
+
+            self.string_Var_comb_tipo_p.set(lista[2])
+            self.cbx_tipo_escala.current(self.tipo_escala.index(self.string_Var_comb_tipo_p.get()))
+
+            self.data_inicio = tk.StringVar()
+            self.data_fim = tk.StringVar()
+
+            self.lbl_data_inicio = tk.Label(self.edit_escala, text="Data de início da escala")
+            self.lbl_data_inicio.place(x=10, y=130)
+
+            self.cal_data_inicio = DateEntry(self.edit_escala, locale='pt_BR', date_pattern='dd/MM/yyyy')
+            self.cal_data_inicio.place(x=10, y=150)
+
+            # print(self.cal_data_inicio.get_date())
+
+            self.lbl_data_fim = tk.Label(self.edit_escala, text="Data de início da escala")
+            self.lbl_data_fim.place(x=10, y=190)
+
+            self.cal_data_fim = DateEntry(self.edit_escala, locale='pt_BR', date_pattern='dd/MM/yyyy')
+            self.cal_data_fim.place(x=10, y=210)
+
+            self.lbl_dias = tk.Label(self.edit_escala, text="Quantos dias:")
+            self.lbl_dias.place(x=10, y=250)
+            self.entry_dias = tk.Entry(self.edit_escala, borderwidth=2)
+            self.entry_dias.place(x=10, y=270)
+            self.entry_dias.insert(0, lista[5])
+
+            self.btn_ok = tk.Button(self.edit_escala, text='Editar', command=self.button_editar_escala)
+            self.btn_ok.place(x=100, y=350)
+
+            self.btn_not_ok = tk.Button(self.edit_escala, text='Cancelar', command=self.edit_escala.destroy)
+            self.btn_not_ok.place(x=200, y=350)
+
+    def button_editar_escala(self):
+        selecionado = self.tvw_escala.selection()
+        lista = self.tvw_escala.item(selecionado, "values")
+
+        nome_escala = self.entry_nome_escala.get()
+        tipo_escala = self.cbx_tipo_escala.get()
+        data_inicio = self.cal_data_inicio.get_date().strftime('%d/%m/%Y')
+        data_fim = self.cal_data_fim.get_date().strftime('%d/%m/%Y')
+        dias = self.entry_dias.get()
+
+        if nome_escala == "":
+            messagebox.showinfo("Insira um nome completo", "O campo nome da escala está incorreto!")
+            self.edit_escala.deiconify()
+        elif tipo_escala == "":
+            messagebox.showinfo("Insira os dias", "O campo tipo escala está vazio!")
+            self.edit_escala.deiconify()
+        elif data_inicio == "":
+            messagebox.showinfo("Selecione um tipo", "Nenhuma seleção na data de inicio!")
+            self.edit_escala.deiconify()
+        elif data_fim == "":
+            messagebox.showinfo("Selecione um tipo", "Nenhuma seleção na data de fim!")
+            self.edit_escala.deiconify()
+        else:
+            query = 'SELECT nome_escala FROM escala;'
+            valores = bd.consultar_usuarios(query)
+            confirmar = False
+            for i in valores:
+                if nome_escala == i and i!=lista[1]:
+                    confirmar = True
+                    break
+            if not confirmar:
+                query = f"SELECT tipo_escala_id FROM tipo_escala WHERE '{tipo_escala}' LIKE nome_tipo_escala;"
+                dados = bd.consultar_usuarios(query)
+                query = f'UPDATE escala SET nome_escala="{nome_escala}", tipo_escala_id={dados[0]}, data_inicio_escala="{data_inicio}", data_fim_escala="{data_fim}", dias_escala={dias} WHERE escala_id={lista[0]};'
+                bd.atualizar(query)
+                messagebox.showinfo("SUCESSO!", "Escala editada com sucesso!")
+                self.atualizar_tvw_escala()
+                self.edit_escala.destroy()
+            else:
+                messagebox.showinfo("Nome de escala já cadastrado", "O Nome da escala já está cadastrado")
+                self.edit_escala.deiconify()
+
+    def excluir_escala(self, event):
+        selecionado = self.tvw_escala.selection()
+        lista = self.tvw_escala.item(selecionado, "values")
+        mensagem = messagebox.askyesno(f'Excluir', f'Você tem certeza que deseja excluir a escala: {lista[1]}?')
+        if mensagem:
+            sql = f'DELETE FROM escala WHERE escala_id={lista[0]};'
+            bd.deletar(sql)
+            messagebox.showinfo("Excluído", "Escala excluída com sucesso")
+            self.atualizar_tvw_escala()
+        self.janelaprincipal.deiconify()
+
+    def Nova_programacao(self, event):
         #print(self.text1.get())
 
         self.janela2 = tk.Toplevel()
         self.janela2.grab_set()
-        self.janela2.title("Atribuir Escala")
+        self.janela2.title("Nova Programação")
         self.janela2.geometry("500x400")
         self.frm_janela2_c = tk.Frame(self.janela2, width=500, height=400)
         self.frm_janela2_c.grid(column=0, row=0)
@@ -53,7 +322,7 @@ class Tela:
         self.lbl_programar = tk.Label(self.frm_janela2_c, text="Para quem:")
         self.lbl_programar.place(x=20, y=10)
         #Exemplos de colaboradores
-        
+
         query = 'SELECT usuario_id, nome_completo, nome_usuario FROM usuario;'
         dados = bd.consultar(query)
         colaboradores = []
@@ -80,7 +349,7 @@ class Tela:
         self.cbx_tipo_escala.place(x=20, y=80)
         self.cbx_tipo_escala.current(0)
 
-        
+
         self.lbl_Periodo = tk.Label(self.frm_janela2_c, text="Periodo:")
         self.lbl_Periodo.place(x=20, y=110)
         #Exemplos de Periodos
@@ -89,10 +358,10 @@ class Tela:
         self.cal_escolha.place(x=40, y=150)
 
 
-        self.btn_ok = tk.Button(self.frm_janela2_c, text='Atribuir', command=self.Atribuir)
+        self.btn_ok = tk.Button(self.frm_janela2_c, text='Criar', command=self.Criar)
         self.btn_ok.place(x=100, y=350)
 
-    def Atribuir(self):
+    def Criar(self):
         # print(self.cbx_usuario.get())
         # print(self.cbx_tipo_escala.get())
         # print(self.cal_escolha.selection_get()) 
