@@ -79,6 +79,7 @@ class Screens:
         self.top_lbl_02 = tk.Label(self.left_frm_2, text='CONTROLE DE ESCALAS',font=('Inter',18,'bold'),fg='#FFF', bg='#94939B')
         self.top_lbl_02.pack(side=tk.TOP)
 
+
         self.top_lbl_03 = tk.Label(self.left_frm_2, text='VERSÃO 1.0', font=('Inter', 10, 'bold'), fg='#FFF',bg='#94939B')
         self.top_lbl_03.pack(side=tk.TOP,padx=10)
 
@@ -132,6 +133,7 @@ class Screens:
         self.main_screen.destroy()
         self.UserScreen()
     def crud_user(self):
+        self.user_screen.destroy()
         self.CrudScreen()
     def voltar_calendar(self):
         self.calendar_screen.destroy()
@@ -142,6 +144,9 @@ class Screens:
     def voltar_user(self):
         self.user_screen.destroy()
         self.MainScreen()
+    def voltar_crud(self):
+        self.crud_user.destroy()
+        self.UserScreen()
 
     def voltar_create(self):
         self.create_screen.destroy()
@@ -250,17 +255,19 @@ class Screens:
     def UserScreen(self):
         self.user_screen = tk.Tk()
         self.user_screen.title("Usuarios")
-        self.user_screen.geometry('600x620')
+        self.user_screen.geometry('800x620')
         self.user_screen.configure(bg='#D9D9D9')
         self.user_screen.resizable(False, False)
         self.user_screen.protocol("WM_DELETE_WINDOW", self.voltar_user)
 
+        self.lbl_name = tk.Label(self.user_screen, text='GERENCIAR USUÁRIOS', font=('Inter', 18, 'bold'), fg='#0B0B0B',bg='#D9D9D9')
+        self.lbl_name.pack(side=tk.TOP, pady=(20, 5))
+
         self.frm = tk.Frame(self.user_screen, bg='#94939B')
-        self.frm.grid(column=0, row=0, pady=10, padx=10)
-        self.frm.grid_columnconfigure(0, weight=1)
+        self.frm.pack(pady=10, padx=10,expand=True,fill=tk.BOTH)
 
         self.frame_tvw_usuario = tk.Frame(self.frm, bg='#94939B')
-        self.frame_tvw_usuario.pack(pady=10, padx=10,expand=True, fill=tk.BOTH)
+        self.frame_tvw_usuario.pack(pady=20, padx=20,expand=True, fill=tk.BOTH)
 
         self.tvw_usuario = ttk.Treeview(self.frame_tvw_usuario, columns=('id', 'nome', 'nome de usuario', 'tipo'),show='headings')
         self.tvw_usuario.column('id', width=40)
@@ -271,7 +278,7 @@ class Screens:
         self.tvw_usuario.heading('nome', text='Nome')
         self.tvw_usuario.heading('nome de usuario', text='Nome de Usuário')
         self.tvw_usuario.heading('tipo', text='Super usuário')
-        self.tvw_usuario.pack(side=tk.LEFT,fill=tk.BOTH)
+        self.tvw_usuario.pack(side=tk.LEFT,fill=tk.BOTH,expand=True)
 
         self.scr_usuario = ttk.Scrollbar(self.frame_tvw_usuario, command=self.tvw_usuario.yview)
         self.scr_usuario.pack(side=tk.LEFT, fill=tk.BOTH)
@@ -280,7 +287,7 @@ class Screens:
         self.frame_tvw_button = tk.Frame(self.frm, bg='#94939B')
         self.frame_tvw_button.pack(side=tk.BOTTOM)
 
-        self.btn_cadastrar_usuario = tk.Button(self.frame_tvw_button, text="Criar Usuário", font=("Arial", 10), bg="#3CB371",fg="white", width=20, height=1,borderwidth=0,command='')
+        self.btn_cadastrar_usuario = tk.Button(self.frame_tvw_button, text="Criar Usuário", font=("Arial", 10), bg="#3CB371",fg="white", width=20, height=1,borderwidth=0,command=self.crud_user)
         self.btn_cadastrar_usuario.grid(row=0,column=0,padx=10,pady=10)
 
         self.btn_editar_usuario = tk.Button(self.frame_tvw_button, text="Editar Usuário", font=("Arial", 10), bg="Orange", fg="white",width=20, height=1,borderwidth=0,command='')
@@ -289,12 +296,52 @@ class Screens:
         self.btn_excluir_usuario = tk.Button(self.frame_tvw_button, text="Excluir Usuário", font=("Arial", 10), bg="#E1523F",fg="white", width=20, height=1,borderwidth=0,command='')
         self.btn_excluir_usuario.grid(row=0,column=2,padx=10,pady=10)
 
+        self.btn_excluir_usuario = tk.Button(self.frame_tvw_button, text="Voltar", font=("Arial", 10),bg="#E1523F", fg="white", width=20, height=1, borderwidth=0, command=self.voltar_user)
+        self.btn_excluir_usuario.grid(row=0, column=3, padx=10, pady=10)
+
     def CrudScreen(self):
         self.crud_user = tk.Tk()
         self.crud_user.title("Cadastrar usuario")
         self.crud_user.geometry('462x676')
         self.crud_user.configure(bg='#D9D9D9')
         self.crud_user.resizable(False, False)
+
+        self.lbl_name = tk.Label(self.crud_user, text='CRIAR USUÁRIO', font=('Inter', 18, 'bold'), fg='#0B0B0B',bg='#D9D9D9')
+        self.lbl_name.pack(side=tk.TOP,pady=(20,5))
+
+        self.center_frame_04 = tk.Frame(self.crud_user,bg='#94939B')
+        self.center_frame_04.pack(pady=20,padx=20,expand=True,fill=tk.BOTH)
+
+        tk.Label(self.center_frame_04, text="Nome Completo:", bg='#94939B',font=('Inter', 18, 'bold')).grid(row=0, column=0, padx=110, pady=(20,5),sticky='nsew')
+
+        self.full_name_entry = tk.Entry(self.center_frame_04)
+        self.full_name_entry.grid(row=1, column=0, padx=110, pady=(20,5),sticky='nswe')
+
+        tk.Label(self.center_frame_04, text="Nome de usuário:", bg='#94939B',font=('Inter', 18, 'bold')).grid(row=2, column=0, padx=110, pady=(20,5),sticky='nswe')
+
+        self.username_entry = tk.Entry(self.center_frame_04)
+        self.username_entry.grid(row=3, column=0, padx=110, pady=(20,5),sticky='nswe')
+
+        tk.Label(self.center_frame_04, text="Senha:", bg='#94939B',font=('Inter', 18, 'bold')).grid(row=4, column=0, padx=110, pady=(20,5), sticky='nswe')
+
+        self.password_entry = tk.Entry(self.center_frame_04, show='*')
+        self.password_entry.grid(row=5, column=0, padx=110, pady=(20,5),sticky='nswe')
+
+        tk.Label(self.center_frame_04, text="Confirmar senha:", bg='#94939B',font=('Inter', 18, 'bold')).grid(row=6, column=0, padx=110, pady=(20,5),sticky='nswe')
+
+        self.confirm_password_entry = tk.Entry(self.center_frame_04, show='*')
+        self.confirm_password_entry.grid(row=7, column=0, padx=110, pady=(20,5),sticky='nswe')
+
+        tk.Label(self.center_frame_04, text="Tipo de usuário:", bg='#94939B',font=('Inter', 18, 'bold')).grid(row=8, column=0, padx=110, pady=(20,5),sticky='nswe')
+
+        self.user_type_var = tk.StringVar()
+        self.user_type_combobox = ttk.Combobox(self.center_frame_04, textvariable=self.user_type_var,values=["Administrador", "Usuário Comum"])
+        self.user_type_combobox.grid(row=9, column=0, padx=110, pady=(20,5),sticky='nswe')
+        self.user_type_combobox.set("Usuário Comum")
+
+        self.btn_conf  = tk.Button(self.crud_user, text="Confirmar", command="",font=("Arial", 10), bg="#3CB371",fg="white", width=10, height=1,borderwidth=0).pack(side='left', padx=35,pady=10)
+        self.btn_limp = tk.Button(self.crud_user, text="Limpar", command="", font=("Arial", 10), bg="Orange", fg="white",width=10, height=1,borderwidth=0).pack(side='left', padx=37,pady=10)
+        self.btn_cancel = tk.Button(self.crud_user, text="Cancelar", command=self.voltar_crud, font=("Arial", 10), bg="#E1523F",fg="white", width=10, height=1,borderwidth=0).pack(side='left', padx=35, pady=10)
 
     def CreateScreen(self):
         self.create_screen = tk.Tk()
