@@ -19,16 +19,16 @@ class Screens:
         self.top_frm.pack(fill=tk.X, padx=20, pady=20)
 
         self.top_lbl = tk.Label(self.top_frm, text = "BEM VINDO", font=('Inter',28,'bold'), fg='#0B0B0B', bg='#94939B')
-        self.top_lbl.pack(side=tk.LEFT, pady=10, padx=50)
+        self.top_lbl.pack(side=tk.TOP, pady=10, padx=50)
 
         self.left_frm = tk.Frame(self.login_screen,bg='#D9D9D9')
-        self.left_frm.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=20, pady=20)
+        self.left_frm.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=20, pady=10)
 
         #self.img_pf = tk.PhotoImage(file="images/image 1.png", height=425, width=336)
         self.img_pf = ImageTk.PhotoImage(Image.open(f"images/image 1.png"))
 
         self.left_lbl = tk.Label(self.left_frm, image=self.img_pf, height=425, width=336, bg='#D9D9D9')
-        self.left_lbl.pack(side=tk.LEFT, pady=10, padx=50)
+        self.left_lbl.pack(side=tk.LEFT, pady=10, padx=50,fill=tk.BOTH,expand=True)
 
         self.left_lbl.configure(image=self.img_pf)
         self.left_lbl.image=self.img_pf
@@ -50,7 +50,7 @@ class Screens:
         self.entry_senha.insert(0, "Senha")
         self.entry_senha.pack(side=tk.TOP, pady=20, padx=20)
 
-        self.bttn_login = tk.Button(self.right_lbl, font=('Inter', 24, 'bold'), fg='#FFFFFF', text="ENTRAR", bg='#6A6666',command=self.enter)
+        self.bttn_login = tk.Button(self.right_lbl, font=('Inter', 24, 'bold'), fg='#FFFFFF', text="ENTRAR", bg='#6A6666',command=self.enter,borderwidth=0)
         self.bttn_login.pack(side=tk.BOTTOM, pady=20, padx=100)
 
         self.bttn_help = tk.Button(self.right_lbl, font=('Inter', 20, 'bold'), fg='#6A6666', text=" Problemas de Login? ", bg='#94939B', borderwidth=0,command='')
@@ -232,11 +232,10 @@ class Screens:
 
         self.scrollbar = ttk.Scrollbar(self.frame_right, orient="vertical", command=self.tree.yview)
         self.scrollbar.grid(row=1, column=0,sticky='NSE',padx=5, pady=10)
-
         self.tree.configure(yscrollcommand=self.scrollbar.set)
 
         self.btt_add = tk.Button(self.frame_right,text='ADICIONAR',font=('Inter', 10, 'bold'), fg='#070707',bg='#D9D9D9',width=19,height=5,command='')
-        self.btt_add.grid(row=2,column=0,sticky='NSEW',pady=50,padx=50)
+        self.btt_add.grid(row=2,column=0,pady=50,padx=50)
 
 
     def CalendarScreen(self):
