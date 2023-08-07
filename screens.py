@@ -232,11 +232,10 @@ class Screens:
 
         self.scrollbar = ttk.Scrollbar(self.frame_right, orient="vertical", command=self.tree.yview)
         self.scrollbar.grid(row=1, column=0,sticky='NSE',padx=5, pady=10)
-
         self.tree.configure(yscrollcommand=self.scrollbar.set)
 
         self.btt_add = tk.Button(self.frame_right,text='ADICIONAR',font=('Inter', 10, 'bold'), fg='#070707',bg='#D9D9D9',width=19,height=5,command='')
-        self.btt_add.grid(row=2,column=0,sticky='NSEW',pady=50,padx=50)
+        self.btt_add.grid(row=2,column=0,pady=50,padx=50)
 
 
     def CalendarScreen(self):
