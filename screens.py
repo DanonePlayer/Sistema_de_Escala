@@ -466,9 +466,35 @@ class Screens:
     def RoasterManage(self):
         self.roster_manage = tk.Tk()
         self.roster_manage.title("Gerenciar Escalas")
-        self.roster_manage.geometry('800x620')
+        self.roster_manage.geometry('1000x600')
         self.roster_manage.configure(bg='#D9D9D9')
         self.roster_manage.resizable(False, False)
+
+        self.lbl_01 = tk.Label(self.roster_manage, text='GERENCIAR ESCALAS', font=('Inter', 18, 'bold'), fg='#0B0B0B',bg='#D9D9D9')
+        self.lbl_01.pack(side=tk.TOP, pady=(20, 5))
+
+        self.frm_01 = tk.Frame(self.roster_manage, bg='#94939B')
+        self.frm_01.pack(pady=10, padx=10, expand=True, fill=tk.BOTH)
+
+        self.tvw_escala = ttk.Treeview(self.frm_01, columns=(
+        'id', 'nome escala', 'tipo de escala', 'data inicio', 'data fim', 'dias da escala'),show='headings')
+        self.tvw_escala.column('id', width=40)
+        self.tvw_escala.column('nome escala', width=350)
+        self.tvw_escala.column('tipo de escala', width=250)
+        self.tvw_escala.column('data inicio', width=100)
+        self.tvw_escala.column('data fim', width=100)
+        self.tvw_escala.column('dias da escala', width=100)
+        self.tvw_escala.heading('id', text='Id')
+        self.tvw_escala.heading('nome escala', text='Nome da Escala')
+        self.tvw_escala.heading('tipo de escala', text='Tipo de Escala')
+        self.tvw_escala.heading('data inicio', text='Data de início')
+        self.tvw_escala.heading('data fim', text='Data de fim')
+        self.tvw_escala.heading('dias da escala', text='Dias da escala')
+        self.tvw_escala.pack(side=tk.LEFT,padx=10,pady=10, fill=tk.BOTH,expand=True)
+
+        self.scr_escala = ttk.Scrollbar(self.frm_01, command=self.tvw_escala.yview)
+        self.scr_escala.pack(side=tk.LEFT, fill=tk.BOTH)
+        self.tvw_escala.configure(yscroll=self.scr_escala.set)
 
 
 janela = tk.Tk()
