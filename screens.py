@@ -357,48 +357,48 @@ class Screens:
     def CreateScreen(self):
         self.create_screen = tk.Tk()
         self.create_screen.title('Criar Escalas')
-        self.create_screen.geometry('517x877')
+        self.create_screen.geometry('462x676')
         self.create_screen.configure(bg='#D9D9D9')
         self.create_screen.resizable(False, False)
         self.create_screen.protocol("WM_DELETE_WINDOW", self.voltar_create)
 
         self.center_frame_03 = tk.Frame(self.create_screen,bg='#94939B')
-        self.center_frame_03.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
+        self.center_frame_03.pack(fill=tk.BOTH, expand=True, padx=20, pady=20)
 
-        self.lbl_create = tk.Label(self.center_frame_03,text='CRIAR TIPO DE ESCALA',font=('Inter', 18, 'bold'),fg='#0B0B0B', bg='#94939B' )
+        self.lbl_create = tk.Label(self.center_frame_03,text='CRIAR TIPO DE ESCALA',font=('Inter', 10, 'bold'),fg='#0B0B0B', bg='#94939B' )
         self.lbl_create.pack(side=tk.TOP,padx=5,pady=10)
 
-        self.lbl_name = tk.Label(self.center_frame_03, text="NOME DA ESCALA",font=('Inter', 18, 'bold'),fg='#FFF',bg='#94939B')
+        self.lbl_name = tk.Label(self.center_frame_03, text="NOME DA ESCALA",font=('Inter', 10, 'bold'),fg='#FFF',bg='#94939B')
         self.lbl_name.pack(side=tk.TOP,pady=5,padx=10)
 
         self.entry_nome_e = tk.Entry(self.center_frame_03, width=59)
         self.entry_nome_e.pack(side=tk.TOP, padx=5, pady=10)
 
-        self.lbl_dias = tk.Label(self.center_frame_03,text='QUANTOS DIAS?',font=('Inter', 18, 'bold'),fg='#FFF',bg='#94939B')
+        self.lbl_dias = tk.Label(self.center_frame_03,text='QUANTOS DIAS?',font=('Inter', 10, 'bold'),fg='#FFF',bg='#94939B')
         self.lbl_dias.pack(side=tk.TOP, padx=5, pady=10, fill=tk.BOTH)
 
         self.entry_dias_02 = tk.Entry(self.center_frame_03, width=59)
         self.entry_dias_02.pack(side=tk.TOP, padx=5, pady=10,)
 
         self.frame_escolhas = tk.Frame(self.center_frame_03,bg='#94939B')
-        self.frame_escolhas.pack(fill=tk.BOTH, expand=True, padx=10, pady=10,side=tk.TOP)
+        self.frame_escolhas.pack(fill=tk.Y, expand=True, padx=10, pady=10,side=tk.TOP)
 
-        self.lbl_03 = tk.Label(self.frame_escolhas, text='CONTAR FINAIS DE SEMANA?', font=('Inter', 18, 'bold'),fg='#FFF', bg='#94939B')
-        self.lbl_03.grid(row=0, column=0, columnspan=3, sticky='nsew', pady=20)
+        self.lbl_03 = tk.Label(self.frame_escolhas, text='CONTAR FINAIS DE SEMANA?', font=('Inter', 10, 'bold'),fg='#FFF', bg='#94939B')
+        self.lbl_03.grid(row=0, column=0, columnspan=3, sticky='nsew', pady=10)
 
         radio_var_01 = tk.StringVar()
         radio_var_02 = tk.StringVar()
         radio_var_03 = tk.StringVar()
 
         style = ttk.Style()
-        style.configure("Custom.TRadiobutton", background="#94939B", foreground="white", font=("Inter", 12, "bold"))
+        style.configure("Custom.TRadiobutton", background="#94939B", foreground="white", font=("Inter", 10, "bold"))
 
         self.radio_01 = ttk.Radiobutton(self.frame_escolhas, text="SIM", variable=radio_var_01, value="SIM_1",style="Custom.TRadiobutton")
         self.radio_01.grid(row=2, column=0, padx=10, pady=10, sticky='nsew')
         self.radio_02 = ttk.Radiobutton(self.frame_escolhas, text="NÃO", variable=radio_var_01, value="NÃO_1",style="Custom.TRadiobutton")
         self.radio_02.grid(row=2, column=1, padx=10, pady=10, sticky='nsew')
 
-        self.lbl_04 = tk.Label(self.frame_escolhas, text='CONTAR FERIADOS?', font=('Inter', 18, 'bold'), fg='#FFF',bg='#94939B')
+        self.lbl_04 = tk.Label(self.frame_escolhas, text='CONTAR FERIADOS?', font=('Inter', 10, 'bold'), fg='#FFF',bg='#94939B')
         self.lbl_04.grid(row=3, column=0, columnspan=2, sticky='nsew', pady=20)
 
         self.radio_03 = ttk.Radiobutton(self.frame_escolhas, text="SIM", variable=radio_var_02, value="SIM_2",style="Custom.TRadiobutton")
@@ -406,7 +406,7 @@ class Screens:
         self.radio_04 = ttk.Radiobutton(self.frame_escolhas, text="NÃO", variable=radio_var_02, value="NÃO_2",style="Custom.TRadiobutton")
         self.radio_04.grid(row=4, column=1, padx=10, pady=10, sticky='nsew')
 
-        self.lbl_05 = tk.Label(self.frame_escolhas, text='ESCALA MUTUA?', font=('Inter', 18, 'bold'), fg='#FFF',bg='#94939B')
+        self.lbl_05 = tk.Label(self.frame_escolhas, text='ESCALA MUTUA?', font=('Inter', 10, 'bold'), fg='#FFF',bg='#94939B')
         self.lbl_05.grid(row=5, column=0, columnspan=2, sticky='nsew', pady=20)
 
         self.radio_06 = ttk.Radiobutton(self.frame_escolhas, text="SIM", variable=radio_var_03, value="SIM_2",style="Custom.TRadiobutton")
@@ -415,13 +415,13 @@ class Screens:
         self.radio_07.grid(row=6, column=1, padx=10, pady=10, sticky='nsew')
 
         self.frame_button = tk.Frame(self.center_frame_03,bg='#94939B')
-        self.frame_button.pack(fill=tk.BOTH, expand=True, padx=10, pady=10,side=tk.BOTTOM)
+        self.frame_button.pack(fill=tk.Y, padx=10, pady=10,side=tk.TOP)
 
-        self.bttn_criar_02 = tk.Button(self.frame_button, text='CRIAR', font=('Inter', 18, 'bold'), fg='#FFF',bg='#1B731A',command='')
-        self.bttn_criar_02.pack(side=tk.LEFT,pady=5,padx=10)
+        self.bttn_criar_02 = tk.Button(self.frame_button, text='CRIAR', font=('Inter', 10, 'bold'), fg='#FFF',bg='#1B731A',command='',borderwidth=0)
+        self.bttn_criar_02.pack(side=tk.LEFT,pady=5,padx=10,fill=tk.BOTH)
 
-        self.bttn_clean = tk.Button(self.frame_button, text='LIMPAR', font=('Inter', 18, 'bold'), fg='#605F5F',bg='#FFFFFF',command='')
-        self.bttn_clean.pack(side=tk.RIGHT,pady=5,padx=10)
+        self.bttn_clean = tk.Button(self.frame_button, text='LIMPAR', font=('Inter', 10, 'bold'), fg='#605F5F',bg='#FFFFFF',command='',borderwidth=0)
+        self.bttn_clean.pack(side=tk.LEFT,pady=5,padx=10,fill=tk.BOTH)
 
     def EditScreen(self):
         self.edit_user = tk.Tk()
