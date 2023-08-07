@@ -104,23 +104,19 @@ class Screens:
         self.bottom_frame = tk.Frame(self.right_frm_2, bg='#565656')
         self.bottom_frame.pack(side=tk.BOTTOM,padx=10,pady=10,fill=tk.BOTH,expand=True)
 
-        self.bttn_calendar = tk.Button(self.top_frame, bg='#6E716E', command=self.calendar,image=self.img_calendar,borderwidth=0)
-        self.bttn_calendar.pack(side=tk.LEFT, padx=10, pady=10, expand=True, fill=tk.BOTH)
-
-        self.bttn_raltorio = tk.Button(self.top_frame, bg='#6E716E', image=self.img_reports,borderwidth=0)
-        self.bttn_raltorio.pack(side=tk.LEFT, padx=10, pady=10, expand=True, fill=tk.BOTH)
-
-        self.bttn_usuario = tk.Button(self.top_frame, bg='#6E716E', command=self.user, image=self.img_user,borderwidth=0)
-        self.bttn_usuario.pack(side=tk.LEFT, padx=10, pady=10, expand=True, fill=tk.BOTH)
-
-        self.bttn_escalas = tk.Button(self.bottom_frame, bg='#6E716E', command=self.roster, image=self.img_roster,borderwidth=0)
-        self.bttn_escalas.pack(side=tk.LEFT, padx=10, pady=10, expand=True, fill=tk.BOTH)
-
-        self.bttn_criar = tk.Button(self.bottom_frame, bg='#6E716E',command=self.create,image=self.img_roster_02,borderwidth=0)
-        self.bttn_criar.pack(side=tk.LEFT, padx=10, pady=10, expand=True, fill=tk.BOTH)
-
-        self.bttn_manage = tk.Button(self.bottom_frame, bg='#6E716E', image=self.img_edit,command=self.manage,borderwidth=0)
-        self.bttn_manage.pack(side=tk.LEFT, padx=10, pady=10, expand=True, fill=tk.BOTH)
+        button_images = [
+            (self.img_calendar, self.calendar),
+            (self.img_reports, ''),
+            (self.img_user, self.user),
+            (self.img_roster, self.roster),
+            (self.img_roster_02, self.create),
+            (self.img_edit, self.manage)
+        ]
+        button_width = max(img.width() for img, _ in button_images)
+        for img, command in button_images:
+            button = tk.Button(self.top_frame if command == self.calendar or command == self.roster or command == self.manage else self.bottom_frame, bg='#6E716E', image=img, borderwidth=0,command=command)
+            button.pack(side=tk.LEFT, padx=10, pady=10, expand=True, fill=tk.BOTH)
+            button.config(width=button_width)
 
     def roster(self):
         self.main_screen.destroy()
