@@ -4,8 +4,8 @@ from tkinter import ttk
 from PIL import Image, ImageTk
 
 
-##from tkcalendar import Calendar, DateEntry
-##import holidays
+from tkcalendar import Calendar, DateEntry
+import holidays
 
 class Screens:
     def __init__(self, master):
@@ -160,7 +160,10 @@ class Screens:
         self.CreateScreen()
     def manage(self):
         self.main_screen.destroy()
-        self.RoasterManage()
+        self.RosterManage()
+    def create_roster(self):
+        self.roster_manage.destroy()
+        self.CreateRoster()
 
     def RosterScreen(self):
         self.roster_screen = tk.Tk()
@@ -313,42 +316,44 @@ class Screens:
         self.crud_user.configure(bg='#D9D9D9')
         self.crud_user.resizable(False, False)
 
-        self.lbl_name = tk.Label(self.crud_user, text='CRIAR USUÁRIO', font=('Inter', 18, 'bold'), fg='#0B0B0B',bg='#D9D9D9')
+        self.lbl_name = tk.Label(self.crud_user, text='CADASTRAR NOVO USUÁRIO', font=('Inter', 18, 'bold'), fg='#0B0B0B',bg='#D9D9D9')
         self.lbl_name.pack(side=tk.TOP,pady=(20,5))
 
         self.center_frame_04 = tk.Frame(self.crud_user,bg='#94939B')
         self.center_frame_04.pack(pady=20,padx=20,expand=True,fill=tk.BOTH)
 
-        tk.Label(self.center_frame_04, text="Nome Completo:", bg='#94939B',font=('Inter', 18, 'bold')).grid(row=0, column=0, padx=110, pady=(20,5),sticky='nsew')
+        tk.Label(self.center_frame_04, text="Nome Completo:", bg='#94939B',font=('Inter', 18, 'bold')).pack(side=tk.TOP,pady=10,padx=20)
 
         self.full_name_entry = tk.Entry(self.center_frame_04)
-        self.full_name_entry.grid(row=1, column=0, padx=110, pady=(20,5),sticky='nswe')
+        self.full_name_entry.pack(side=tk.TOP,pady=10,padx=40,fill=tk.BOTH)
 
-        tk.Label(self.center_frame_04, text="Nome de usuário:", bg='#94939B',font=('Inter', 18, 'bold')).grid(row=2, column=0, padx=110, pady=(20,5),sticky='nswe')
+        tk.Label(self.center_frame_04, text="Nome de usuário:", bg='#94939B',font=('Inter', 18, 'bold')).pack(side=tk.TOP,pady=10,padx=20)
 
         self.username_entry = tk.Entry(self.center_frame_04)
-        self.username_entry.grid(row=3, column=0, padx=110, pady=(20,5),sticky='nswe')
+        self.username_entry.pack(side=tk.TOP,pady=10,padx=40,fill=tk.BOTH)
 
-        tk.Label(self.center_frame_04, text="Senha:", bg='#94939B',font=('Inter', 18, 'bold')).grid(row=4, column=0, padx=110, pady=(20,5), sticky='nswe')
+        tk.Label(self.center_frame_04, text="Senha:", bg='#94939B',font=('Inter', 18, 'bold')).pack(side=tk.TOP,pady=10,padx=20)
 
         self.password_entry = tk.Entry(self.center_frame_04, show='*')
-        self.password_entry.grid(row=5, column=0, padx=110, pady=(20,5),sticky='nswe')
+        self.password_entry.pack(side=tk.TOP,pady=10,padx=40,fill=tk.BOTH)
 
-        tk.Label(self.center_frame_04, text="Confirmar senha:", bg='#94939B',font=('Inter', 18, 'bold')).grid(row=6, column=0, padx=110, pady=(20,5),sticky='nswe')
-
+        tk.Label(self.center_frame_04, text="Confirmar senha:", bg='#94939B',font=('Inter', 18, 'bold')).pack(side=tk.TOP,pady=10,padx=20)
         self.confirm_password_entry = tk.Entry(self.center_frame_04, show='*')
-        self.confirm_password_entry.grid(row=7, column=0, padx=110, pady=(20,5),sticky='nswe')
+        self.confirm_password_entry.pack(side=tk.TOP,pady=10,padx=40,fill=tk.BOTH)
 
-        tk.Label(self.center_frame_04, text="Tipo de usuário:", bg='#94939B',font=('Inter', 18, 'bold')).grid(row=8, column=0, padx=110, pady=(20,5),sticky='nswe')
+        tk.Label(self.center_frame_04, text="Tipo de usuário:", bg='#94939B',font=('Inter', 18, 'bold')).pack(side=tk.TOP,pady=10,padx=20)
 
         self.user_type_var = tk.StringVar()
         self.user_type_combobox = ttk.Combobox(self.center_frame_04, textvariable=self.user_type_var,values=["Administrador", "Usuário Comum"])
-        self.user_type_combobox.grid(row=9, column=0, padx=110, pady=(20,5),sticky='nswe')
+        self.user_type_combobox.pack(side=tk.TOP,pady=10,padx=40,fill=tk.BOTH)
         self.user_type_combobox.set("Usuário Comum")
 
-        self.btn_conf  = tk.Button(self.crud_user, text="Confirmar", command="",font=("Arial", 10), bg="#3CB371",fg="white", width=10, height=1,borderwidth=0).pack(side='left', padx=35,pady=10)
-        self.btn_limp = tk.Button(self.crud_user, text="Limpar", command="", font=("Arial", 10), bg="Orange", fg="white",width=10, height=1,borderwidth=0).pack(side='left', padx=37,pady=10)
-        self.btn_cancel = tk.Button(self.crud_user, text="Cancelar", command=self.voltar_crud, font=("Arial", 10), bg="#E1523F",fg="white", width=10, height=1,borderwidth=0).pack(side='left', padx=35, pady=10)
+        self.frm_bttn_03 = tk.Frame(self.center_frame_04, bg='#94939B')
+        self.frm_bttn_03.pack(side=tk.BOTTOM, expand=True, padx=10, pady=10)
+
+        self.btn_conf  = tk.Button(self.frm_bttn_03, text="Confirmar", command="",font=("Arial", 10), bg="#3CB371",fg="white", width=10, height=1,borderwidth=0).pack(side='left', padx=15,pady=10)
+        self.btn_limp = tk.Button(self.frm_bttn_03, text="Limpar", command="", font=("Arial", 10), bg="Orange", fg="white",width=10, height=1,borderwidth=0).pack(side='left', padx=15,pady=10)
+        self.btn_cancel = tk.Button(self.frm_bttn_03, text="Cancelar", command=self.voltar_crud, font=("Arial", 10), bg="#E1523F",fg="white", width=10, height=1,borderwidth=0).pack(side='left', padx=15, pady=10)
 
     def CreateScreen(self):
         self.create_screen = tk.Tk()
@@ -432,38 +437,39 @@ class Screens:
         self.center_frame_05 = tk.Frame(self.edit_user,bg='#94939B')
         self.center_frame_05.pack(pady=20,padx=20,expand=True,fill=tk.BOTH)
 
-        tk.Label(self.center_frame_05, text="Nome Completo:", bg='#94939B',font=('Inter', 18, 'bold')).grid(row=0, column=0, padx=110, pady=(20,5),sticky='nsew')
+        tk.Label(self.center_frame_05, text="Nome Completo:", bg='#94939B',font=('Inter', 18, 'bold')).pack(side=tk.TOP,pady=10,padx=20)
 
         self.full_name_entry = tk.Entry(self.center_frame_05)
-        self.full_name_entry.grid(row=1, column=0, padx=110, pady=(20,5),sticky='nswe')
+        self.full_name_entry.pack(side=tk.TOP,pady=10,padx=40,fill=tk.BOTH)
 
-        tk.Label(self.center_frame_05, text="Nome de usuário:", bg='#94939B',font=('Inter', 18, 'bold')).grid(row=2, column=0, padx=110, pady=(20,5),sticky='nswe')
-
+        tk.Label(self.center_frame_05, text="Nome de usuário:", bg='#94939B',font=('Inter', 18, 'bold')).pack(side=tk.TOP,pady=10,padx=20)
         self.username_entry = tk.Entry(self.center_frame_05)
-        self.username_entry.grid(row=3, column=0, padx=110, pady=(20,5),sticky='nswe')
+        self.username_entry.pack(side=tk.TOP,pady=10,padx=40,fill=tk.BOTH)
 
-        tk.Label(self.center_frame_05, text="Senha:", bg='#94939B',font=('Inter', 18, 'bold')).grid(row=4, column=0, padx=110, pady=(20,5), sticky='nswe')
+        tk.Label(self.center_frame_05, text="Senha:", bg='#94939B',font=('Inter', 18, 'bold')).pack(side=tk.TOP,pady=10,padx=20)
 
         self.password_entry = tk.Entry(self.center_frame_05, show='*')
-        self.password_entry.grid(row=5, column=0, padx=110, pady=(20,5),sticky='nswe')
+        self.password_entry.pack(side=tk.TOP,pady=10,padx=40,fill=tk.BOTH)
 
-        tk.Label(self.center_frame_05, text="Confirmar senha:", bg='#94939B',font=('Inter', 18, 'bold')).grid(row=6, column=0, padx=110, pady=(20,5),sticky='nswe')
+        tk.Label(self.center_frame_05, text="Confirmar senha:", bg='#94939B',font=('Inter', 18, 'bold')).pack(side=tk.TOP,pady=10,padx=20)
 
         self.confirm_password_entry = tk.Entry(self.center_frame_05, show='*')
-        self.confirm_password_entry.grid(row=7, column=0, padx=110, pady=(20,5),sticky='nswe')
+        self.confirm_password_entry.pack(side=tk.TOP,pady=10,padx=40,fill=tk.BOTH)
 
-        tk.Label(self.center_frame_05, text="Tipo de usuário:", bg='#94939B',font=('Inter', 18, 'bold')).grid(row=8, column=0, padx=110, pady=(20,5),sticky='nswe')
-
+        tk.Label(self.center_frame_05, text="Tipo de usuário:", bg='#94939B',font=('Inter', 18, 'bold')).pack(side=tk.TOP,pady=10,padx=20)
         self.user_type_var = tk.StringVar()
         self.user_type_combobox = ttk.Combobox(self.center_frame_05, textvariable=self.user_type_var,values=["Administrador", "Usuário Comum"])
-        self.user_type_combobox.grid(row=9, column=0, padx=110, pady=(20,5),sticky='nswe')
+        self.user_type_combobox.pack(side=tk.TOP,pady=10,padx=40,fill=tk.BOTH)
         self.user_type_combobox.set("Usuário Comum")
 
-        self.btn_conf  = tk.Button(self.edit_user, text="Confirmar", command="",font=("Arial", 10), bg="#3CB371",fg="white", width=10, height=1,borderwidth=0).pack(side='left', padx=35,pady=10)
-        self.btn_limp = tk.Button(self.edit_user, text="Limpar", command="", font=("Arial", 10), bg="Orange", fg="white",width=10, height=1,borderwidth=0).pack(side='left', padx=37,pady=10)
-        self.btn_cancel = tk.Button(self.edit_user, text="Cancelar", command=self.voltar_crud, font=("Arial", 10), bg="#E1523F",fg="white", width=10, height=1,borderwidth=0).pack(side='left', padx=35, pady=10)
+        self.frm_bttn_02 = tk.Frame(self.center_frame_05,bg='#94939B')
+        self.frm_bttn_02.pack(side=tk.BOTTOM,expand=True,padx=10,pady=10)
 
-    def RoasterManage(self):
+        self.btn_conf  = tk.Button(self.frm_bttn_02, text="Confirmar", command="",font=("Arial", 10), bg="#3CB371",fg="white", width=10, height=1,borderwidth=0).pack(side='left', padx=15,pady=10)
+        self.btn_limp = tk.Button(self.frm_bttn_02, text="Limpar", command="", font=("Arial", 10), bg="Orange", fg="white",width=10, height=1,borderwidth=0).pack(side='left', padx=15,pady=10)
+        self.btn_cancel = tk.Button(self.frm_bttn_02, text="Cancelar", command=self.voltar_crud, font=("Arial", 10), bg="#E1523F",fg="white", width=10, height=1,borderwidth=0).pack(side='left', padx=15, pady=10)
+
+    def RosterManage(self):
         self.roster_manage = tk.Tk()
         self.roster_manage.title("Gerenciar Escalas")
         self.roster_manage.geometry('1000x600')
@@ -476,7 +482,10 @@ class Screens:
         self.frm_01 = tk.Frame(self.roster_manage, bg='#94939B')
         self.frm_01.pack(pady=10, padx=10, expand=True, fill=tk.BOTH)
 
-        self.tvw_escala = ttk.Treeview(self.frm_01, columns=(
+        self.frame_tvw_roster = tk.Frame(self.frm_01, bg='#94939B')
+        self.frame_tvw_roster.pack(expand=True, fill=tk.BOTH,padx=8,pady=(10,8))
+
+        self.tvw_escala = ttk.Treeview(self.frame_tvw_roster, columns=(
         'id', 'nome escala', 'tipo de escala', 'data inicio', 'data fim', 'dias da escala'),show='headings')
         self.tvw_escala.column('id', width=40)
         self.tvw_escala.column('nome escala', width=350)
@@ -490,14 +499,83 @@ class Screens:
         self.tvw_escala.heading('data inicio', text='Data de início')
         self.tvw_escala.heading('data fim', text='Data de fim')
         self.tvw_escala.heading('dias da escala', text='Dias da escala')
-        self.tvw_escala.pack(side=tk.LEFT,padx=10,pady=10, fill=tk.BOTH,expand=True)
+        self.tvw_escala.pack(side=tk.LEFT, fill=tk.BOTH,expand=True)
 
-        self.scr_escala = ttk.Scrollbar(self.frm_01, command=self.tvw_escala.yview)
+        self.scr_escala = ttk.Scrollbar(self.frame_tvw_roster, command=self.tvw_escala.yview)
         self.scr_escala.pack(side=tk.LEFT, fill=tk.BOTH)
         self.tvw_escala.configure(yscroll=self.scr_escala.set)
 
         self.frame_button = tk.Frame(self.frm_01, bg='#94939B')
         self.frame_button.pack(side=tk.BOTTOM)
+
+        self.btn_create = tk.Button(self.frame_button,text="Criar Escala", font=("Arial", 10), bg="#3CB371",fg="white", width=20, height=1,borderwidth=0,command=self.create_roster)
+        self.btn_create.grid(row=0, column=0, padx=10, pady=10)
+
+        self.btn_edit = tk.Button(self.frame_button, text="Editar Escala", font=("Arial", 10), bg="Orange", fg="white",width=20, height=1,borderwidth=0, command='')
+        self.btn_edit.grid(row=0, column=1, padx=10, pady=10)
+
+        self.btn_exclude = tk.Button(self.frame_button, text="Desativar Escala", font=("Arial", 10),bg="#E1523F", fg="white", width=20, height=1, borderwidth=0, command='')
+        self.btn_exclude.grid(row=0, column=2, padx=10, pady=10)
+
+        self.bttn_return = tk.Button(self.frame_button,text="Voltar", font=("Arial", 10),bg="#E1523F", fg="white", width=20, height=1, borderwidth=0, command='')
+        self.bttn_return.grid(row=0, column=3, padx=10, pady=10)
+
+    def CreateRoster(self):
+        self.create_roster_screen = tk.Tk()
+        self.create_roster_screen.title("Criar Escala")
+        self.create_roster_screen.geometry('462x676')
+        self.create_roster_screen.configure(bg='#D9D9D9')
+        self.create_roster_screen.resizable(False, False)
+
+        self.lbl_name_03 = tk.Label(self.create_roster_screen,text= "CRIAR ESCALA",font=('Inter', 18, 'bold'), fg='#0B0B0B',bg='#D9D9D9')
+        self.lbl_name_03.pack(side=tk.TOP,pady=(20,5))
+
+        self.center_frame_06 = tk.Frame(self.create_roster_screen, bg='#94939B')
+        self.center_frame_06.pack(pady=20, padx=20, expand=True, fill=tk.BOTH)
+
+        self.lbl_name_04 = tk.Label(self.center_frame_06,text='Nome da escala',bg='#94939B',font=('Inter', 18, 'bold'))
+        self.lbl_name_04.pack(side=tk.TOP,pady=10,padx=20)
+
+        self.roster_name_entry = tk.Entry(self.center_frame_06)
+        self.roster_name_entry.pack(side=tk.TOP,pady=10,padx=40,fill=tk.BOTH)
+
+        self.lbl_type = tk.Label(self.center_frame_06,text='Tipo da Escala',bg='#94939B',font=('Inter', 18, 'bold'))
+        self.lbl_type.pack(side=tk.TOP,pady=10,padx=20)
+
+        self.roster_type_var = tk.StringVar()
+        self.roster_type_combobox = ttk.Combobox(self.center_frame_06, textvariable=self.roster_type_var,values=["Sobreaviso", "Missão"])
+        self.roster_type_combobox.pack(side=tk.TOP, pady=10, padx=40, fill=tk.BOTH)
+        self.roster_type_combobox.set("Missão")
+
+        self.lbl_data_inicio = tk.Label(self.center_frame_06, text="Data de início da escala",bg='#94939B',font=('Inter', 18, 'bold'))
+        self.lbl_data_inicio.pack(side=tk.TOP,pady=10,padx=20)
+
+        self.cal_data_inicio = DateEntry(self.center_frame_06, locale='pt_BR', date_pattern='dd/MM/yyyy')
+        self.cal_data_inicio.pack(side=tk.TOP, pady=10, padx=40, fill=tk.BOTH)
+
+        self.lbl_data_final = tk.Label(self.center_frame_06, text="Data de Termino da escala", bg='#94939B',font=('Inter', 18, 'bold'))
+        self.lbl_data_final.pack(side=tk.TOP, pady=10, padx=20)
+
+        self.cal_data_final = DateEntry(self.center_frame_06, locale='pt_BR', date_pattern='dd/MM/yyyy')
+        self.cal_data_final.pack(side=tk.TOP, pady=10, padx=40, fill=tk.BOTH)
+
+        self.lbl_days= tk.Label(self.center_frame_06, text='Quantos dias', bg='#94939B', font=('Inter', 18, 'bold'))
+        self.lbl_days.pack(side=tk.TOP, pady=10, padx=20)
+
+        self.entry_days = tk.Entry(self.center_frame_06)
+        self.entry_days.pack(side=tk.TOP,pady=10,padx=40,fill=tk.BOTH)
+
+        self.frm_bttn = tk.Frame(self.center_frame_06,bg='#94939B')
+        self.frm_bttn.pack(side=tk.BOTTOM,pady=10,padx=10,expand=True)
+
+        self.bttn_confirmar = tk.Button(self.frm_bttn,text="Confirmar", command="",font=("Arial", 10), bg="#3CB371",fg="white", width=10, height=1,borderwidth=0)
+        self.bttn_confirmar.pack(side=tk.LEFT,padx=15,pady=10)
+
+        self.bttn_limpar = tk.Button(self.frm_bttn, text="Limpar", command="", font=("Arial", 10), bg="Orange", fg="white",width=10, height=1,borderwidth=0)
+        self.bttn_limpar.pack(side=tk.LEFT,padx=15,pady=10)
+
+        self.btn_cancelar = tk.Button(self.frm_bttn, text="Cancelar", command=self.voltar_crud, font=("Arial", 10),bg="#E1523F", fg="white", width=10, height=1, borderwidth=0)
+        self.btn_cancelar.pack(side=tk.LEFT,padx=15,pady=10)
 
 
 
