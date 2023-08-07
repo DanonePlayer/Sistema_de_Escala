@@ -34,7 +34,7 @@ class Screens:
         self.left_lbl.image=self.img_pf
 
         self.right_frm = tk.Frame(self.login_screen, width=421, height=542)
-        self.right_frm.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=20, pady=20)
+        self.right_frm.pack(side=tk.LEFT, fill=tk.Y, expand=True, padx=20, pady=20)
 
         self.right_lbl = tk.Label(self.right_frm, bg='#94939B')
         self.right_lbl.pack(side=tk.LEFT, fill=tk.BOTH)
