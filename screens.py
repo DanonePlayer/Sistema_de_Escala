@@ -119,8 +119,8 @@ class Screens:
         self.bttn_criar = tk.Button(self.bottom_frame, bg='#6E716E',command=self.create,image=self.img_roster_02)
         self.bttn_criar.pack(side=tk.LEFT, padx=10, pady=10, expand=True, fill=tk.BOTH)
 
-        self.bttn_hist = tk.Button(self.bottom_frame, bg='#6E716E', image=self.img_edit)
-        self.bttn_hist.pack(side=tk.LEFT, padx=10, pady=10, expand=True, fill=tk.BOTH)
+        self.bttn_manage = tk.Button(self.bottom_frame, bg='#6E716E', image=self.img_edit,command=self.manage)
+        self.bttn_manage.pack(side=tk.LEFT, padx=10, pady=10, expand=True, fill=tk.BOTH)
 
     def roster(self):
         self.main_screen.destroy()
@@ -136,6 +136,9 @@ class Screens:
     def crud_user(self):
         self.user_screen.destroy()
         self.CrudScreen()
+    def edit_user(self):
+        self.user_screen.destroy()
+        self.EditScreen()
     def voltar_calendar(self):
         self.calendar_screen.destroy()
         self.MainScreen()
@@ -155,6 +158,9 @@ class Screens:
     def create(self):
         self.main_screen.destroy()
         self.CreateScreen()
+    def manage(self):
+        self.main_screen.destroy()
+        self.RoasterManage()
 
     def RosterScreen(self):
         self.roster_screen = tk.Tk()
@@ -291,7 +297,7 @@ class Screens:
         self.btn_cadastrar_usuario = tk.Button(self.frame_tvw_button, text="Criar Usuário", font=("Arial", 10), bg="#3CB371",fg="white", width=20, height=1,borderwidth=0,command=self.crud_user)
         self.btn_cadastrar_usuario.grid(row=0,column=0,padx=10,pady=10)
 
-        self.btn_editar_usuario = tk.Button(self.frame_tvw_button, text="Editar Usuário", font=("Arial", 10), bg="Orange", fg="white",width=20, height=1,borderwidth=0,command='')
+        self.btn_editar_usuario = tk.Button(self.frame_tvw_button, text="Editar Usuário", font=("Arial", 10), bg="Orange", fg="white",width=20, height=1,borderwidth=0,command=self.edit_user)
         self.btn_editar_usuario.grid(row=0,column=1,padx=10,pady=10)
 
         self.btn_excluir_usuario = tk.Button(self.frame_tvw_button, text="Excluir Usuário", font=("Arial", 10), bg="#E1523F",fg="white", width=20, height=1,borderwidth=0,command='')
@@ -355,7 +361,7 @@ class Screens:
         self.center_frame_03 = tk.Frame(self.create_screen,bg='#94939B')
         self.center_frame_03.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
 
-        self.lbl_create = tk.Label(self.center_frame_03,text='CRIAR ESCALA',font=('Inter', 18, 'bold'),fg='#0B0B0B', bg='#94939B' )
+        self.lbl_create = tk.Label(self.center_frame_03,text='CRIAR TIPO DE ESCALA',font=('Inter', 18, 'bold'),fg='#0B0B0B', bg='#94939B' )
         self.lbl_create.pack(side=tk.TOP,padx=5,pady=10)
 
         self.lbl_name = tk.Label(self.center_frame_03, text="NOME DA ESCALA",font=('Inter', 18, 'bold'),fg='#FFF',bg='#94939B')
@@ -412,6 +418,57 @@ class Screens:
 
         self.bttn_clean = tk.Button(self.frame_button, text='LIMPAR', font=('Inter', 18, 'bold'), fg='#605F5F',bg='#FFFFFF',command='')
         self.bttn_clean.pack(side=tk.RIGHT,pady=5,padx=10)
+
+    def EditScreen(self):
+        self.edit_user = tk.Tk()
+        self.edit_user.title("Editar usuario")
+        self.edit_user.geometry('462x676')
+        self.edit_user.configure(bg='#D9D9D9')
+        self.edit_user.resizable(False, False)
+
+        self.lbl_name_02 = tk.Label(self.edit_user, text='EDITAR USUÁRIO', font=('Inter', 18, 'bold'), fg='#0B0B0B',bg='#D9D9D9')
+        self.lbl_name_02.pack(side=tk.TOP,pady=(20,5))
+
+        self.center_frame_05 = tk.Frame(self.edit_user,bg='#94939B')
+        self.center_frame_05.pack(pady=20,padx=20,expand=True,fill=tk.BOTH)
+
+        tk.Label(self.center_frame_05, text="Nome Completo:", bg='#94939B',font=('Inter', 18, 'bold')).grid(row=0, column=0, padx=110, pady=(20,5),sticky='nsew')
+
+        self.full_name_entry = tk.Entry(self.center_frame_05)
+        self.full_name_entry.grid(row=1, column=0, padx=110, pady=(20,5),sticky='nswe')
+
+        tk.Label(self.center_frame_05, text="Nome de usuário:", bg='#94939B',font=('Inter', 18, 'bold')).grid(row=2, column=0, padx=110, pady=(20,5),sticky='nswe')
+
+        self.username_entry = tk.Entry(self.center_frame_05)
+        self.username_entry.grid(row=3, column=0, padx=110, pady=(20,5),sticky='nswe')
+
+        tk.Label(self.center_frame_05, text="Senha:", bg='#94939B',font=('Inter', 18, 'bold')).grid(row=4, column=0, padx=110, pady=(20,5), sticky='nswe')
+
+        self.password_entry = tk.Entry(self.center_frame_05, show='*')
+        self.password_entry.grid(row=5, column=0, padx=110, pady=(20,5),sticky='nswe')
+
+        tk.Label(self.center_frame_05, text="Confirmar senha:", bg='#94939B',font=('Inter', 18, 'bold')).grid(row=6, column=0, padx=110, pady=(20,5),sticky='nswe')
+
+        self.confirm_password_entry = tk.Entry(self.center_frame_05, show='*')
+        self.confirm_password_entry.grid(row=7, column=0, padx=110, pady=(20,5),sticky='nswe')
+
+        tk.Label(self.center_frame_05, text="Tipo de usuário:", bg='#94939B',font=('Inter', 18, 'bold')).grid(row=8, column=0, padx=110, pady=(20,5),sticky='nswe')
+
+        self.user_type_var = tk.StringVar()
+        self.user_type_combobox = ttk.Combobox(self.center_frame_05, textvariable=self.user_type_var,values=["Administrador", "Usuário Comum"])
+        self.user_type_combobox.grid(row=9, column=0, padx=110, pady=(20,5),sticky='nswe')
+        self.user_type_combobox.set("Usuário Comum")
+
+        self.btn_conf  = tk.Button(self.edit_user, text="Confirmar", command="",font=("Arial", 10), bg="#3CB371",fg="white", width=10, height=1,borderwidth=0).pack(side='left', padx=35,pady=10)
+        self.btn_limp = tk.Button(self.edit_user, text="Limpar", command="", font=("Arial", 10), bg="Orange", fg="white",width=10, height=1,borderwidth=0).pack(side='left', padx=37,pady=10)
+        self.btn_cancel = tk.Button(self.edit_user, text="Cancelar", command=self.voltar_crud, font=("Arial", 10), bg="#E1523F",fg="white", width=10, height=1,borderwidth=0).pack(side='left', padx=35, pady=10)
+
+    def RoasterManage(self):
+        self.roster_manage = tk.Tk()
+        self.roster_manage.title("Gerenciar Escalas")
+        self.roster_manage.geometry('800x620')
+        self.roster_manage.configure(bg='#D9D9D9')
+        self.roster_manage.resizable(False, False)
 
 
 janela = tk.Tk()
