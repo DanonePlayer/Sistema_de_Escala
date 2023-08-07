@@ -169,7 +169,7 @@ class Screens:
         self.center_frame_02 = tk.Frame(self.big_frame, bg='#94939B')
         self.center_frame_02.pack(fill=tk.BOTH, expand=True, padx=10,pady=20,side=tk.LEFT)
 
-        self.top_frame_02 = tk.Frame(self.center_frame_02)
+        self.top_frame_02 = tk.Frame(self.center_frame_02, bg='#94939B')
         self.top_frame_02.grid(row=0, column=0, pady=20, padx=10)
 
         self.top_lbl_04 = tk.Label(self.top_frame_02, text='CALENDARIO DE ESCALAS', font=('Inter', 12, 'bold'),fg='#0B0B0B', bg='#94939B')
