@@ -104,22 +104,22 @@ class Screens:
         self.bottom_frame = tk.Frame(self.right_frm_2, bg='#565656')
         self.bottom_frame.pack(side=tk.BOTTOM,padx=10,pady=10,fill=tk.BOTH,expand=True)
 
-        self.bttn_calendar = tk.Button(self.top_frame, bg='#6E716E', command=self.calendar,image=self.img_calendar)
+        self.bttn_calendar = tk.Button(self.top_frame, bg='#6E716E', command=self.calendar,image=self.img_calendar,borderwidth=0)
         self.bttn_calendar.pack(side=tk.LEFT, padx=10, pady=10, expand=True, fill=tk.BOTH)
 
-        self.bttn_raltorio = tk.Button(self.top_frame, bg='#6E716E', image=self.img_reports)
+        self.bttn_raltorio = tk.Button(self.top_frame, bg='#6E716E', image=self.img_reports,borderwidth=0)
         self.bttn_raltorio.pack(side=tk.LEFT, padx=10, pady=10, expand=True, fill=tk.BOTH)
 
-        self.bttn_usuario = tk.Button(self.top_frame, bg='#6E716E', command=self.user, image=self.img_user)
+        self.bttn_usuario = tk.Button(self.top_frame, bg='#6E716E', command=self.user, image=self.img_user,borderwidth=0)
         self.bttn_usuario.pack(side=tk.LEFT, padx=10, pady=10, expand=True, fill=tk.BOTH)
 
-        self.bttn_escalas = tk.Button(self.bottom_frame, bg='#6E716E', command=self.roster, image=self.img_roster)
+        self.bttn_escalas = tk.Button(self.bottom_frame, bg='#6E716E', command=self.roster, image=self.img_roster,borderwidth=0)
         self.bttn_escalas.pack(side=tk.LEFT, padx=10, pady=10, expand=True, fill=tk.BOTH)
 
-        self.bttn_criar = tk.Button(self.bottom_frame, bg='#6E716E',command=self.create,image=self.img_roster_02)
+        self.bttn_criar = tk.Button(self.bottom_frame, bg='#6E716E',command=self.create,image=self.img_roster_02,borderwidth=0)
         self.bttn_criar.pack(side=tk.LEFT, padx=10, pady=10, expand=True, fill=tk.BOTH)
 
-        self.bttn_manage = tk.Button(self.bottom_frame, bg='#6E716E', image=self.img_edit,command=self.manage)
+        self.bttn_manage = tk.Button(self.bottom_frame, bg='#6E716E', image=self.img_edit,command=self.manage,borderwidth=0)
         self.bttn_manage.pack(side=tk.LEFT, padx=10, pady=10, expand=True, fill=tk.BOTH)
 
     def roster(self):
@@ -417,11 +417,11 @@ class Screens:
         self.frame_button = tk.Frame(self.center_frame_03,bg='#94939B')
         self.frame_button.pack(fill=tk.Y, padx=10, pady=10,side=tk.TOP)
 
-        self.bttn_criar_02 = tk.Button(self.frame_button, text='CRIAR', font=('Inter', 10, 'bold'), fg='#FFF',bg='#1B731A',command='',borderwidth=0)
-        self.bttn_criar_02.pack(side=tk.LEFT,pady=5,padx=10,fill=tk.BOTH)
+        self.bttn_criar_02 = tk.Button(self.frame_button, text='CRIAR', font=('Inter', 10, 'bold'), fg='#FFF',bg='#3CB371',command='',borderwidth=0)
+        self.bttn_criar_02.pack(side=tk.LEFT,pady=5,padx=10)
 
         self.bttn_clean = tk.Button(self.frame_button, text='LIMPAR', font=('Inter', 10, 'bold'), fg='#605F5F',bg='#FFFFFF',command='',borderwidth=0)
-        self.bttn_clean.pack(side=tk.LEFT,pady=5,padx=10,fill=tk.BOTH)
+        self.bttn_clean.pack(side=tk.LEFT,pady=5,padx=10)
 
     def EditScreen(self):
         self.edit_user = tk.Tk()
