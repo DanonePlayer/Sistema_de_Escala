@@ -50,7 +50,7 @@ class Screens:
         self.entry_senha.insert(0, "Senha")
         self.entry_senha.pack(side=tk.TOP, pady=20, padx=20)
 
-        self.bttn_login = tk.Button(self.right_lbl, font=('Inter', 24, 'bold'), fg='#FFFFFF', text="ENTRAR", bg='#6A6666',command=self.enter)
+        self.bttn_login = tk.Button(self.right_lbl, font=('Inter', 24, 'bold'), fg='#FFFFFF', text="ENTRAR", bg='#6A6666',command=self.enter,borderwidth=0)
         self.bttn_login.pack(side=tk.BOTTOM, pady=20, padx=100)
 
         self.bttn_help = tk.Button(self.right_lbl, font=('Inter', 20, 'bold'), fg='#6A6666', text=" Problemas de Login? ", bg='#94939B', borderwidth=0,command='')
