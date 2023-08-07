@@ -106,7 +106,7 @@ class Screens:
 
         button_images = [
             (self.img_calendar, self.calendar),
-            (self.img_reports, ''),
+            (self.img_reports, self.reports),
             (self.img_user, self.user),
             (self.img_roster, self.roster),
             (self.img_roster_02, self.create),
@@ -114,7 +114,7 @@ class Screens:
         ]
         button_width = max(img.width() for img, _ in button_images)
         for img, command in button_images:
-            button = tk.Button(self.top_frame if command == self.calendar or command == self.roster or command == self.manage else self.bottom_frame, bg='#6E716E', image=img, borderwidth=0,command=command)
+            button = tk.Button(self.top_frame if command == self.calendar or command == self.reports or command == self.user else self.bottom_frame, bg='#6E716E', image=img, borderwidth=0,command=command)
             button.pack(side=tk.LEFT, padx=10, pady=10, expand=True, fill=tk.BOTH)
             button.config(width=button_width)
 
@@ -125,6 +125,10 @@ class Screens:
     def calendar(self):
         self.main_screen.destroy()
         self.CalendarScreen()
+
+    def reports(self):
+        self.main_screen.destroy()
+        self.ReportScreen()
 
     def user(self):
         self.main_screen.destroy()
@@ -572,6 +576,12 @@ class Screens:
         self.btn_cancelar = tk.Button(self.frm_bttn, text="Cancelar", command=self.voltar_crud, font=("Arial", 10),bg="#E1523F", fg="white", width=10, height=1, borderwidth=0)
         self.btn_cancelar.pack(side=tk.LEFT,padx=15,pady=10)
 
+    def ReportScreen(self):
+        self.report_screen = tk.Tk()
+        self.report_screen.title("Gerenciar Relatorios")
+        self.report_screen.geometry('1000x600')
+        self.report_screen.configure(bg='#D9D9D9')
+        self.report_screen.resizable(False, False)
 
 
 janela = tk.Tk()
