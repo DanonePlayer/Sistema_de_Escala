@@ -19,16 +19,16 @@ class Screens:
         self.top_frm.pack(fill=tk.X, padx=20, pady=20)
 
         self.top_lbl = tk.Label(self.top_frm, text = "BEM VINDO", font=('Inter',28,'bold'), fg='#0B0B0B', bg='#94939B')
-        self.top_lbl.pack(side=tk.LEFT, pady=10, padx=50)
+        self.top_lbl.pack(side=tk.TOP, pady=10, padx=50)
 
         self.left_frm = tk.Frame(self.login_screen,bg='#D9D9D9')
-        self.left_frm.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=20, pady=20)
+        self.left_frm.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=20, pady=10)
 
         #self.img_pf = tk.PhotoImage(file="images/image 1.png", height=425, width=336)
         self.img_pf = ImageTk.PhotoImage(Image.open(f"images/image 1.png"))
 
         self.left_lbl = tk.Label(self.left_frm, image=self.img_pf, height=425, width=336, bg='#D9D9D9')
-        self.left_lbl.pack(side=tk.LEFT, pady=10, padx=50)
+        self.left_lbl.pack(side=tk.LEFT, pady=10, padx=50,fill=tk.BOTH,expand=True)
 
         self.left_lbl.configure(image=self.img_pf)
         self.left_lbl.image=self.img_pf
