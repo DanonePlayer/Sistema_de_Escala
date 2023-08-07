@@ -471,7 +471,7 @@ class Screens:
         self.roster_manage.resizable(False, False)
 
         self.lbl_01 = tk.Label(self.roster_manage, text='GERENCIAR ESCALAS', font=('Inter', 18, 'bold'), fg='#0B0B0B',bg='#D9D9D9')
-        self.lbl_01.pack(side=tk.TOP, pady=(20, 5))
+        self.lbl_01.pack(side=tk.TOP, pady=(20))
 
         self.frm_01 = tk.Frame(self.roster_manage, bg='#94939B')
         self.frm_01.pack(pady=10, padx=10, expand=True, fill=tk.BOTH)
@@ -495,6 +495,10 @@ class Screens:
         self.scr_escala = ttk.Scrollbar(self.frm_01, command=self.tvw_escala.yview)
         self.scr_escala.pack(side=tk.LEFT, fill=tk.BOTH)
         self.tvw_escala.configure(yscroll=self.scr_escala.set)
+
+        self.frame_button = tk.Frame(self.frm_01, bg='#94939B')
+        self.frame_button.pack(side=tk.BOTTOM)
+
 
 
 janela = tk.Tk()
