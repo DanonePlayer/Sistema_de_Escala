@@ -1,10 +1,12 @@
 import tkinter as tk
-from tkinter import ttk, messagebox
-from tkcalendar import Calendar, DateEntry
-import holidays
-import bd_sistemas_de_escala as bd
-from datetime import datetime
 from calendar import monthrange
+from datetime import datetime
+from tkinter import messagebox, ttk
+
+import holidays
+from tkcalendar import Calendar, DateEntry
+
+import bd_sistemas_de_escala as bd
 
 
 class Tela:
@@ -345,11 +347,18 @@ class Tela:
 
         for tupla in dados:
             for escala in tupla:
+                print(escala)
                 self.Tipo_escala.append(escala)
 
         self.cbx_tipo_escala = ttk.Combobox(self.frm_janela2_c, values=self.Tipo_escala, state="readonly", font="30", width=28, height=5, textvariable=self.string_Var_comb_tipo_p)
         self.cbx_tipo_escala.place(x=20, y=80)
         self.cbx_tipo_escala.current(0)
+
+        query = f'SELECT dias_escala FROM escala Where nome_escala Like "{self.cbx_tipo_escala.get()}";'
+        dados = bd.consultar(query)
+
+        self.entry_dias_da_escala = tk.Entry(self.frm_janela2_c, width=3)
+        self.entry_dias_da_escala.place(x=300, y=80)
 
 
         self.lbl_Periodo = tk.Label(self.frm_janela2_c, text="Periodo:")
@@ -380,6 +389,12 @@ class Tela:
         usuario_id = ids[0]
         escala_id = ids[1]
         data_inicio = self.cal_escolha.get_date()
+
+
+        query = 'SELECT data_inicio_escala, data_fim_escala, dias_escala FROM escala;'
+        dados = bd.consultar(query)
+
+
         query = f'INSERT INTO usuario_escala ("usuario_id", "escala_id", "data_inicio") VALUES ("{usuario_id}", {escala_id}, "{data_inicio}");'
         bd.inserir(query)
         self.janela2.destroy()

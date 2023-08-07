@@ -1,11 +1,11 @@
 import tkinter as tk
 ##from tkinter import PhotoImage, ttk, messagebox,RAISED, RIDGE
 from tkinter import ttk
-from PIL import Image, ImageTk
 
-
-from tkcalendar import Calendar, DateEntry
 import holidays
+from PIL import Image, ImageTk
+from tkcalendar import Calendar, DateEntry
+
 
 class Screens:
     def __init__(self, master):
@@ -255,6 +255,8 @@ class Screens:
 
         self.lbl_text = tk.Label(self.calendar_frame,text='CALENDARIO GERAL DE ESCALAS', font=('Inter',18,'bold'), fg='#0B0B0B', bg='#94939B')
         self.lbl_text.pack(side=tk.TOP)
+
+        
 
         self.buttons_frame= tk.Frame(self.center_frame)
         self.buttons_frame.pack(side=tk.BOTTOM,padx=20, pady=20)
