@@ -237,11 +237,10 @@ class Screens:
         self.btt_add = tk.Button(self.frame_right,text='ADICIONAR',font=('Inter', 10, 'bold'), fg='#070707',bg='#D9D9D9',width=19,height=5,command='')
         self.btt_add.grid(row=2,column=0,pady=50,padx=50)
 
-
     def CalendarScreen(self):
         self.calendar_screen = tk.Tk()
         self.calendar_screen.title("Calendario")
-        self.calendar_screen.geometry('1253x588')
+        self.calendar_screen.geometry('1253x688')
         self.calendar_screen.configure(bg='#D9D9D9')
         self.calendar_screen.resizable(False, False)
         self.calendar_screen.protocol("WM_DELETE_WINDOW", self.voltar_calendar)
@@ -249,20 +248,23 @@ class Screens:
         self.center_frame = tk.Frame(self.calendar_screen, width=1253, height=588, bg='#94939B')
         self.center_frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=20)
 
-        self.calendar_frame = tk.Frame(self.center_frame,bg='#D9D9D9',width=906,height=449) ## Usem esse frame para colocar o calendario principal
-        self.calendar_frame.pack(side=tk.TOP,padx=20, pady=20,fill=tk.BOTH)
+        self.calendar_frame = tk.Frame(self.center_frame,
+                                       bg='#94939B')  ## Usem esse frame para colocar o calendario principal
+        self.calendar_frame.pack(side=tk.TOP, padx=20, pady=10, fill=tk.BOTH, expand=True)
 
-        self.lbl_text = tk.Label(self.calendar_frame,text='CALENDARIO GERAL DE ESCALAS', font=('Inter',18,'bold'), fg='#0B0B0B', bg='#94939B')
-        self.lbl_text.pack(side=tk.TOP)
+        self.lbl_text = tk.Label(self.calendar_frame, text='CALENDARIO GERAL DE ESCALAS', font=('Inter', 18, 'bold'),
+                                 fg='#0B0B0B', bg='#94939B')
+        self.lbl_text.pack(side=tk.TOP, pady=15)
 
-        
+        self.cal_show = Calendar(self.calendar_frame, locale='pt_BR', date_pattern='dd/MM/yyyy')
+        self.cal_show.pack(side=tk.TOP, expand=True, fill=tk.BOTH)
 
-        self.buttons_frame= tk.Frame(self.center_frame)
-        self.buttons_frame.pack(side=tk.BOTTOM,padx=20, pady=20)
+        self.buttons_frame = tk.Frame(self.center_frame, bg='#94939B')
+        self.buttons_frame.pack(side=tk.BOTTOM, padx=10, pady=10)
 
-        self.bttn_back = tk.Button(self.buttons_frame,text='VOLTAR',font=('Inter',10,'bold'), fg='#605F5F', bg='#FFF', command=self.voltar_calendar)
-        self.bttn_back.pack(side=tk.BOTTOM,pady=20,padx=20)
-
+        self.bttn_back = tk.Button(self.buttons_frame, text='VOLTAR', font=("Arial", 10), bg="#E1523F", fg="white",
+                                   command=self.voltar_calendar, borderwidth=0)
+        self.bttn_back.pack(side=tk.BOTTOM, pady=10, padx=15)
     def UserScreen(self):
         self.user_screen = tk.Tk()
         self.user_screen.title("Usuarios")
