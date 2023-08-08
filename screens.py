@@ -214,34 +214,35 @@ class Screens:
         self.bttn_voltar.pack(side=tk.LEFT)
 
         self.frame_right = tk.Frame(self.big_frame,bg='#94939B')
-        self.frame_right.pack(fill=tk.BOTH, expand=True, padx=20, pady=20,side=tk.RIGHT)
+        self.frame_right.pack(fill=tk.BOTH, expand=True, padx=20, pady=20,side=tk.LEFT)
+
+        self.top_lbl_05 = tk.Label(self.frame_right, text='ATRIBUIR FUNCIONARIO', font=('Inter', 12, 'bold'),fg='#0B0B0B', bg='#94939B')
+        self.top_lbl_05.pack(side=tk.TOP, pady=3, padx=10)
 
         self.frame_pesquisa = tk.Frame(self.frame_right,bg='#94939B')
-        self.frame_pesquisa.pack(fill=tk.Y, expand=True, padx=20, pady=20,side=tk.TOP)
+        self.frame_pesquisa.pack(fill=tk.Y, expand=True, padx=20, pady=10,side=tk.TOP)
 
         self.entry_pesquisa = tk.Entry(self.frame_pesquisa,width=60,font=('Inter', 10 , 'bold'), fg='#94939B')
         self.entry_pesquisa.pack(side=tk.LEFT,pady=10,fill=tk.X)
         self.entry_pesquisa.insert(0, "Pesquisar")
 
-        self.frame_right.grid_columnconfigure(1, minsize=20)
-
         self.bttn_pesquisa = tk.Button(self.frame_pesquisa,command='',borderwidth=0)
         self.bttn_pesquisa.pack(side=tk.LEFT,pady=10,fill=tk.X)
 
         self.frame_tvw_usuario_01 = tk.Frame(self.frame_right,bg='#94939B')
-        self.frame_tvw_usuario_01.pack(side=tk.TOP,expand=True,fill=tk.Y)
+        self.frame_tvw_usuario_01.pack(side=tk.TOP, expand=True,fill=tk.Y)
 
         self.tree = ttk.Treeview(self.frame_tvw_usuario_01, columns=("ID", "Nome"), show="headings")
         self.tree.heading("ID", text="ID")
         self.tree.heading("Nome", text="Nome")
-        self.tree.pack(side=tk.LEFT,fill=tk.BOTH,pady=10)
+        self.tree.pack(side=tk.LEFT,fill=tk.BOTH,pady=10,expand=True)
 
         self.scrollbar = ttk.Scrollbar(self.frame_tvw_usuario_01, orient="vertical", command=self.tree.yview)
         self.scrollbar.pack(side=tk.LEFT,fill=tk.BOTH,pady=10)
         self.tree.configure(yscrollcommand=self.scrollbar.set)
 
         self.frame_btn = tk.Frame(self.frame_right,bg='#94939B')
-        self.frame_btn.pack(side=tk.TOP,expand=True,fill=tk.X)
+        self.frame_btn.pack(side=tk.TOP,expand=True,fill=tk.X,pady=10)
 
         self.btt_add = tk.Button(self.frame_btn,text='ADICIONAR',font=('Inter', 10, 'bold'), fg='#070707',bg='#D9D9D9',command='',borderwidth=0)
         self.btt_add.pack(side=tk.TOP)
