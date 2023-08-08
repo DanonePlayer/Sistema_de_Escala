@@ -441,6 +441,7 @@ class Tela:
 
 
     def Aplica_Calendario(self):
+        self.verifica_cal.calevent_remove("all")
         query = f'''SELECT eu.usuario_escala_id
         FROM usuario_escala eu
         JOIN usuario u ON u.usuario_id = eu.usuario_id
@@ -448,7 +449,7 @@ class Tela:
         WHERE u.nome_completo LIKE "{self.cbx_usuario_es.get()}"
         AND e.nome_escala LIKE  "{self.cbx_escala_es.get()}";'''
         dados = bd.consultar(query)
-
+        print(dados)
         self.id_usu_escala = 0
 
         for tupla in dados:
@@ -486,10 +487,14 @@ class Tela:
                 pass
             # print(dias_de_escala)
 
+            query = f''' 
+                    
+                    '''
 
-            query = f'''SELECT e.finais_semana, e.feriados
-            FROM usuario_escala ue
-            JOIN escala e ON ue.escala_id = e.escala_id
+            query = f'''SELECT ts.feriados, ts.finais_semana
+            FROM usuario_escala AS ue
+            JOIN escala AS e ON ue.escala_id = e.escala_id
+            JOIN tipo_escala AS ts ON e.tipo_escala_id = ts.tipo_escala_id
             WHERE ue.usuario_escala_id = {self.id_usu_escala}'''
             dados = bd.consultar(query)
             for contar_finais_semana, conta_feriados in dados:
@@ -622,7 +627,7 @@ class Tela:
             self.verifica_cal.tag_config('escala', background=cor_escolhida_escala, foreground='black')
             self.verifica_cal.tag_config("final_semana", background="#cccccc", foreground='black')
             
-
+            
             # print(dia_escolha, ano_escolha, mes_escolha, dias_de_escala)
 
 
