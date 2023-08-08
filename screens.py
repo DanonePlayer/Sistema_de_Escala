@@ -255,7 +255,7 @@ class Screens:
         self.calendar_screen.title("Calendario")
         self.calendar_screen.geometry('1253x688')
         self.calendar_screen.configure(bg='#D9D9D9')
-        self.calendar_screen.resizable(False, False)
+        ##self.calendar_screen.resizable(False, False)
         self.calendar_screen.protocol("WM_DELETE_WINDOW", self.voltar_calendar)
 
         self.center_frame = tk.Frame(self.calendar_screen, width=1253, height=588, bg='#94939B')
