@@ -262,9 +262,9 @@ class Screens:
         self.buttons_frame = tk.Frame(self.center_frame, bg='#94939B')
         self.buttons_frame.pack(side=tk.BOTTOM, padx=10, pady=10)
 
-        self.bttn_back = tk.Button(self.buttons_frame, text='VOLTAR', font=("Arial", 10), bg="#E1523F", fg="white",
-                                   command=self.voltar_calendar, borderwidth=0)
+        self.bttn_back = tk.Button(self.buttons_frame, text='VOLTAR', font=("Arial", 10), bg="#E1523F", fg="white",command=self.voltar_calendar, borderwidth=0)
         self.bttn_back.pack(side=tk.BOTTOM, pady=10, padx=15)
+
     def UserScreen(self):
         self.user_screen = tk.Tk()
         self.user_screen.title("Usuarios")
