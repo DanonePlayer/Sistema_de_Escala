@@ -398,7 +398,7 @@ class Screens:
         self.frame_escolhas.pack(fill=tk.Y, expand=True, padx=10, pady=10,side=tk.TOP)
 
         self.lbl_03 = tk.Label(self.frame_escolhas, text='CONTAR FINAIS DE SEMANA?', font=('Inter', 10, 'bold'),fg='#FFF', bg='#94939B')
-        self.lbl_03.grid(row=0, column=0, columnspan=3, sticky='nsew', pady=10)
+        self.lbl_03.grid(row=0, column=0, columnspan=3, sticky='n', pady=10)
 
         radio_var_01 = tk.StringVar()
         radio_var_02 = tk.StringVar()
@@ -408,25 +408,25 @@ class Screens:
         style.configure("Custom.TRadiobutton", background="#94939B", foreground="white", font=("Inter", 10, "bold"))
 
         self.radio_01 = ttk.Radiobutton(self.frame_escolhas, text="SIM", variable=radio_var_01, value="SIM_1",style="Custom.TRadiobutton")
-        self.radio_01.grid(row=2, column=0, padx=10, pady=10, sticky='nsew')
+        self.radio_01.grid(row=2, column=0, padx=10, pady=10, sticky='n')
         self.radio_02 = ttk.Radiobutton(self.frame_escolhas, text="NÃO", variable=radio_var_01, value="NÃO_1",style="Custom.TRadiobutton")
-        self.radio_02.grid(row=2, column=1, padx=10, pady=10, sticky='nsew')
+        self.radio_02.grid(row=2, column=1, padx=10, pady=10, sticky='n')
 
         self.lbl_04 = tk.Label(self.frame_escolhas, text='CONTAR FERIADOS?', font=('Inter', 10, 'bold'), fg='#FFF',bg='#94939B')
         self.lbl_04.grid(row=3, column=0, columnspan=2, sticky='nsew', pady=20)
 
         self.radio_03 = ttk.Radiobutton(self.frame_escolhas, text="SIM", variable=radio_var_02, value="SIM_2",style="Custom.TRadiobutton")
-        self.radio_03.grid(row=4, column=0, padx=10, pady=10, sticky='nsew')
+        self.radio_03.grid(row=4, column=0, padx=10, pady=10, sticky='n')
         self.radio_04 = ttk.Radiobutton(self.frame_escolhas, text="NÃO", variable=radio_var_02, value="NÃO_2",style="Custom.TRadiobutton")
-        self.radio_04.grid(row=4, column=1, padx=10, pady=10, sticky='nsew')
+        self.radio_04.grid(row=4, column=1, padx=10, pady=10, sticky='n')
 
         self.lbl_05 = tk.Label(self.frame_escolhas, text='ESCALA MUTUA?', font=('Inter', 10, 'bold'), fg='#FFF',bg='#94939B')
         self.lbl_05.grid(row=5, column=0, columnspan=2, sticky='nsew', pady=20)
 
         self.radio_06 = ttk.Radiobutton(self.frame_escolhas, text="SIM", variable=radio_var_03, value="SIM_2",style="Custom.TRadiobutton")
-        self.radio_06.grid(row=6, column=0, padx=10, pady=10, sticky='nsew')
+        self.radio_06.grid(row=6, column=0, padx=10, pady=10, sticky='n')
         self.radio_07 = ttk.Radiobutton(self.frame_escolhas, text="NÃO", variable=radio_var_03, value="NÃO_2",style="Custom.TRadiobutton")
-        self.radio_07.grid(row=6, column=1, padx=10, pady=10, sticky='nsew')
+        self.radio_07.grid(row=6, column=1, padx=10, pady=10, sticky='n')
 
         self.frame_button = tk.Frame(self.center_frame_03,bg='#94939B')
         self.frame_button.pack(fill=tk.Y, padx=10, pady=10,side=tk.TOP)
