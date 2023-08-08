@@ -347,7 +347,7 @@ class Tela:
 
         for tupla in dados:
             for escala in tupla:
-                print(escala)
+                # print(escala)
                 self.Tipo_escala.append(escala)
 
         self.cbx_tipo_escala = ttk.Combobox(self.frm_janela2_c, values=self.Tipo_escala, state="readonly", font="30", width=28, height=5, textvariable=self.string_Var_comb_tipo_p)
@@ -373,6 +373,7 @@ class Tela:
         self.btn_ok.place(x=100, y=350)
 
     def Atribuir(self):
+
         # print(self.cbx_usuario.get())
         # print(self.cbx_tipo_escala.get())
         # print(self.cal_escolha.selection_get()) 
