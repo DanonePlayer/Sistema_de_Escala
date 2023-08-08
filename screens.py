@@ -164,6 +164,9 @@ class Screens:
     def create_roster(self):
         self.roster_manage.destroy()
         self.CreateRoster()
+    def edit_roster(self):
+        self.roster_manage.destroy()
+        self.RosterEdit()
 
     def RosterScreen(self):
         self.roster_screen = tk.Tk()
@@ -524,7 +527,7 @@ class Screens:
         self.btn_create = tk.Button(self.frame_button,text="Criar Escala", font=("Arial", 10), bg="#3CB371",fg="white", width=20, height=1,borderwidth=0,command=self.create_roster)
         self.btn_create.grid(row=0, column=0, padx=10, pady=10)
 
-        self.btn_edit = tk.Button(self.frame_button, text="Editar Escala", font=("Arial", 10), bg="Orange", fg="white",width=20, height=1,borderwidth=0, command='')
+        self.btn_edit = tk.Button(self.frame_button, text="Editar Escala", font=("Arial", 10), bg="Orange", fg="white",width=20, height=1,borderwidth=0, command=self.edit_roster)
         self.btn_edit.grid(row=0, column=1, padx=10, pady=10)
 
         self.btn_exclude = tk.Button(self.frame_button, text="Desativar Escala", font=("Arial", 10),bg="#E1523F", fg="white", width=20, height=1, borderwidth=0, command='')
@@ -589,6 +592,64 @@ class Screens:
 
         self.btn_cancelar = tk.Button(self.frm_bttn, text="Cancelar", command=self.voltar_crud, font=("Arial", 10),bg="#E1523F", fg="white", width=10, height=1, borderwidth=0)
         self.btn_cancelar.pack(side=tk.LEFT,padx=15,pady=10)
+
+    def RosterEdit(self):
+        self.edit_roster_screen = tk.Tk()
+        self.edit_roster_screen.title("Editar Escala")
+        self.edit_roster_screen.geometry('462x676')
+        self.edit_roster_screen.configure(bg='#D9D9D9')
+        self.edit_roster_screen.resizable(False, False)
+
+        self.lbl_text= tk.Label(self.edit_roster_screen, text="EDITAR ESCALA", font=('Inter', 18, 'bold'),fg='#0B0B0B', bg='#D9D9D9')
+        self.lbl_text.pack(side=tk.TOP, pady=(20, 5))
+
+        self.center_frame_07 = tk.Frame(self.edit_roster_screen, bg='#94939B')
+        self.center_frame_07.pack(pady=20, padx=20, expand=True, fill=tk.BOTH)
+
+        self.lbl_name_06 = tk.Label(self.center_frame_07, text='Nome da escala', bg='#94939B',font=('Inter', 18, 'bold'))
+        self.lbl_name_06.pack(side=tk.TOP, pady=10, padx=20)
+
+        self.roster_name_entry_edit = tk.Entry(self.center_frame_07)
+        self.roster_name_entry_edit.pack(side=tk.TOP, pady=10, padx=40, fill=tk.BOTH)
+
+        self.lbl_type_edit = tk.Label(self.center_frame_07, text='Tipo da Escala', bg='#94939B', font=('Inter', 18, 'bold'))
+        self.lbl_type_edit.pack(side=tk.TOP, pady=10, padx=20)
+
+        self.roster_type_var_edit = tk.StringVar()
+        self.roster_type_combobox_edit = ttk.Combobox(self.center_frame_07, textvariable=self.roster_type_var_edit,values=["Sobreaviso", "Missão"])
+        self.roster_type_combobox_edit.pack(side=tk.TOP, pady=10, padx=40, fill=tk.BOTH)
+        self.roster_type_combobox_edit.set("Missão")
+
+        self.lbl_data_inicio_edit = tk.Label(self.center_frame_07, text="Data de início da escala", bg='#94939B',font=('Inter', 18, 'bold'))
+        self.lbl_data_inicio_edit.pack(side=tk.TOP, pady=10, padx=20)
+
+        self.cal_data_inicio_edit = DateEntry(self.center_frame_07, locale='pt_BR', date_pattern='dd/MM/yyyy')
+        self.cal_data_inicio_edit.pack(side=tk.TOP, pady=10, padx=40, fill=tk.BOTH)
+
+        self.lbl_data_final_edit = tk.Label(self.center_frame_07, text="Data de Termino da escala", bg='#94939B',font=('Inter', 18, 'bold'))
+        self.lbl_data_final_edit.pack(side=tk.TOP, pady=10, padx=20)
+
+        self.cal_data_final_edit = DateEntry(self.center_frame_07, locale='pt_BR', date_pattern='dd/MM/yyyy')
+        self.cal_data_final_edit.pack(side=tk.TOP, pady=10, padx=40, fill=tk.BOTH)
+
+        self.lbl_days_edit = tk.Label(self.center_frame_07, text='Quantos dias', bg='#94939B', font=('Inter', 18, 'bold'))
+        self.lbl_days_edit.pack(side=tk.TOP, pady=10, padx=20)
+
+        self.entry_days_edit = tk.Entry(self.center_frame_07)
+        self.entry_days_edit.pack(side=tk.TOP, pady=10, padx=40, fill=tk.BOTH)
+
+        self.frm_bttn_04 = tk.Frame(self.center_frame_07, bg='#94939B')
+        self.frm_bttn_04.pack(side=tk.BOTTOM, pady=10, padx=10, expand=True)
+
+        self.bttn_confirmar_edit = tk.Button(self.frm_bttn_04, text="Confirmar", command="", font=("Arial", 10), bg="#3CB371",fg="white", width=10, height=1, borderwidth=0)
+        self.bttn_confirmar_edit.pack(side=tk.LEFT, padx=15, pady=10)
+
+        self.bttn_limpar_edit = tk.Button(self.frm_bttn_04, text="Limpar", command="", font=("Arial", 10), bg="Orange",fg="white", width=10, height=1, borderwidth=0)
+        self.bttn_limpar_edit.pack(side=tk.LEFT, padx=15, pady=10)
+
+        self.btn_cancelar_edit = tk.Button(self.frm_bttn_04, text="Cancelar", command='', font=("Arial", 10),bg="#E1523F", fg="white", width=10, height=1, borderwidth=0)
+        self.btn_cancelar_edit.pack(side=tk.LEFT, padx=15, pady=10)
+
 
     def ReportScreen(self):
         self.report_screen = tk.Tk()
