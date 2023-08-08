@@ -41,12 +41,6 @@ class Tela:
         # w["menu"].config(bg="RED")
         # w.place(x=10, y=150)
 
-        self.Tipo_escala = []
-
-
-
-
-
     def escalas(self, event):
         self.janela_escala = tk.Toplevel()
         self.janela_escala.title("Escalas")
@@ -344,7 +338,7 @@ class Tela:
 
         query = 'SELECT nome_escala FROM escala;'
         dados = bd.consultar(query)
-
+        self.Tipo_escala = []
         for tupla in dados:
             for escala in tupla:
                 # print(escala)
