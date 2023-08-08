@@ -440,6 +440,10 @@ class Screens:
         self.bttn_clean = tk.Button(self.frame_button, text='LIMPAR', font=('Inter', 10, 'bold'), fg='#605F5F',bg='#FFFFFF',command='',borderwidth=0)
         self.bttn_clean.pack(side=tk.LEFT,pady=5,padx=10)
 
+        self.bttn_voltar_02 = tk.Button(self.frame_button,text='VOLTAR',font=("Arial", 10), bg="#E1523F",fg="white",borderwidth=0,command='')
+        self.bttn_voltar_02.pack(side=tk.LEFT, pady=5, padx=10)
+
+
     def EditScreen(self):
         self.edit_user = tk.Tk()
         self.edit_user.title("Editar usuario")
