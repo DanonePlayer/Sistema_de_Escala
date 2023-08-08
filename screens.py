@@ -180,20 +180,20 @@ class Screens:
         self.center_frame_02.pack(fill=tk.BOTH, expand=True, padx=10,pady=20,side=tk.LEFT)
 
         self.top_frame_02 = tk.Frame(self.center_frame_02, bg='#94939B')
-        self.top_frame_02.pack(side=tk.TOP)
+        self.top_frame_02.pack(side=tk.TOP,fill=tk.BOTH)
 
         self.top_lbl_04 = tk.Label(self.top_frame_02, text='CALENDARIO DE ESCALAS', font=('Inter', 12, 'bold'),fg='#0B0B0B', bg='#94939B')
-        self.top_lbl_04.pack(side=tk.LEFT, pady=10, padx=20)
+        self.top_lbl_04.pack(side=tk.TOP, pady=10, padx=10)
 
         self.middle_frame = tk.Frame(self.center_frame_02, bg='#94939B')
-        self.middle_frame.pack(side=tk.TOP)
+        self.middle_frame.pack(side=tk.TOP,fill=tk.Y,pady=10,padx=10)
 
         combo_var = tk.StringVar()
         self.combo_box = ttk.Combobox(self.middle_frame, textvariable=combo_var,values=["Opção 1", "Opção 2", "Opção 3"])
         self.combo_box.pack(pady=20, padx=20, side=tk.LEFT)
 
         self.middle_label = tk.Label(self.middle_frame, text='DIAS', font=('Inter', 10, 'bold'), fg='#FFF',bg='#94939B')
-        self.middle_label.pack(side=tk.LEFT, pady=10, padx=10)
+        self.middle_label.pack(side=tk.LEFT, pady=10, padx=10,)
 
         self.entry_dias = tk.Entry(self.middle_frame)
         self.entry_dias.pack(side=tk.LEFT, pady=10, padx=10)
@@ -210,32 +210,42 @@ class Screens:
         self.bottom_frame_02 = tk.Frame(self.center_frame_02)
         self.bottom_frame_02.pack(side=tk.TOP,pady=10)
 
-        self.bttn_voltar = tk.Button(self.bottom_frame_02, text='VOLTAR', font=('Inter', 10, 'bold'), fg='#605F5F', bg='#FFF',command=self.voltar_roster)
+        self.bttn_voltar = tk.Button(self.bottom_frame_02, text='VOLTAR', font=('Inter', 10, 'bold'), fg='#605F5F', bg='#FFF',command=self.voltar_roster,borderwidth=0)
         self.bttn_voltar.pack(side=tk.LEFT)
 
         self.frame_right = tk.Frame(self.big_frame,bg='#94939B')
-        self.frame_right.pack(fill=tk.BOTH, expand=True, padx=20, pady=20,side=tk.RIGHT)
+        self.frame_right.pack(fill=tk.BOTH, expand=True, padx=20, pady=20,side=tk.LEFT)
 
-        self.entry_pesquisa = tk.Entry(self.frame_right,width=60,font=('Inter', 10 , 'bold'), fg='#94939B')
-        self.entry_pesquisa.grid(row=0,column=0,sticky='NW',padx=5,pady=10)
+        self.top_lbl_05 = tk.Label(self.frame_right, text='ATRIBUIR FUNCIONARIO', font=('Inter', 12, 'bold'),fg='#0B0B0B', bg='#94939B')
+        self.top_lbl_05.pack(side=tk.TOP, pady=3, padx=10)
+
+        self.frame_pesquisa = tk.Frame(self.frame_right,bg='#94939B')
+        self.frame_pesquisa.pack(fill=tk.Y, expand=True, padx=20, pady=10,side=tk.TOP)
+
+        self.entry_pesquisa = tk.Entry(self.frame_pesquisa,width=60,font=('Inter', 10 , 'bold'), fg='#94939B')
+        self.entry_pesquisa.pack(side=tk.LEFT,pady=10,fill=tk.X)
         self.entry_pesquisa.insert(0, "Pesquisar")
 
-        self.frame_right.grid_columnconfigure(1, minsize=20)
+        self.bttn_pesquisa = tk.Button(self.frame_pesquisa,command='',borderwidth=0)
+        self.bttn_pesquisa.pack(side=tk.LEFT,pady=10,fill=tk.X)
 
-        self.bttn_pesquisa = tk.Button(self.frame_right,width=3,height=0,command='')
-        self.bttn_pesquisa.grid(row=0, column=0,padx=5,sticky='NE',pady=10)
+        self.frame_tvw_usuario_01 = tk.Frame(self.frame_right,bg='#94939B')
+        self.frame_tvw_usuario_01.pack(side=tk.TOP, expand=True,fill=tk.Y)
 
-        self.tree = ttk.Treeview(self.frame_right, columns=("ID", "Nome"), show="headings")
+        self.tree = ttk.Treeview(self.frame_tvw_usuario_01, columns=("ID", "Nome"), show="headings")
         self.tree.heading("ID", text="ID")
         self.tree.heading("Nome", text="Nome")
-        self.tree.grid(row=1, column=0,sticky='NSEW', padx=5, pady=10,columnspan=True)
+        self.tree.pack(side=tk.LEFT,fill=tk.BOTH,pady=10,expand=True)
 
-        self.scrollbar = ttk.Scrollbar(self.frame_right, orient="vertical", command=self.tree.yview)
-        self.scrollbar.grid(row=1, column=0,sticky='NSE',padx=5, pady=10)
+        self.scrollbar = ttk.Scrollbar(self.frame_tvw_usuario_01, orient="vertical", command=self.tree.yview)
+        self.scrollbar.pack(side=tk.LEFT,fill=tk.BOTH,pady=10)
         self.tree.configure(yscrollcommand=self.scrollbar.set)
 
-        self.btt_add = tk.Button(self.frame_right,text='ADICIONAR',font=('Inter', 10, 'bold'), fg='#070707',bg='#D9D9D9',width=19,height=5,command='')
-        self.btt_add.grid(row=2,column=0,pady=50,padx=50)
+        self.frame_btn = tk.Frame(self.frame_right,bg='#94939B')
+        self.frame_btn.pack(side=tk.TOP,expand=True,fill=tk.X,pady=10)
+
+        self.btt_add = tk.Button(self.frame_btn,text='ADICIONAR',font=('Inter', 10, 'bold'), fg='#070707',bg='#D9D9D9',command='',borderwidth=0)
+        self.btt_add.pack(side=tk.TOP)
 
     def CalendarScreen(self):
         self.calendar_screen = tk.Tk()
@@ -388,7 +398,7 @@ class Screens:
         self.frame_escolhas.pack(fill=tk.Y, expand=True, padx=10, pady=10,side=tk.TOP)
 
         self.lbl_03 = tk.Label(self.frame_escolhas, text='CONTAR FINAIS DE SEMANA?', font=('Inter', 10, 'bold'),fg='#FFF', bg='#94939B')
-        self.lbl_03.grid(row=0, column=0, columnspan=3, sticky='nsew', pady=10)
+        self.lbl_03.grid(row=0, column=0, columnspan=3, sticky='n', pady=10)
 
         radio_var_01 = tk.StringVar()
         radio_var_02 = tk.StringVar()
@@ -398,25 +408,25 @@ class Screens:
         style.configure("Custom.TRadiobutton", background="#94939B", foreground="white", font=("Inter", 10, "bold"))
 
         self.radio_01 = ttk.Radiobutton(self.frame_escolhas, text="SIM", variable=radio_var_01, value="SIM_1",style="Custom.TRadiobutton")
-        self.radio_01.grid(row=2, column=0, padx=10, pady=10, sticky='nsew')
+        self.radio_01.grid(row=2, column=0, padx=10, pady=10, sticky='n')
         self.radio_02 = ttk.Radiobutton(self.frame_escolhas, text="NÃO", variable=radio_var_01, value="NÃO_1",style="Custom.TRadiobutton")
-        self.radio_02.grid(row=2, column=1, padx=10, pady=10, sticky='nsew')
+        self.radio_02.grid(row=2, column=1, padx=10, pady=10, sticky='n')
 
         self.lbl_04 = tk.Label(self.frame_escolhas, text='CONTAR FERIADOS?', font=('Inter', 10, 'bold'), fg='#FFF',bg='#94939B')
         self.lbl_04.grid(row=3, column=0, columnspan=2, sticky='nsew', pady=20)
 
         self.radio_03 = ttk.Radiobutton(self.frame_escolhas, text="SIM", variable=radio_var_02, value="SIM_2",style="Custom.TRadiobutton")
-        self.radio_03.grid(row=4, column=0, padx=10, pady=10, sticky='nsew')
+        self.radio_03.grid(row=4, column=0, padx=10, pady=10, sticky='n')
         self.radio_04 = ttk.Radiobutton(self.frame_escolhas, text="NÃO", variable=radio_var_02, value="NÃO_2",style="Custom.TRadiobutton")
-        self.radio_04.grid(row=4, column=1, padx=10, pady=10, sticky='nsew')
+        self.radio_04.grid(row=4, column=1, padx=10, pady=10, sticky='n')
 
         self.lbl_05 = tk.Label(self.frame_escolhas, text='ESCALA MUTUA?', font=('Inter', 10, 'bold'), fg='#FFF',bg='#94939B')
         self.lbl_05.grid(row=5, column=0, columnspan=2, sticky='nsew', pady=20)
 
         self.radio_06 = ttk.Radiobutton(self.frame_escolhas, text="SIM", variable=radio_var_03, value="SIM_2",style="Custom.TRadiobutton")
-        self.radio_06.grid(row=6, column=0, padx=10, pady=10, sticky='nsew')
+        self.radio_06.grid(row=6, column=0, padx=10, pady=10, sticky='n')
         self.radio_07 = ttk.Radiobutton(self.frame_escolhas, text="NÃO", variable=radio_var_03, value="NÃO_2",style="Custom.TRadiobutton")
-        self.radio_07.grid(row=6, column=1, padx=10, pady=10, sticky='nsew')
+        self.radio_07.grid(row=6, column=1, padx=10, pady=10, sticky='n')
 
         self.frame_button = tk.Frame(self.center_frame_03,bg='#94939B')
         self.frame_button.pack(fill=tk.Y, padx=10, pady=10,side=tk.TOP)
