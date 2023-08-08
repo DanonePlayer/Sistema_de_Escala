@@ -180,13 +180,13 @@ class Screens:
         self.center_frame_02.pack(fill=tk.BOTH, expand=True, padx=10,pady=20,side=tk.LEFT)
 
         self.top_frame_02 = tk.Frame(self.center_frame_02, bg='#94939B')
-        self.top_frame_02.grid(row=0, column=0, pady=20, padx=10)
+        self.top_frame_02.pack(side=tk.TOP)
 
         self.top_lbl_04 = tk.Label(self.top_frame_02, text='CALENDARIO DE ESCALAS', font=('Inter', 12, 'bold'),fg='#0B0B0B', bg='#94939B')
-        self.top_lbl_04.pack(side=tk.LEFT, pady=20, padx=20)
+        self.top_lbl_04.pack(side=tk.LEFT, pady=10, padx=20)
 
-        self.middle_frame = tk.Frame(self.center_frame_02, bg='#D9D9D9')
-        self.middle_frame.grid(row=1, column=0, pady=20, padx=10)
+        self.middle_frame = tk.Frame(self.center_frame_02, bg='#94939B')
+        self.middle_frame.pack(side=tk.TOP)
 
         combo_var = tk.StringVar()
         self.combo_box = ttk.Combobox(self.middle_frame, textvariable=combo_var,values=["Opção 1", "Opção 2", "Opção 3"])
@@ -202,15 +202,15 @@ class Screens:
         self.bttn_edit.pack(side=tk.LEFT, pady=10, padx=10)
 
         self.calendar_frame_02 = tk.Frame(self.center_frame_02)
-        self.calendar_frame_02.grid(row=2, column=0, pady=10, padx=10)
+        self.calendar_frame_02.pack(side=tk.TOP,expand=True,fill=tk.BOTH)
 
-        self.calendar_lbl = tk.Label(self.calendar_frame_02, bg='#94939B', width=70, height=15) ##Coloque o calendario aqui, pode aumentar a resolução da tela se achar que precisa de mais espaço
-        self.calendar_lbl.pack(pady=10, padx=40)
+        self.cal_atrib = Calendar(self.calendar_frame_02, locale='pt_BR', date_pattern='dd/MM/yyyy')
+        self.cal_atrib.pack(side=tk.TOP, expand=True, fill=tk.BOTH)
 
         self.bottom_frame_02 = tk.Frame(self.center_frame_02)
-        self.bottom_frame_02.grid(row=3, column=0)
+        self.bottom_frame_02.pack(side=tk.TOP,pady=10)
 
-        self.bttn_voltar = tk.Button(self.bottom_frame_02, text='VOLTAR', font=('Inter', 10, 'bold'), fg='#605F5F',bg='#FFF',command=self.voltar_roster)
+        self.bttn_voltar = tk.Button(self.bottom_frame_02, text='VOLTAR', font=('Inter', 10, 'bold'), fg='#605F5F', bg='#FFF',command=self.voltar_roster)
         self.bttn_voltar.pack(side=tk.LEFT)
 
         self.frame_right = tk.Frame(self.big_frame,bg='#94939B')
