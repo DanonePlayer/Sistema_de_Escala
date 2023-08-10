@@ -331,7 +331,7 @@ class Tela:
         self.cbx_usuario.place(x=20, y=30)
         self.cbx_usuario.current(0)
 
-        self.lbl_Tipo_escala = tk.Label(self.frm_janela2_c, text="Tipo:")
+        self.lbl_Tipo_escala = tk.Label(self.frm_janela2_c, text="Escala:")
         self.lbl_Tipo_escala.place(x=20, y=60)
 
         self.string_Var_comb_tipo_p = tk.StringVar()
@@ -501,6 +501,8 @@ class Tela:
             dados = bd.consultar(query)
             for contar_finais_semana, conta_feriados in dados:
                 pass
+            print(conta_feriados)
+            print(contar_finais_semana)
 
             mes_escolha = int(data_escala[1])
             ano_escolha = int(data_escala[2])
