@@ -155,6 +155,12 @@ class Screens:
     def voltar_create(self):
         self.create_screen.destroy()
         self.MainScreen()
+    def voltar_report(self):
+        self.report_screen.destroy()
+        self.MainScreen()
+    def voltar_manage(self):
+        self.roster_manage.destroy()
+        self.MainScreen()
     def create(self):
         self.main_screen.destroy()
         self.CreateScreen()
@@ -167,6 +173,8 @@ class Screens:
     def edit_roster(self):
         self.roster_manage.destroy()
         self.RosterEdit()
+
+
 
     def RosterScreen(self):
         self.roster_screen = tk.Tk()
@@ -491,6 +499,7 @@ class Screens:
         self.roster_manage.geometry('1000x600')
         self.roster_manage.configure(bg='#D9D9D9')
         self.roster_manage.resizable(False, False)
+        self.roster_manage.protocol("WM_DELETE_WINDOW", self.voltar_manage)
 
         self.lbl_01 = tk.Label(self.roster_manage, text='GERENCIAR ESCALAS', font=('Inter', 18, 'bold'), fg='#0B0B0B',bg='#D9D9D9')
         self.lbl_01.pack(side=tk.TOP, pady=(20))
@@ -600,6 +609,8 @@ class Screens:
         self.edit_roster_screen.configure(bg='#D9D9D9')
         self.edit_roster_screen.resizable(False, False)
 
+
+
         self.lbl_text= tk.Label(self.edit_roster_screen, text="EDITAR ESCALA", font=('Inter', 18, 'bold'),fg='#0B0B0B', bg='#D9D9D9')
         self.lbl_text.pack(side=tk.TOP, pady=(20, 5))
 
@@ -657,6 +668,7 @@ class Screens:
         self.report_screen.geometry('1000x600')
         self.report_screen.configure(bg='#D9D9D9')
         self.report_screen.resizable(False, False)
+        self.report_screen.protocol("WM_DELETE_WINDOW", self.voltar_report)
 
 
 janela = tk.Tk()
