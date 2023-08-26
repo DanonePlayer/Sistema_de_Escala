@@ -41,12 +41,6 @@ class Tela:
         # w["menu"].config(bg="RED")
         # w.place(x=10, y=150)
 
-        self.Tipo_escala = []
-
-
-
-
-
     def escalas(self, event):
         self.janela_escala = tk.Toplevel()
         self.janela_escala.title("Escalas")
@@ -337,27 +331,27 @@ class Tela:
         self.cbx_usuario.place(x=20, y=30)
         self.cbx_usuario.current(0)
 
-        self.lbl_Tipo_escala = tk.Label(self.frm_janela2_c, text="Tipo:")
+        self.lbl_Tipo_escala = tk.Label(self.frm_janela2_c, text="Escala:")
         self.lbl_Tipo_escala.place(x=20, y=60)
 
         self.string_Var_comb_tipo_p = tk.StringVar()
 
         query = 'SELECT nome_escala FROM escala;'
         dados = bd.consultar(query)
-
+        self.Tipo_escala = []
         for tupla in dados:
             for escala in tupla:
-                print(escala)
+                # print(escala)
                 self.Tipo_escala.append(escala)
 
         self.cbx_tipo_escala = ttk.Combobox(self.frm_janela2_c, values=self.Tipo_escala, state="readonly", font="30", width=28, height=5, textvariable=self.string_Var_comb_tipo_p)
+        self.cbx_tipo_escala.bind("<<ComboboxSelected>>", self.Dias_Escala_Entry)
         self.cbx_tipo_escala.place(x=20, y=80)
         self.cbx_tipo_escala.current(0)
 
-        query = f'SELECT dias_escala FROM escala Where nome_escala Like "{self.cbx_tipo_escala.get()}";'
-        dados = bd.consultar(query)
+        self.entry_dias_var = tk.StringVar()
 
-        self.entry_dias_da_escala = tk.Entry(self.frm_janela2_c, width=3)
+        self.entry_dias_da_escala = tk.Entry(self.frm_janela2_c, width=3, textvariable=self.entry_dias_var)
         self.entry_dias_da_escala.place(x=300, y=80)
 
 
@@ -372,7 +366,15 @@ class Tela:
         self.btn_ok = tk.Button(self.frm_janela2_c, text='Atribuir', command=self.Atribuir)
         self.btn_ok.place(x=100, y=350)
 
+    def Dias_Escala_Entry(self, event):
+        query = f'SELECT dias_escala FROM escala Where nome_escala Like "{self.cbx_tipo_escala.get()}";'
+        dados = bd.consultar(query)
+        for dias_escala in dados:
+            pass
+        self.entry_dias_var.set(dias_escala[0])
+
     def Atribuir(self):
+
         # print(self.cbx_usuario.get())
         # print(self.cbx_tipo_escala.get())
         # print(self.cal_escolha.selection_get()) 
@@ -499,6 +501,8 @@ class Tela:
             dados = bd.consultar(query)
             for contar_finais_semana, conta_feriados in dados:
                 pass
+            print(conta_feriados)
+            print(contar_finais_semana)
 
             mes_escolha = int(data_escala[1])
             ano_escolha = int(data_escala[2])
