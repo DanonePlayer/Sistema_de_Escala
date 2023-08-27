@@ -173,27 +173,38 @@ class Screens:
         self.main_screen.destroy()
         self.ReportScreen()
 
+    # USER SCREEN
     def user(self):
         self.main_screen.destroy()
         self.UserScreen()
-    def crud_user(self):
-        self.user_screen.destroy()
-        self.CrudScreen()
-    def edit_user(self):
-        self.user_screen.destroy()
-        self.EditScreen()
-    def voltar_calendar(self):
-        self.calendar_screen.destroy()
-        self.MainScreen()
-    def voltar_roster(self):
-        self.roster_screen.destroy()
-        self.MainScreen()
+
     def voltar_user(self):
         self.user_screen.destroy()
         self.MainScreen()
-    def voltar_crud(self):
-        self.crud_user.destroy()
+
+    def open_create_user(self):
+        self.user_screen.iconify()
+        self.CreateUserScreen()
+
+    def open_edit_user(self):
+        self.user_screen.iconify()
+        self.EditUserScreen()
+
+    def voltar_create_user(self):
+        self.create_user.destroy()
         self.UserScreen()
+
+    def voltar_edit_user(self):
+        self.edit_user.destroy()
+        self.UserScreen()
+
+    def voltar_calendar(self):
+        self.calendar_screen.destroy()
+        self.MainScreen()
+
+    def voltar_roster(self):
+        self.roster_screen.destroy()
+        self.MainScreen()
 
     def voltar_create(self):
         self.create_screen.destroy()
@@ -218,7 +229,7 @@ class Screens:
         self.RosterEdit()
 
     def Atribuir_Escala(self, event):
-        #print(self.text1.get())
+        # print(self.text1.get())
 
         self.janela2 = tk.Toplevel()
         self.janela2.grab_set()
@@ -233,33 +244,25 @@ class Screens:
         self.tvw.place(x=290, y=10)
 
         self.tvw.heading(colunas[0], text=colunas[0])
-  
+
         self.scr = ttk.Scrollbar(self.janela2, command=self.tvw.yview)
         self.tvw.configure(yscroll=self.scr.set)
         self.scr.place(x=474, y=10)
-
 
         query = 'SELECT usuario_id, nome_completo, nome_usuario FROM usuario;'
         dados = bd.consultar(query)
         for tupla in dados:
             self.tvw.insert('', tk.END, values=(tupla[1],))
-            
-
 
         self.lbl_Periodo = tk.Label(self.frm_janela2_c, text="Periodo:")
         self.lbl_Periodo.place(x=20, y=110)
-        #Exemplos de Periodos
+        # Exemplos de Periodos
 
         self.cal_escolha = Calendar(self.frm_janela2_c, locale='pt_BR', date_pattern='dd/MM/yyyy')
         self.cal_escolha.place(x=40, y=150)
 
-
         self.btn_ok = tk.Button(self.frm_janela2_c, text='Atribuir', command=self.Atribuir)
         self.btn_ok.place(x=100, y=350)
-
-
-
-
 
     def RosterScreen(self):
         self.roster_screen = tk.Tk()
@@ -284,8 +287,9 @@ class Screens:
         self.middle_frame = tk.Frame(self.center_frame_02, bg='#94939B')
         self.middle_frame.pack(side=tk.TOP,fill=tk.Y,pady=10,padx=10)
 
-        self.escalas_label = tk.Label(self.middle_frame, text='ESCALAS', font=('Inter', 10, 'bold'), fg='#FFF',bg='#94939B')
-        self.escalas_label.pack(side=tk.LEFT, pady=1, padx=10,)
+        self.escalas_label = tk.Label(self.middle_frame, text='ESCALAS', font=('Inter', 10, 'bold'), fg='#FFF',
+                                      bg='#94939B')
+        self.escalas_label.pack(side=tk.LEFT, pady=1, padx=10, )
 
         self.string_Var_comb_tipo_p = tk.StringVar()
 
@@ -298,13 +302,14 @@ class Screens:
                 self.Tipo_escala.append(escala)
 
         combo_var = tk.StringVar()
-        self.combo_box = ttk.Combobox(self.middle_frame, values=self.Tipo_escala, state="readonly", font="30", width=28, height=5, textvariable=self.string_Var_comb_tipo_p)
+        self.combo_box = ttk.Combobox(self.middle_frame, values=self.Tipo_escala, state="readonly", font="30", width=28,
+                                      height=5, textvariable=self.string_Var_comb_tipo_p)
         self.combo_box.bind("<<ComboboxSelected>>", self.Dias_Escala_Entry)
         self.combo_box.pack(pady=20, padx=20, side=tk.LEFT)
         self.combo_box.current(0)
 
         self.entry_dias_var = tk.StringVar()
-        
+
         self.middle_label = tk.Label(self.middle_frame, text='DIAS', font=('Inter', 10, 'bold'), fg='#FFF',bg='#94939B')
         self.middle_label.pack(side=tk.LEFT, pady=10, padx=10,)
 
@@ -365,14 +370,12 @@ class Screens:
         self.btt_add = tk.Button(self.frame_btn,text='ATRIBUIR',font=('Inter', 10, 'bold'), fg='#070707',bg='#D9D9D9',command=self.Atribuir,borderwidth=0)
         self.btt_add.pack(side=tk.TOP)
 
-
     def Dias_Escala_Entry(self, event):
         query = f'SELECT dias_escala FROM escala Where nome_escala Like "{self.combo_box.get()}";'
         dados = bd.consultar(query)
         for dias_escala in dados:
             pass
         self.entry_dias_var.set(dias_escala[0])
-
 
     def Atribuir(self):
         selecionado = self.tree.selection()
@@ -381,7 +384,7 @@ class Screens:
             nome = nome
         # print(self.cbx_usuario.get())
         # print(self.cbx_tipo_escala.get())
-        # print(self.cal_escolha.selection_get()) 
+        # print(self.cal_escolha.selection_get())
         query = f'''SELECT usuario_id, escala_id FROM escala, usuario 
         WHERE nome_escala LIKE "{self.combo_box.get()}" and nome_completo LIKE "{nome}";'''
         dados = bd.consultar(query)
@@ -396,17 +399,12 @@ class Screens:
         escala_id = ids[1]
         data_inicio = self.cal_atrib.get_date()
 
-
         query = 'SELECT data_inicio_escala, data_fim_escala, dias_escala FROM escala;'
         dados = bd.consultar(query)
-
 
         query = f'INSERT INTO usuario_escala ("usuario_id", "escala_id", "data_inicio") VALUES ("{usuario_id}", {escala_id}, "{data_inicio}");'
         bd.inserir(query)
         self.voltar_roster()
-
-
-
 
     def CalendarScreen(self):
         self.calendar_screen = tk.Tk()
@@ -464,6 +462,8 @@ class Screens:
         self.tvw_usuario.heading('tipo', text='Super usuário')
         self.tvw_usuario.pack(side=tk.LEFT,fill=tk.BOTH,expand=True)
 
+        self.update_tvw_user()
+
         self.scr_usuario = ttk.Scrollbar(self.frame_tvw_usuario, command=self.tvw_usuario.yview)
         self.scr_usuario.pack(side=tk.LEFT, fill=tk.BOTH)
         self.tvw_usuario.configure(yscroll=self.scr_usuario.set)
@@ -471,29 +471,37 @@ class Screens:
         self.frame_tvw_button = tk.Frame(self.frm, bg='#94939B')
         self.frame_tvw_button.pack(side=tk.BOTTOM)
 
-        self.btn_cadastrar_usuario = tk.Button(self.frame_tvw_button, text="Criar Usuário", font=("Arial", 10), bg="#3CB371",fg="white", width=20, height=1,borderwidth=0,command=self.crud_user)
+        self.btn_cadastrar_usuario = tk.Button(self.frame_tvw_button, text="Criar Usuário", font=("Arial", 10), bg="#3CB371",fg="white", width=20, height=1,borderwidth=0,command=self.open_create_user)
         self.btn_cadastrar_usuario.grid(row=0,column=0,padx=10,pady=10)
 
-        self.btn_editar_usuario = tk.Button(self.frame_tvw_button, text="Editar Usuário", font=("Arial", 10), bg="Orange", fg="white",width=20, height=1,borderwidth=0,command=self.edit_user)
+        self.btn_editar_usuario = tk.Button(self.frame_tvw_button, text="Editar Usuário", font=("Arial", 10), bg="Orange", fg="white",width=20, height=1,borderwidth=0,command=self.open_edit_user)
         self.btn_editar_usuario.grid(row=0,column=1,padx=10,pady=10)
 
-        self.btn_excluir_usuario = tk.Button(self.frame_tvw_button, text="Excluir Usuário", font=("Arial", 10), bg="#E1523F",fg="white", width=20, height=1,borderwidth=0,command='')
+        self.btn_excluir_usuario = tk.Button(self.frame_tvw_button, text="Excluir Usuário", font=("Arial", 10), bg="#E1523F",fg="white", width=20, height=1,borderwidth=0,command=self.delete_user)
         self.btn_excluir_usuario.grid(row=0,column=2,padx=10,pady=10)
 
         self.btn_excluir_usuario = tk.Button(self.frame_tvw_button, text="Voltar", font=("Arial", 10),bg="#E1523F", fg="white", width=20, height=1, borderwidth=0, command=self.voltar_user)
         self.btn_excluir_usuario.grid(row=0, column=3, padx=10, pady=10)
 
-    def CrudScreen(self):
-        self.crud_user = tk.Tk()
-        self.crud_user.title("Cadastrar usuario")
-        self.crud_user.geometry('462x676')
-        self.crud_user.configure(bg='#D9D9D9')
-        self.crud_user.resizable(False, False)
+    def update_tvw_user(self):
+        for i in self.tvw_usuario.get_children():
+            self.tvw_usuario.delete(i)
+        query = f"SELECT usuario_id, nome_completo, nome_usuario, CASE WHEN super_usuario = 0 THEN 'Não' WHEN super_usuario = 1 THEN 'Sim' END AS super_usuario FROM usuario;"
+        dados = bd.consultar(query)
+        for tupla in dados:
+            self.tvw_usuario.insert('', tk.END, values=tupla)
 
-        self.lbl_name = tk.Label(self.crud_user, text='CADASTRAR NOVO USUÁRIO', font=('Inter', 18, 'bold'), fg='#0B0B0B',bg='#D9D9D9')
+    def CreateUserScreen(self):
+        self.create_user = tk.Tk()
+        self.create_user.title("Cadastrar usuario")
+        self.create_user.geometry('462x676')
+        self.create_user.configure(bg='#D9D9D9')
+        self.create_user.resizable(False, False)
+
+        self.lbl_name = tk.Label(self.create_user, text='CADASTRAR NOVO USUÁRIO', font=('Inter', 18, 'bold'), fg='#0B0B0B',bg='#D9D9D9')
         self.lbl_name.pack(side=tk.TOP,pady=(20,5))
 
-        self.center_frame_04 = tk.Frame(self.crud_user,bg='#94939B')
+        self.center_frame_04 = tk.Frame(self.create_user,bg='#94939B')
         self.center_frame_04.pack(pady=20,padx=20,expand=True,fill=tk.BOTH)
 
         tk.Label(self.center_frame_04, text="Nome Completo:", bg='#94939B',font=('Inter', 18, 'bold')).pack(side=tk.TOP,pady=10,padx=20)
@@ -525,9 +533,184 @@ class Screens:
         self.frm_bttn_03 = tk.Frame(self.center_frame_04, bg='#94939B')
         self.frm_bttn_03.pack(side=tk.BOTTOM, expand=True, padx=10, pady=10)
 
-        self.btn_conf  = tk.Button(self.frm_bttn_03, text="Confirmar", command="",font=("Arial", 10), bg="#3CB371",fg="white", width=10, height=1,borderwidth=0).pack(side='left', padx=15,pady=10)
+        self.btn_conf  = tk.Button(self.frm_bttn_03, text="Confirmar", command=self.confirm_create_user,font=("Arial", 10), bg="#3CB371",fg="white", width=10, height=1,borderwidth=0).pack(side='left', padx=15,pady=10)
         self.btn_limp = tk.Button(self.frm_bttn_03, text="Limpar", command="", font=("Arial", 10), bg="Orange", fg="white",width=10, height=1,borderwidth=0).pack(side='left', padx=15,pady=10)
-        self.btn_cancel = tk.Button(self.frm_bttn_03, text="Cancelar", command=self.voltar_crud, font=("Arial", 10), bg="#E1523F",fg="white", width=10, height=1,borderwidth=0).pack(side='left', padx=15, pady=10)
+        self.btn_cancel = tk.Button(self.frm_bttn_03, text="Cancelar", command=self.voltar_create_user, font=("Arial", 10), bg="#E1523F",fg="white", width=10, height=1,borderwidth=0).pack(side='left', padx=15, pady=10)
+
+    def confirm_create_user(self):
+        full_name = self.full_name_entry.get()
+        username = self.username_entry.get()
+        password = self.password_entry.get().encode('utf-8')
+        conf_password = self.confirm_password_entry.get().encode('utf-8')
+        type = self.user_type_combobox.get()
+
+        # Criptografando a senha
+        salt = bcrypt.gensalt(8)
+        senha = bcrypt.hashpw(password, salt)
+        conf_password = bcrypt.hashpw(conf_password, salt)
+
+        uper_case = False
+        for char in username:
+            if char.isupper():
+                uper_case = True
+
+        if full_name == "":
+            messagebox.showinfo("Insira um nome completo", "O campo nome completo está incorreto!")
+            self.create_user.deiconify()
+        elif username == "":
+            messagebox.showinfo("Insira o nome de usuario", "O campo nome de usuário está incorreto!")
+            self.create_user.deiconify()
+        elif uper_case:
+            messagebox.showinfo("Insira o nome de usuario minusculo", "O campo nome de usuário deve ser totalmente minusculo!")
+            self.create_user.deiconify()
+        elif password == "":
+            messagebox.showinfo("Insira uma senha", "O campo senha está vazio!")
+            self.create_user.deiconify()
+        elif conf_password == "":
+            messagebox.showinfo("Confirme a senha", "O campo de confirmação da senha está vazio!")
+            self.create_user.deiconify()
+        elif senha != conf_password:
+            messagebox.showinfo("Senhas divergentes", "As senhas não correspondem")
+            self.create_user.deiconify()
+        elif type == "":
+            messagebox.showinfo("Selecione um tipo", "Nenhum Tipo foi selecionado!")
+            self.create_user.deiconify()
+        else:
+            query = 'SELECT nome_usuario FROM usuario;'
+            valores = bd.consultar(query)
+            confirmar = False
+            for i in valores:
+                if username == i[0]:
+                    confirmar = True
+                    break
+            if not confirmar:
+                if type == "Usuário Comum":
+                    type = 0
+                else:
+                    type = 1
+                query = f'INSERT INTO usuario ("nome_completo", "nome_usuario", "senha", "super_usuario") VALUES ("{full_name}", "{username}", "{password}", {type});'
+                bd.inserir(query)
+                messagebox.showinfo("SUCESSO!", "Usuário criado com sucesso!")
+                self.update_tvw_user()
+                self.create_user.destroy()
+                self.user_screen.deiconify()
+            else:
+                messagebox.showinfo("Nome de usuário já cadastrado", "O Nome de usuário já cadastrado")
+                self.create_user.deiconify()
+
+    def EditUserScreen(self):
+        self.selecionado = self.tvw_usuario.selection()
+        self.lista = self.tvw_usuario.item(self.selecionado, "values")
+        query = f"SELECT usuario_id, nome_completo, nome_usuario, senha, super_usuario FROM usuario WHERE usuario_id = {self.lista[0]};"
+        self.lista = bd.consultar_usuarios(query)
+        if self.selecionado != ():
+            self.edit_user = tk.Tk()
+            self.edit_user.title("Editar usuario")
+            self.edit_user.geometry('462x676')
+            self.edit_user.configure(bg='#D9D9D9')
+            self.edit_user.resizable(False, False)
+
+            self.lbl_name_02 = tk.Label(self.edit_user, text='EDITAR USUÁRIO', font=('Inter', 18, 'bold'), fg='#0B0B0B',bg='#D9D9D9')
+            self.lbl_name_02.pack(side=tk.TOP,pady=(20,5))
+
+            self.center_frame_05 = tk.Frame(self.edit_user,bg='#94939B')
+            self.center_frame_05.pack(pady=20,padx=20,expand=True,fill=tk.BOTH)
+
+            tk.Label(self.center_frame_05, text="Nome Completo:", bg='#94939B',font=('Inter', 18, 'bold')).pack(side=tk.TOP,pady=10,padx=20)
+
+            self.full_name_entry = tk.Entry(self.center_frame_05)
+            self.full_name_entry.pack(side=tk.TOP,pady=10,padx=40,fill=tk.BOTH)
+            self.full_name_entry.insert(0, self.lista[1])
+
+            tk.Label(self.center_frame_05, text="Nome de usuário:", bg='#94939B',font=('Inter', 18, 'bold')).pack(side=tk.TOP,pady=10,padx=20)
+            self.username_entry = tk.Entry(self.center_frame_05)
+            self.username_entry.pack(side=tk.TOP,pady=10,padx=40,fill=tk.BOTH)
+            self.username_entry.insert(0, self.lista[2])
+
+            #tk.Label(self.center_frame_05, text="Senha:", bg='#94939B',font=('Inter', 18, 'bold')).pack(side=tk.TOP,pady=10,padx=20)
+
+            #self.password_entry = tk.Entry(self.center_frame_05, show='*', bg="Grey")
+            #self.password_entry.pack(side=tk.TOP,pady=10,padx=40,fill=tk.BOTH)
+            #self.password_entry.config(state='disabled', bg='grey')
+
+            #tk.Label(self.center_frame_05, text="Confirmar senha:", bg='#94939B',font=('Inter', 18, 'bold')).pack(side=tk.TOP,pady=10,padx=20)
+
+            #self.confirm_password_entry = tk.Entry(self.center_frame_05, show='*')
+            #self.confirm_password_entry.pack(side=tk.TOP,pady=10,padx=40,fill=tk.BOTH)
+
+            tk.Label(self.center_frame_05, text="Tipo de usuário:", bg='#94939B',font=('Inter', 18, 'bold')).pack(side=tk.TOP,pady=10,padx=20)
+            self.user_type_var = tk.StringVar()
+            self.user_type_combobox = ttk.Combobox(self.center_frame_05, textvariable=self.user_type_var,values=["Administrador", "Usuário Comum"])
+            self.user_type_combobox.pack(side=tk.TOP,pady=10,padx=40,fill=tk.BOTH)
+            self.user_type_combobox.current(self.lista[4])
+
+            self.frm_bttn_02 = tk.Frame(self.center_frame_05,bg='#94939B')
+            self.frm_bttn_02.pack(side=tk.BOTTOM,expand=True,padx=10,pady=10)
+
+            self.btn_conf  = tk.Button(self.frm_bttn_02, text="Confirmar", command=self.confirm_edit_user,font=("Arial", 10), bg="#3CB371",fg="white", width=10, height=1,borderwidth=0).pack(side='left', padx=15,pady=10)
+            self.btn_limp = tk.Button(self.frm_bttn_02, text="Limpar", command="", font=("Arial", 10), bg="Orange", fg="white",width=10, height=1,borderwidth=0).pack(side='left', padx=15,pady=10)
+            self.btn_cancel = tk.Button(self.frm_bttn_02, text="Cancelar", command=self.voltar_edit_user, font=("Arial", 10), bg="#E1523F",fg="white", width=10, height=1,borderwidth=0).pack(side='left', padx=15, pady=10)
+
+    def confirm_edit_user(self):
+        self.selecionado = self.tvw_usuario.selection()
+        self.lista = self.tvw_usuario.item(self.selecionado, "values")
+
+        nome_completo = self.full_name_entry.get()
+        nome_usuario = self.username_entry.get()
+        # senha = self.entry_senha.get().encode('utf-8')
+        # conf_senha = self.entry_confirmar_senha.get().encode('utf-8')
+        tipo = self.user_type_combobox.get()
+        uper_case = False
+        for char in nome_usuario:
+            if char.isupper():
+                uper_case = True
+
+        if nome_completo == "":
+            messagebox.showinfo("Insira um nome completo", "O campo nome completo está incorreto!")
+            self.edit_user.deiconify()
+        elif nome_usuario == "":
+            messagebox.showinfo("Insira o nome de usuario", "O campo nome de usuário está incorreto!")
+            self.edit_user.deiconify()
+        elif uper_case:
+            messagebox.showinfo("Insira o nome de usuario minusculo",
+                                "O campo nome de usuário deve ser totalmente minusculo!")
+            self.edit_user.deiconify()
+        elif tipo == "":
+            messagebox.showinfo("Selecione um tipo", "Nenhum Tipo foi selecionado!")
+            self.edit_user.deiconify()
+        else:
+            query = 'SELECT nome_usuario FROM usuario;'
+            valores = bd.consultar(query)
+            confirmar = False
+            for i in valores:
+                if nome_usuario == i[0] and i[0] != self.lista[2]:
+                    confirmar = True
+                    break
+            if not confirmar:
+                if tipo == "Usuário Comum":
+                    tipo = 0
+                else:
+                    tipo = 1
+                query = f'UPDATE usuario SET nome_completo="{nome_completo}", nome_usuario="{nome_usuario}", super_usuario="{tipo}" WHERE usuario_id={self.lista[0]};'
+                bd.atualizar(query)
+                messagebox.showinfo("SUCESSO!", "Usuário editado com sucesso!")
+                self.update_tvw_user()
+                self.edit_user.destroy()
+                self.user_screen.deiconify()
+            else:
+                messagebox.showinfo("Nome de usuário já cadastrado", "O Nome de usuário já cadastrado")
+                self.edit_user.deiconify()
+
+    def delete_user(self):
+        selecionado = self.tvw_usuario.selection()
+        lista = self.tvw_usuario.item(selecionado, "values")
+        mensagem = messagebox.askyesno(f'Excluir', f'Você tem certeza que deseja excluir o usuario: {lista[2]}?')
+        if mensagem:
+            sql = f'DELETE FROM usuario WHERE usuario_id={lista[0]};'
+            bd.deletar(sql)
+            self.update_tvw_user()
+            messagebox.showinfo("Excluído", "usuário excluído com sucesso")
+        self.user_screen.deiconify()
 
     def CreateScreen(self):
         self.create_screen = tk.Tk()
@@ -600,52 +783,6 @@ class Screens:
 
         self.bttn_voltar_02 = tk.Button(self.frame_button,text='VOLTAR',font=("Arial", 10), bg="#E1523F",fg="white",borderwidth=0,command='')
         self.bttn_voltar_02.pack(side=tk.LEFT, pady=5, padx=10)
-
-
-    def EditScreen(self):
-        self.edit_user = tk.Tk()
-        self.edit_user.title("Editar usuario")
-        self.edit_user.geometry('462x676')
-        self.edit_user.configure(bg='#D9D9D9')
-        self.edit_user.resizable(False, False)
-
-        self.lbl_name_02 = tk.Label(self.edit_user, text='EDITAR USUÁRIO', font=('Inter', 18, 'bold'), fg='#0B0B0B',bg='#D9D9D9')
-        self.lbl_name_02.pack(side=tk.TOP,pady=(20,5))
-
-        self.center_frame_05 = tk.Frame(self.edit_user,bg='#94939B')
-        self.center_frame_05.pack(pady=20,padx=20,expand=True,fill=tk.BOTH)
-
-        tk.Label(self.center_frame_05, text="Nome Completo:", bg='#94939B',font=('Inter', 18, 'bold')).pack(side=tk.TOP,pady=10,padx=20)
-
-        self.full_name_entry = tk.Entry(self.center_frame_05)
-        self.full_name_entry.pack(side=tk.TOP,pady=10,padx=40,fill=tk.BOTH)
-
-        tk.Label(self.center_frame_05, text="Nome de usuário:", bg='#94939B',font=('Inter', 18, 'bold')).pack(side=tk.TOP,pady=10,padx=20)
-        self.username_entry = tk.Entry(self.center_frame_05)
-        self.username_entry.pack(side=tk.TOP,pady=10,padx=40,fill=tk.BOTH)
-
-        tk.Label(self.center_frame_05, text="Senha:", bg='#94939B',font=('Inter', 18, 'bold')).pack(side=tk.TOP,pady=10,padx=20)
-
-        self.password_entry = tk.Entry(self.center_frame_05, show='*')
-        self.password_entry.pack(side=tk.TOP,pady=10,padx=40,fill=tk.BOTH)
-
-        tk.Label(self.center_frame_05, text="Confirmar senha:", bg='#94939B',font=('Inter', 18, 'bold')).pack(side=tk.TOP,pady=10,padx=20)
-
-        self.confirm_password_entry = tk.Entry(self.center_frame_05, show='*')
-        self.confirm_password_entry.pack(side=tk.TOP,pady=10,padx=40,fill=tk.BOTH)
-
-        tk.Label(self.center_frame_05, text="Tipo de usuário:", bg='#94939B',font=('Inter', 18, 'bold')).pack(side=tk.TOP,pady=10,padx=20)
-        self.user_type_var = tk.StringVar()
-        self.user_type_combobox = ttk.Combobox(self.center_frame_05, textvariable=self.user_type_var,values=["Administrador", "Usuário Comum"])
-        self.user_type_combobox.pack(side=tk.TOP,pady=10,padx=40,fill=tk.BOTH)
-        self.user_type_combobox.set("Usuário Comum")
-
-        self.frm_bttn_02 = tk.Frame(self.center_frame_05,bg='#94939B')
-        self.frm_bttn_02.pack(side=tk.BOTTOM,expand=True,padx=10,pady=10)
-
-        self.btn_conf  = tk.Button(self.frm_bttn_02, text="Confirmar", command="",font=("Arial", 10), bg="#3CB371",fg="white", width=10, height=1,borderwidth=0).pack(side='left', padx=15,pady=10)
-        self.btn_limp = tk.Button(self.frm_bttn_02, text="Limpar", command="", font=("Arial", 10), bg="Orange", fg="white",width=10, height=1,borderwidth=0).pack(side='left', padx=15,pady=10)
-        self.btn_cancel = tk.Button(self.frm_bttn_02, text="Cancelar", command=self.voltar_crud, font=("Arial", 10), bg="#E1523F",fg="white", width=10, height=1,borderwidth=0).pack(side='left', padx=15, pady=10)
 
     def RosterManage(self):
         self.roster_manage = tk.Tk()

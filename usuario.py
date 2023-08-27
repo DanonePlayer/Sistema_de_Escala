@@ -49,8 +49,6 @@ class Usuario:
     def atualizar_tvw_usuario(self):
         for i in self.tvw_usuario.get_children():
             self.tvw_usuario.delete(i)
-        #query = 'SELECT escala_id, nome_escala, nome_tipo_escala, data_inicio_escala, data_fim_escala, dias_escala FROM tipo_escala as te, escala as e WHERE te.tipo_escala_id = e.tipo_escala_id;'
-
         query = f"SELECT usuario_id, nome_completo, nome_usuario, CASE WHEN super_usuario = 0 THEN 'Não' WHEN super_usuario = 1 THEN 'Sim' END AS super_usuario FROM usuario;"
         dados = bd.consultar(query)
         for tupla in dados:
@@ -231,14 +229,14 @@ class Usuario:
 
         if nome_completo == "":
             messagebox.showinfo("Insira um nome completo", "O campo nome completo está incorreto!")
-            self.janela_cadastrar_usuario.deiconify()
+            self.edit_usuario.deiconify()
         elif nome_usuario == "":
             messagebox.showinfo("Insira o nome de usuario", "O campo nome de usuário está incorreto!")
-            self.janela_cadastrar_usuario.deiconify()
+            self.edit_usuario.deiconify()
         elif uper_case:
             messagebox.showinfo("Insira o nome de usuario minusculo",
                                 "O campo nome de usuário deve ser totalmente minusculo!")
-            self.janela_cadastrar_usuario.deiconify()
+            self.edit_usuario.deiconify()
         elif tipo == "":
             messagebox.showinfo("Selecione um tipo", "Nenhum Tipo foi selecionado!")
             self.edit_usuario.deiconify()
