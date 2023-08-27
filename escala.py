@@ -317,19 +317,24 @@ class Tela:
         self.frm_janela2_c.grid(column=0, row=0)
 
 
-        self.lbl_programar = tk.Label(self.frm_janela2_c, text="Para quem:")
-        self.lbl_programar.place(x=20, y=10)
-        #Exemplos de colaboradores
+
+        colunas = ["Nomes"]
+
+        self.tvw = ttk.Treeview(self.janela2, columns=colunas, show="headings")
+        self.tvw.place(x=290, y=10)
+
+        self.tvw.heading(colunas[0], text=colunas[0])
+  
+        self.scr = ttk.Scrollbar(self.janela2, command=self.tvw.yview)
+        self.tvw.configure(yscroll=self.scr.set)
+        self.scr.place(x=474, y=10)
+
 
         query = 'SELECT usuario_id, nome_completo, nome_usuario FROM usuario;'
         dados = bd.consultar(query)
-        colaboradores = []
         for tupla in dados:
-            colaboradores.append(tupla[1])
-        self.cbx_usuario = ttk.Combobox(self.frm_janela2_c, values=colaboradores, state="readonly", font="30", width=28, height=5, )
-
-        self.cbx_usuario.place(x=20, y=30)
-        self.cbx_usuario.current(0)
+            self.tvw.insert('', tk.END, values=(tupla[1],))
+            
 
         self.lbl_Tipo_escala = tk.Label(self.frm_janela2_c, text="Escala:")
         self.lbl_Tipo_escala.place(x=20, y=60)
@@ -373,13 +378,18 @@ class Tela:
             pass
         self.entry_dias_var.set(dias_escala[0])
 
-    def Atribuir(self):
 
+
+    def Atribuir(self):
+        selecionado = self.tvw.selection()
+        lista = self.tvw.item(selecionado, "values")
+        for nome in lista:
+            nome = nome
         # print(self.cbx_usuario.get())
         # print(self.cbx_tipo_escala.get())
         # print(self.cal_escolha.selection_get()) 
         query = f'''SELECT usuario_id, escala_id FROM escala, usuario 
-        WHERE nome_escala LIKE "{self.cbx_tipo_escala.get()}" and nome_completo LIKE "{self.cbx_usuario.get()}";'''
+        WHERE nome_escala LIKE "{self.cbx_tipo_escala.get()}" and nome_completo LIKE "{nome}";'''
         dados = bd.consultar(query)
 
         ids = []
