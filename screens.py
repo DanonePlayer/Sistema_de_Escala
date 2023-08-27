@@ -148,28 +148,16 @@ class Screens:
         self.bottom_frame.pack(side=tk.BOTTOM,padx=10,pady=10,fill=tk.BOTH,expand=True)
 
         button_images = [
-            (self.img_calendar, "Calendário", self.calendar),
-            (self.img_reports, "Reltorios", self.reports),
-            (self.img_user, "Usuários", self.user),
-            (self.img_roster, "Escalas", self.roster),
-            (self.img_roster_02, "Criar", self.create),
-            (self.img_edit, "Gerenciar", self.manage)
+            (self.img_calendar, self.calendar),
+            (self.img_reports, self.reports),
+            (self.img_user, self.user),
+            (self.img_roster, self.roster),
+            (self.img_roster_02, self.create),
+            (self.img_edit, self.manage)
         ]
-        button_width = max(img.width() for img, _, _ in button_images)
-
-        for img, text, command in button_images:
-            button = tk.Button(
-                self.top_frame if command in [self.calendar, self.reports, self.user] else self.bottom_frame,
-                bg='#6E716E',
-                text=text,
-                image=img,
-                compound=tk.TOP,
-                borderwidth=0,
-                command=command,
-                font=('Inter', 24, 'bold'),
-                fg='#FFF',
-                pady=20
-            )
+        button_width = max(img.width() for img, _ in button_images)
+        for img, command in button_images:
+            button = tk.Button(self.top_frame if command == self.calendar or command == self.reports or command == self.user else self.bottom_frame, bg='#6E716E', image=img, borderwidth=0,command=command)
             button.pack(side=tk.LEFT, padx=10, pady=10, expand=True, fill=tk.BOTH)
             button.config(width=button_width)
 
