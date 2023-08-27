@@ -520,6 +520,27 @@ class Screens:
 
         self.bttn_verificar = tk.Button(self.buttons_frame,text='VERIFICAR', font=("Arial", 10), bg="#3CB371",fg="white",command=self.Aplica_Calendario,borderwidth=0)
         self.bttn_verificar.pack(side=tk.LEFT, pady=10, padx=15)
+        self.calendar_ferias()
+
+
+    def calendar_ferias(self):
+        cor_escolhida_ferias = "#FF7F50"
+        date = self.cal_show.datetime.today()
+        # print(date)
+        feriados= holidays.Brazil()
+        ano_feriado = str(date).split("-")[0]
+        vetor_feriados = []
+        for feriado in feriados[f"{ano_feriado}-01-01": f'{ano_feriado}-12-31']:
+            dia = str(feriado).split("-")[2]
+            mes = str(feriado).split("-")[1]
+            ano = str(feriado).split("-")[0]
+            feriados = self.cal_show.datetime(year=int(ano), month=int(mes), day=int(dia))
+            #print(feriados)
+            vetor_feriados.append(feriados)
+        for feriados1 in vetor_feriados:
+            self.cal_show.calevent_create(feriados1 , 'Ferias', 'Ferias')
+        self.cal_show.tag_config('Ferias', background=cor_escolhida_ferias, foreground='white')
+
 
     def Aplica_Calendario(self):
         self.cal_show.calevent_remove("all")
@@ -530,13 +551,14 @@ class Screens:
         WHERE u.nome_completo LIKE "{self.cbx_nome.get()}"
         AND e.nome_escala LIKE  "{self.cbx_cargo.get()}";'''
         dados = bd.consultar(query)
-        print(dados)
+        # print(dados)
         self.id_usu_escala = 0
 
         for tupla in dados:
             for id in tupla:
                 self.id_usu_escala = id
         # print(self.id_usu_escala)
+        self.calendar_ferias()
         if self.id_usu_escala != 0:
             # print(self.id_usu_escala)
             query = f'SELECT data_inicio FROM usuario_escala WHERE usuario_escala_id = {self.id_usu_escala};'
@@ -587,7 +609,6 @@ class Screens:
             ano_escolha = int(data_escala[2])
             dia_escolha = int(data_escala[0])
             cor_escolhida_escala = "#FFFACD"
-            cor_escolhida_ferias = "#FF7F50"
             vetor_dias_corridos_na_escala = []
             vetor_finais_semana = []
             dia_cont = dia_escolha
@@ -646,7 +667,6 @@ class Screens:
 
 
             #data atual =  date = cal.datetime.today()
-            date = self.cal_show.datetime.today()
 
             escala_ecolha_dia = self.cal_show.datetime(ano_escolha, mes_escolha, dia_escolha)
             #print(escala_ecolha_dia)
@@ -670,43 +690,14 @@ class Screens:
                 aux_dias_de_escala -=1
                 dias +=1
 
-
-            feriados= holidays.Brazil()
-
-            ano_feriado = str(date).split("-")[0]
-            vetor_feriados = []
-            for feriado in feriados[f"{ano_feriado}-01-01": f'{ano_feriado}-12-31']:
-
-                dia = str(feriado).split("-")[2]
-                mes = str(feriado).split("-")[1]
-                ano = str(feriado).split("-")[0]
-
-                feriados = self.cal_show.datetime(year=int(ano), month=int(mes), day=int(dia))
-                #print(feriados)
-                
-                vetor_feriados.append(feriados)
-
-                if conta_feriados == 0:
-                    if feriados in vetor_dias_corridos_na_escala:
-                        dias_de_escala += 1
-            
-            for feriados1 in vetor_feriados:
-                self.cal_show.calevent_create(feriados1 , 'Ferias', 'Ferias')
-
-
             for i in range(0, dias_de_escala):
                 self.cal_show.calevent_create(escala_ecolha_dia + self.cal_show.timedelta(days=i), 'escalas', 'escala')
 
-            if conta_feriados == 0:
-                for feriados1 in vetor_feriados:
-                    self.cal_show.calevent_create(feriados1 , 'Ferias', 'Ferias')
 
             for final_semana in vetor_finais_semana:
                 self.cal_show.calevent_create(final_semana, "final_semana", "final_semana")
             
-
-
-            self.cal_show.tag_config('Ferias', background=cor_escolhida_ferias, foreground='white')
+            
             self.cal_show.tag_config('escala', background=cor_escolhida_escala, foreground='black')
             self.cal_show.tag_config("final_semana", background="#cccccc", foreground='black')
             
