@@ -151,9 +151,9 @@ class Screens:
             (self.img_calendar, "Calendário", self.calendar),
             (self.img_reports, "Relatórios", self.reports),
             (self.img_user, "Usuários", self.user),
-            (self.img_roster, "Escalas", self.roster),
-            (self.img_roster_02, "Criar", self.create),
-            (self.img_edit, "Gerenciar", self.manage)
+            (self.img_roster, "Atribuir", self.roster),
+            (self.img_roster_02, "Tipos", self.create),
+            (self.img_edit, "Escalas", self.manage)
         ]
         button_width = max(img.width() for img, _, _ in button_images)
 
@@ -229,7 +229,7 @@ class Screens:
         self.MainScreen()
     def create(self):
         self.main_screen.destroy()
-        self.CreateScreen()
+        self.TypeManage()
     def manage(self):
         self.main_screen.destroy()
         self.RosterManage()
@@ -239,6 +239,19 @@ class Screens:
     def edit_roster(self):
         self.roster_manage.destroy()
         self.RosterEdit()
+    def create_type(self):
+        self.type_manage.destroy()
+        self.CreateTypeScreen()
+
+    def edit_type(self):
+        self.type_manage.destroy()
+        self.EditeTypeScreen()
+    def type_close(self):
+        self.create_screen.destroy()
+        self.TypeManage()
+    def type_manage_close(self):
+        self.type_manage.destroy()
+        self.MainScreen()
 
     def Atribuir_Escala(self, event):
         # print(self.text1.get())
@@ -724,13 +737,13 @@ class Screens:
             messagebox.showinfo("Excluído", "usuário excluído com sucesso")
         self.user_screen.deiconify()
 
-    def CreateScreen(self):
+    def CreateTypeScreen(self):
         self.create_screen = tk.Tk()
         self.create_screen.title('Criar Escalas')
         self.create_screen.geometry('462x676')
         self.create_screen.configure(bg='#D9D9D9')
         self.create_screen.resizable(False, False)
-        self.create_screen.protocol("WM_DELETE_WINDOW", self.voltar_create)
+        self.create_screen.protocol("WM_DELETE_WINDOW", self.type_close)
 
         self.center_frame_03 = tk.Frame(self.create_screen,bg='#94939B')
         self.center_frame_03.pack(fill=tk.BOTH, expand=True, padx=20, pady=20)
@@ -793,8 +806,83 @@ class Screens:
         self.bttn_clean = tk.Button(self.frame_button, text='LIMPAR', font=('Inter', 10, 'bold'), fg='#605F5F',bg='#FFFFFF',command='',borderwidth=0)
         self.bttn_clean.pack(side=tk.LEFT,pady=5,padx=10)
 
-        self.bttn_voltar_02 = tk.Button(self.frame_button,text='VOLTAR',font=("Arial", 10), bg="#E1523F",fg="white",borderwidth=0,command='')
+        self.bttn_voltar_02 = tk.Button(self.frame_button,text='VOLTAR',font=("Arial", 10), bg="#E1523F",fg="white",borderwidth=0,command=self.type_close)
         self.bttn_voltar_02.pack(side=tk.LEFT, pady=5, padx=10)
+
+    def EditeTypeScreen(self):
+        self.edite_type = tk.Tk()
+        self.edite_type.title('Criar Escalas')
+        self.edite_type.geometry('462x676')
+        self.edite_type.configure(bg='#D9D9D9')
+        self.edite_type.resizable(False, False)
+        self.edite_type.protocol("WM_DELETE_WINDOW", )
+
+        self.center_frame_05 = tk.Frame(self.edite_type, bg='#94939B')
+        self.center_frame_05.pack(fill=tk.BOTH, expand=True, padx=20, pady=20)
+
+        self.lbl_edite_type = tk.Label(self.center_frame_05, text='EDITAR TIPO DE ESCALA', font=('Inter', 10, 'bold'),
+                                       fg='#0B0B0B', bg='#94939B')
+        self.lbl_edite_type.pack(side=tk.TOP, padx=5, pady=10)
+
+        self.lbl_name = tk.Label(self.center_frame_05, text="NOME DA ESCALA", font=('Inter', 10, 'bold'), fg='#FFF',
+                                 bg='#94939B')
+        self.lbl_name.pack(side=tk.TOP, pady=5, padx=10)
+
+        self.entry_nome_e = tk.Entry(self.center_frame_05, width=59)
+        self.entry_nome_e.pack(side=tk.TOP, padx=5, pady=10)
+
+        self.lbl_dias = tk.Label(self.center_frame_05, text='QUANTOS DIAS?', font=('Inter', 10, 'bold'), fg='#FFF',
+                                 bg='#94939B')
+        self.lbl_dias.pack(side=tk.TOP, padx=5, pady=10, fill=tk.BOTH)
+
+        self.entry_dias_02 = tk.Entry(self.center_frame_05, width=59)
+        self.entry_dias_02.pack(side=tk.TOP, padx=5, pady=10, )
+
+        self.frame_escolhas_01 = tk.Frame(self.center_frame_05, bg='#94939B')
+        self.frame_escolhas_01.pack(fill=tk.Y, expand=True, padx=10, pady=10, side=tk.TOP)
+
+        self.lbl_03 = tk.Label(self.frame_escolhas_01, text='CONTAR FINAIS DE SEMANA?', font=('Inter', 10, 'bold'),fg='#FFF', bg='#94939B')
+        self.lbl_03.grid(row=0, column=0, columnspan=3, sticky='n', pady=10)
+
+        radio_var_01 = tk.StringVar()
+        radio_var_02 = tk.StringVar()
+        radio_var_03 = tk.StringVar()
+
+        style = ttk.Style()
+        style.configure("Custom.TRadiobutton", background="#94939B", foreground="white", font=("Inter", 10, "bold"))
+
+        self.radioedit_01 = ttk.Radiobutton(self.frame_escolhas_01, text="SIM", variable=radio_var_01, value="SIM_1",style="Custom.TRadiobutton")
+        self.radioedit_01.grid(row=2, column=0, padx=10, pady=10, sticky='n')
+        self.radioedit_02 = ttk.Radiobutton(self.frame_escolhas_01, text="NÃO", variable=radio_var_01, value="NÃO_1",style="Custom.TRadiobutton")
+        self.radioedit_02.grid(row=2, column=1, padx=10, pady=10, sticky='n')
+
+        self.lbl_04 = tk.Label(self.frame_escolhas_01, text='CONTAR FERIADOS?', font=('Inter', 10, 'bold'), fg='#FFF',bg='#94939B')
+        self.lbl_04.grid(row=3, column=0, columnspan=2, sticky='nsew', pady=20)
+
+        self.radioedit_03 = ttk.Radiobutton(self.frame_escolhas_01, text="SIM", variable=radio_var_02, value="SIM_2",style="Custom.TRadiobutton")
+        self.radioedit_03.grid(row=4, column=0, padx=10, pady=10, sticky='n')
+        self.radioedit_04 = ttk.Radiobutton(self.frame_escolhas_01, text="NÃO", variable=radio_var_02, value="NÃO_2",style="Custom.TRadiobutton")
+        self.radioedit_04.grid(row=4, column=1, padx=10, pady=10, sticky='n')
+
+        self.lbl_05edit = tk.Label(self.frame_escolhas_01, text='ESCALA MUTUA?', font=('Inter', 10, 'bold'), fg='#FFF',bg='#94939B')
+        self.lbl_05edit.grid(row=5, column=0, columnspan=2, sticky='nsew', pady=20)
+
+        self.radioedit_06 = ttk.Radiobutton(self.frame_escolhas_01, text="SIM", variable=radio_var_03, value="SIM_2",style="Custom.TRadiobutton")
+        self.radioedit_06.grid(row=6, column=0, padx=10, pady=10, sticky='n')
+        self.radioedit_07 = ttk.Radiobutton(self.frame_escolhas_01, text="NÃO", variable=radio_var_03, value="NÃO_2",style="Custom.TRadiobutton")
+        self.radioedit_07.grid(row=6, column=1, padx=10, pady=10, sticky='n')
+
+        self.frame_button_03 = tk.Frame(self.center_frame_05, bg='#94939B')
+        self.frame_button_03.pack(fill=tk.Y, padx=10, pady=10, side=tk.TOP)
+
+        self.bttn_editar_02 = tk.Button(self.frame_button_03, text='CRIAR', font=('Inter', 10, 'bold'), fg='#FFF',bg='#3CB371', command='', borderwidth=0)
+        self.bttn_editar_02.pack(side=tk.LEFT, pady=5, padx=10)
+
+        self.bttn_clean_01 = tk.Button(self.frame_button_03, text='LIMPAR', font=('Inter', 10, 'bold'), fg='#605F5F',bg='#FFFFFF', command='', borderwidth=0)
+        self.bttn_clean_01.pack(side=tk.LEFT, pady=5, padx=10)
+
+        self.bttn_voltar_03 = tk.Button(self.frame_button_03, text='VOLTAR', font=("Arial", 10), bg="#E1523F", fg="white",borderwidth=0, command='')
+        self.bttn_voltar_03.pack(side=tk.LEFT, pady=5, padx=10)
 
     def RosterManage(self):
         self.roster_manage = tk.Tk()
@@ -847,6 +935,56 @@ class Screens:
 
         self.bttn_return = tk.Button(self.frame_button,text="Voltar", font=("Arial", 10),bg="#E1523F", fg="white", width=20, height=1, borderwidth=0, command='')
         self.bttn_return.grid(row=0, column=3, padx=10, pady=10)
+
+    def TypeManage(self):
+        self.type_manage = tk.Tk()
+        self.type_manage.title("Gerenciar Escalas")
+        self.type_manage.geometry('1000x600')
+        self.type_manage.configure(bg='#D9D9D9')
+        self.type_manage.resizable(False, False)
+        self.type_manage.protocol("WM_DELETE_WINDOW",self.type_manage_close)
+
+        self.lbl_07 = tk.Label(self.type_manage, text='GERENCIAR TIPOS DE ESCALAS', font=('Inter', 18, 'bold'), fg='#0B0B0B',bg='#D9D9D9')
+        self.lbl_07.pack(side=tk.TOP, pady=(20))
+
+        self.frm_06 = tk.Frame(self.type_manage, bg='#94939B')
+        self.frm_06.pack(pady=10, padx=10, expand=True, fill=tk.BOTH)
+
+        self.frame_tvw_type = tk.Frame(self.frm_06, bg='#94939B')
+        self.frame_tvw_type.pack(expand=True, fill=tk.BOTH,padx=8,pady=(10,8))
+
+        self.tvw_tipo_escala = ttk.Treeview(self.frame_tvw_type,columns=('id', 'nome tipo de escala', 'finais de semana', 'feriados','escala mutua'),show='headings')
+        self.tvw_tipo_escala.column('id', width=40)
+        self.tvw_tipo_escala.column('nome tipo de escala', width=250)
+        self.tvw_tipo_escala.column('finais de semana', width=125)
+        self.tvw_tipo_escala.column('feriados', width=125)
+        self.tvw_tipo_escala.column('escala mutua', width=125)
+        self.tvw_tipo_escala.heading('id', text='Id')
+        self.tvw_tipo_escala.heading('nome tipo de escala', text='Nome da Escala')
+        self.tvw_tipo_escala.heading('finais de semana', text='Finais de Semana')
+        self.tvw_tipo_escala.heading('feriados', text='Feriados')
+        self.tvw_tipo_escala.heading('escala mutua', text='Escala Mútua')
+        self.tvw_tipo_escala.pack(side=tk.LEFT,fill=tk.BOTH,expand=True)
+        #self.atualizar_tvw_tipo_escala()
+
+        self.scr_escala_type = ttk.Scrollbar(self.frame_tvw_type, command=self.tvw_tipo_escala.yview)
+        self.scr_escala_type.pack(side=tk.LEFT, fill=tk.BOTH)
+        self.tvw_tipo_escala.configure(yscroll=self.scr_escala_type.set)
+
+        self.frame_button_02 = tk.Frame(self.frm_06, bg='#94939B')
+        self.frame_button_02.pack(side=tk.BOTTOM)
+
+        self.btn_create_01 = tk.Button(self.frame_button_02,text="Criar Tipo", font=("Arial", 10), bg="#3CB371",fg="white", width=20, height=1,borderwidth=0,command=self.create_type)
+        self.btn_create_01.grid(row=0, column=0, padx=10, pady=10)
+
+        self.btn_edit_01 = tk.Button(self.frame_button_02, text="Editar Tipo", font=("Arial", 10), bg="Orange", fg="white",width=20, height=1,borderwidth=0, command=self.edit_type)
+        self.btn_edit_01.grid(row=0, column=1, padx=10, pady=10)
+
+        self.btn_exclude_01 = tk.Button(self.frame_button_02, text="Desativar", font=("Arial", 10),bg="#E1523F", fg="white", width=20, height=1, borderwidth=0, command='')
+        self.btn_exclude_01.grid(row=0, column=2, padx=10, pady=10)
+
+        self.bttn_return_01 = tk.Button(self.frame_button_02,text="Voltar", font=("Arial", 10),bg="#E1523F", fg="white", width=20, height=1, borderwidth=0, command=self.type_manage_close)
+        self.bttn_return_01.grid(row=0, column=3, padx=10, pady=10)
 
     def CreateRoster(self):
         self.create_roster_screen = tk.Tk()
