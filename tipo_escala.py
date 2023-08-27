@@ -78,7 +78,7 @@ class Tela:
     def atualizar_tvw_tipo_escala(self):
         for i in self.tvw_tipo_escala.get_children():
             self.tvw_tipo_escala.delete(i)
-        query = 'SELECT * FROM tipo_escala;'
+        query = "SELECT tipo_escala_id, nome_tipo_escala, CASE WHEN finais_semana = 0 THEN 'Não' WHEN finais_semana = 1 THEN 'Sim' END AS finais_semana, CASE WHEN feriados = 0 THEN 'Não' WHEN feriados = 1 THEN 'Sim' END AS feriados, CASE WHEN escala_mutua = 0 THEN 'Não' WHEN escala_mutua = 1 THEN 'Sim' END AS escala_mutua FROM tipo_escala;"
         dados = bd.consultar(query)
         for tupla in dados:
             self.tvw_tipo_escala.insert('', tk.END, values=tupla)

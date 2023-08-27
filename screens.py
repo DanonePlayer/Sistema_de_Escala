@@ -49,7 +49,7 @@ class Screens:
         self.entry_nome.bind("<FocusOut>", self.restaurar_entry)
         self.entry_nome.pack(side=tk.TOP, pady=20, padx=20)
 
-        self.entry_senha = tk.Entry(self.right_lbl, width=200, bg='#D9D9D9', justify="center",font=('Inter', 24, 'bold'), fg='#94939B')
+        self.entry_senha = tk.Entry(self.right_lbl, width=200, bg='#D9D9D9', justify="center",font=('Inter', 24, 'bold'), fg='#94939B', show='*')
         self.entry_senha.insert(0, "Senha")
         self.entry_senha.bind("<FocusIn>", self.limpar_entry)
         self.entry_senha.bind("<FocusOut>", self.restaurar_entry)
