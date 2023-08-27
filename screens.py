@@ -1,10 +1,11 @@
 import tkinter as tk
 ##from tkinter import PhotoImage, ttk, messagebox,RAISED, RIDGE
-from tkinter import ttk
-
+from tkinter import ttk, messagebox
+import bcrypt
 import holidays
 from PIL import Image, ImageTk
 from tkcalendar import Calendar, DateEntry
+import bd_sistemas_de_escala as bd
 
 
 class Screens:
@@ -54,12 +55,37 @@ class Screens:
         self.entry_senha.bind("<FocusOut>", self.restaurar_entry)
         self.entry_senha.pack(side=tk.TOP, pady=20, padx=20)
 
-        self.bttn_login = tk.Button(self.right_lbl, font=('Inter', 24, 'bold'), fg='#FFFFFF', text="ENTRAR", bg='#6A6666',command=self.enter,borderwidth=0)
+        self.bttn_login = tk.Button(self.right_lbl, font=('Inter', 24, 'bold'), fg='#FFFFFF', text="ENTRAR", bg='#6A6666', command=self.confirm_login, borderwidth=0)
         self.bttn_login.pack(side=tk.BOTTOM, pady=20, padx=100)
 
         self.bttn_help = tk.Button(self.right_lbl, font=('Inter', 20, 'bold'), fg='#6A6666', text=" Problemas de Login? ", bg='#94939B', borderwidth=0,command='')
         self.bttn_help.pack(fill=tk.BOTH)
         self.bttn_help.config()
+
+    def confirm_login(self):
+        nome = self.entry_nome.get()
+        senha = self.entry_senha.get().encode("utf-8")
+        if nome == "":
+            messagebox.showinfo("Insira o nome", "O campo nome está vazio!")
+        elif senha == "":
+            messagebox.showinfo("Insira a senha", "O campo senha está vazio!")
+        else:
+            query = 'SELECT nome_usuario, senha, super_usuario FROM usuario;'
+            valores = bd.consultar(query)
+            logado = False
+            for i in valores:
+                if i[0] == nome:
+                    hash = i[1][2:len(i[1]) - 1].encode("utf-8")
+                    if bcrypt.checkpw(senha, hash):
+                        logado = True
+                        self.user_logged = i[2]
+            if logado:
+                if self.user_logged == 1:
+                    self.enter()
+                else:
+                    self.enter()  # MODIFICAR PARA TELA DE USUARIO COMUM
+            else:
+                messagebox.showinfo("Dados incorretos", "Usuário ou senha inválido")
 
     def limpar_entry(self, event):
         entry = event.widget
