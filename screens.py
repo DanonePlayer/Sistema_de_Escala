@@ -217,6 +217,48 @@ class Screens:
         self.roster_manage.destroy()
         self.RosterEdit()
 
+    def Atribuir_Escala(self, event):
+        #print(self.text1.get())
+
+        self.janela2 = tk.Toplevel()
+        self.janela2.grab_set()
+        self.janela2.title("Atribuir Escala")
+        self.janela2.geometry("500x400")
+        self.frm_janela2_c = tk.Frame(self.janela2, width=500, height=400)
+        self.frm_janela2_c.grid(column=0, row=0)
+
+        colunas = ["Nomes"]
+
+        self.tvw = ttk.Treeview(self.janela2, columns=colunas, show="headings")
+        self.tvw.place(x=290, y=10)
+
+        self.tvw.heading(colunas[0], text=colunas[0])
+  
+        self.scr = ttk.Scrollbar(self.janela2, command=self.tvw.yview)
+        self.tvw.configure(yscroll=self.scr.set)
+        self.scr.place(x=474, y=10)
+
+
+        query = 'SELECT usuario_id, nome_completo, nome_usuario FROM usuario;'
+        dados = bd.consultar(query)
+        for tupla in dados:
+            self.tvw.insert('', tk.END, values=(tupla[1],))
+            
+
+
+        self.lbl_Periodo = tk.Label(self.frm_janela2_c, text="Periodo:")
+        self.lbl_Periodo.place(x=20, y=110)
+        #Exemplos de Periodos
+
+        self.cal_escolha = Calendar(self.frm_janela2_c, locale='pt_BR', date_pattern='dd/MM/yyyy')
+        self.cal_escolha.place(x=40, y=150)
+
+
+        self.btn_ok = tk.Button(self.frm_janela2_c, text='Atribuir', command=self.Atribuir)
+        self.btn_ok.place(x=100, y=350)
+
+
+
 
 
     def RosterScreen(self):
@@ -242,14 +284,31 @@ class Screens:
         self.middle_frame = tk.Frame(self.center_frame_02, bg='#94939B')
         self.middle_frame.pack(side=tk.TOP,fill=tk.Y,pady=10,padx=10)
 
-        combo_var = tk.StringVar()
-        self.combo_box = ttk.Combobox(self.middle_frame, textvariable=combo_var,values=["Opção 1", "Opção 2", "Opção 3"])
-        self.combo_box.pack(pady=20, padx=20, side=tk.LEFT)
+        self.escalas_label = tk.Label(self.middle_frame, text='ESCALAS', font=('Inter', 10, 'bold'), fg='#FFF',bg='#94939B')
+        self.escalas_label.pack(side=tk.LEFT, pady=1, padx=10,)
 
+        self.string_Var_comb_tipo_p = tk.StringVar()
+
+        query = 'SELECT nome_escala FROM escala;'
+        dados = bd.consultar(query)
+        self.Tipo_escala = []
+        for tupla in dados:
+            for escala in tupla:
+                # print(escala)
+                self.Tipo_escala.append(escala)
+
+        combo_var = tk.StringVar()
+        self.combo_box = ttk.Combobox(self.middle_frame, values=self.Tipo_escala, state="readonly", font="30", width=28, height=5, textvariable=self.string_Var_comb_tipo_p)
+        self.combo_box.bind("<<ComboboxSelected>>", self.Dias_Escala_Entry)
+        self.combo_box.pack(pady=20, padx=20, side=tk.LEFT)
+        self.combo_box.current(0)
+
+        self.entry_dias_var = tk.StringVar()
+        
         self.middle_label = tk.Label(self.middle_frame, text='DIAS', font=('Inter', 10, 'bold'), fg='#FFF',bg='#94939B')
         self.middle_label.pack(side=tk.LEFT, pady=10, padx=10,)
 
-        self.entry_dias = tk.Entry(self.middle_frame)
+        self.entry_dias = tk.Entry(self.middle_frame, textvariable=self.entry_dias_var, width=3)
         self.entry_dias.pack(side=tk.LEFT, pady=10, padx=10)
 
         self.bttn_edit = tk.Button(self.middle_frame, text='EDITAR', font=('Inter', 10, 'bold'), fg='#FFF',bg='#FF7F50',command='')
@@ -295,11 +354,59 @@ class Screens:
         self.scrollbar.pack(side=tk.LEFT,fill=tk.BOTH,pady=10)
         self.tree.configure(yscrollcommand=self.scrollbar.set)
 
+        query = 'SELECT usuario_id, nome_completo, nome_usuario FROM usuario;'
+        dados = bd.consultar(query)
+        for tupla in dados:
+            self.tree.insert('', tk.END, values=(tupla[0], tupla[1],))
+
         self.frame_btn = tk.Frame(self.frame_right,bg='#94939B')
         self.frame_btn.pack(side=tk.TOP,expand=True,fill=tk.X,pady=10)
 
-        self.btt_add = tk.Button(self.frame_btn,text='ADICIONAR',font=('Inter', 10, 'bold'), fg='#070707',bg='#D9D9D9',command='',borderwidth=0)
+        self.btt_add = tk.Button(self.frame_btn,text='ATRIBUIR',font=('Inter', 10, 'bold'), fg='#070707',bg='#D9D9D9',command=self.Atribuir,borderwidth=0)
         self.btt_add.pack(side=tk.TOP)
+
+
+    def Dias_Escala_Entry(self, event):
+        query = f'SELECT dias_escala FROM escala Where nome_escala Like "{self.combo_box.get()}";'
+        dados = bd.consultar(query)
+        for dias_escala in dados:
+            pass
+        self.entry_dias_var.set(dias_escala[0])
+
+
+    def Atribuir(self):
+        selecionado = self.tree.selection()
+        lista = self.tree.item(selecionado, "values")
+        for nome in lista:
+            nome = nome
+        # print(self.cbx_usuario.get())
+        # print(self.cbx_tipo_escala.get())
+        # print(self.cal_escolha.selection_get()) 
+        query = f'''SELECT usuario_id, escala_id FROM escala, usuario 
+        WHERE nome_escala LIKE "{self.combo_box.get()}" and nome_completo LIKE "{nome}";'''
+        dados = bd.consultar(query)
+
+        ids = []
+
+        for tupla in dados:
+            for id in tupla:
+                ids.append(id)
+
+        usuario_id = ids[0]
+        escala_id = ids[1]
+        data_inicio = self.cal_atrib.get_date()
+
+
+        query = 'SELECT data_inicio_escala, data_fim_escala, dias_escala FROM escala;'
+        dados = bd.consultar(query)
+
+
+        query = f'INSERT INTO usuario_escala ("usuario_id", "escala_id", "data_inicio") VALUES ("{usuario_id}", {escala_id}, "{data_inicio}");'
+        bd.inserir(query)
+        self.voltar_roster()
+
+
+
 
     def CalendarScreen(self):
         self.calendar_screen = tk.Tk()
