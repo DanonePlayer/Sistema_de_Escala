@@ -149,7 +149,7 @@ class Screens:
 
         button_images = [
             (self.img_calendar, "Calendário", self.calendar),
-            (self.img_reports, "Relatorios", self.reports),
+            (self.img_reports, "Relatórios", self.reports),
             (self.img_user, "Usuários", self.user),
             (self.img_roster, "Escalas", self.roster),
             (self.img_roster_02, "Criar", self.create),
