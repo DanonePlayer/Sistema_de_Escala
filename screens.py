@@ -44,10 +44,14 @@ class Screens:
 
         self.entry_nome = tk.Entry(self.right_lbl, width=200, bg='#D9D9D9', justify="center", font=('Inter', 24 , 'bold'), fg='#94939B')
         self.entry_nome.insert(0, "Nome de Usuario")
+        self.entry_nome.bind("<FocusIn>", self.limpar_entry)
+        self.entry_nome.bind("<FocusOut>", self.restaurar_entry)
         self.entry_nome.pack(side=tk.TOP, pady=20, padx=20)
 
         self.entry_senha = tk.Entry(self.right_lbl, width=200, bg='#D9D9D9', justify="center",font=('Inter', 24, 'bold'), fg='#94939B')
         self.entry_senha.insert(0, "Senha")
+        self.entry_senha.bind("<FocusIn>", self.limpar_entry)
+        self.entry_senha.bind("<FocusOut>", self.restaurar_entry)
         self.entry_senha.pack(side=tk.TOP, pady=20, padx=20)
 
         self.bttn_login = tk.Button(self.right_lbl, font=('Inter', 24, 'bold'), fg='#FFFFFF', text="ENTRAR", bg='#6A6666',command=self.enter,borderwidth=0)
@@ -56,6 +60,19 @@ class Screens:
         self.bttn_help = tk.Button(self.right_lbl, font=('Inter', 20, 'bold'), fg='#6A6666', text=" Problemas de Login? ", bg='#94939B', borderwidth=0,command='')
         self.bttn_help.pack(fill=tk.BOTH)
         self.bttn_help.config()
+
+    def limpar_entry(self, event):
+        entry = event.widget
+        if entry.get() == "Nome de Usuario" or entry.get() == "Senha":
+            entry.delete(0, tk.END)
+
+    def restaurar_entry(self, event):
+        entry = event.widget
+        if not entry.get():
+            if entry == self.entry_nome:
+                entry.insert(0, "Nome de Usuario")
+            elif entry == self.entry_senha:
+                entry.insert(0, "Senha")
 
     def enter(self):
         self.login_screen.destroy()
