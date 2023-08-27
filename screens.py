@@ -30,7 +30,7 @@ class Screens:
         self.left_frm.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=20, pady=10)
 
         #self.img_pf = tk.PhotoImage(file="images/image 1.png", height=425, width=336)
-        self.img_pf = ImageTk.PhotoImage(Image.open(f"images/image 1.png"))
+        self.img_pf = ImageTk.PhotoImage(Image.open(f"images/image1.png"))
 
         self.left_lbl = tk.Label(self.left_frm, image=self.img_pf, height=425, width=336, bg='#D9D9D9')
         self.left_lbl.pack(side=tk.LEFT, pady=10, padx=50,fill=tk.BOTH,expand=True)
@@ -132,7 +132,7 @@ class Screens:
         self.top_lbl_03.pack(side=tk.TOP,padx=10)
 
 
-        self.img_pf_02 = ImageTk.PhotoImage(Image.open(f"images/image 1.png"))
+        self.img_pf_02 = ImageTk.PhotoImage(Image.open(f"images/image1.png"))
 
         self.left_lbl_02 = tk.Label(self.left_frm_2, image=self.img_pf_02, height=425, width=336, bg='#94939B')
         self.left_lbl_02.pack(side=tk.TOP,padx=10,pady=10)
@@ -212,7 +212,7 @@ class Screens:
 
     def voltar_edit_user(self):
         self.edit_user.destroy()
-        self.UserScreen()
+        # self.UserScreen()
 
     # Manage Roster Screen
     def manage(self):
@@ -874,7 +874,7 @@ class Screens:
         query = f"SELECT usuario_id, nome_completo, nome_usuario, senha, super_usuario FROM usuario WHERE usuario_id = {self.lista[0]};"
         self.lista = bd.consultar_usuarios(query)
         if self.selecionado != ():
-            self.edit_user = tk.Tk()
+            self.edit_user = tk.Toplevel()
             self.edit_user.title("Editar usuario")
             self.edit_user.geometry('462x676')
             self.edit_user.configure(bg='#D9D9D9')
