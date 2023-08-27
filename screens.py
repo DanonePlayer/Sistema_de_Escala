@@ -212,7 +212,7 @@ class Screens:
 
     def voltar_edit_user(self):
         self.edit_user.destroy()
-        # self.UserScreen()
+        self.user_screen.deiconify()
 
     # Manage Roster Screen
     def manage(self):
