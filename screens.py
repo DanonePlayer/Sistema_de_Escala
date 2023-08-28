@@ -65,6 +65,7 @@ class Screens:
         self.bttn_help = tk.Button(self.right_lbl, font=('Inter', 20, 'bold'), fg='#6A6666', text=" Problemas de Login? ", bg='#94939B', borderwidth=0,command='')
         self.bttn_help.pack(fill=tk.BOTH)
         self.bttn_help.config()
+        self.verifica_termino_escalas()
 
     def confirm_login(self):
         nome = self.entry_nome.get()
@@ -376,7 +377,7 @@ class Screens:
         self.middle_label = tk.Label(self.middle_frame, text='DIAS', font=('Inter', 10, 'bold'), fg='#FFF',bg='#94939B')
         self.middle_label.pack(side=tk.LEFT, pady=10, padx=10,)
 
-        self.entry_dias = tk.Entry(self.middle_frame, textvariable=self.entry_dias_var, width=3)
+        self.entry_dias = tk.Entry(self.middle_frame, textvariable=self.entry_dias_var, width=3, state="readonly")
         self.entry_dias.pack(side=tk.LEFT, pady=10, padx=10)
 
         self.bttn_edit = tk.Button(self.middle_frame, text='EDITAR', font=('Inter', 10, 'bold'), fg='#FFF',bg='#FF7F50',command='')
@@ -1564,6 +1565,14 @@ class Screens:
         self.report_screen.configure(bg='#D9D9D9')
         self.report_screen.resizable(False, False)
         self.report_screen.protocol("WM_DELETE_WINDOW", self.voltar_report)
+
+    def verifica_termino_escalas(self):
+        data_atual = datetime.now()
+        data_completa = data_atual.strftime("%d/%m/%Y")#%H:%M:%S
+
+        print("O dia atual é:", data_completa)
+
+
 
 
 janela = tk.Tk()
