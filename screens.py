@@ -237,16 +237,16 @@ class Screens:
         self.TypeManage()
 
     def create_type(self):
-        self.type_manage_screen.destroy()
+        self.type_manage_screen.iconify()
         self.CreateTypeScreen()
 
     def edit_type(self):
-        self.type_manage_screen.destroy()
+        self.type_manage_screen.iconify()
         self.EditeTypeScreen()
 
     def type_close(self):
         self.create_screen.destroy()
-        self.TypeManage()
+        self.type_manage_screen.deiconify()
 
     def voltar_type_manage(self):
         self.type_manage_screen.destroy()
@@ -993,7 +993,7 @@ class Screens:
 
     def TypeManage(self):
         self.type_manage_screen = tk.Tk()
-        self.type_manage_screen.title("Usuarios")
+        self.type_manage_screen.title("Tipo de Escala")
         self.type_manage_screen.geometry('800x620')
         self.type_manage_screen.configure(bg='#D9D9D9')
         self.type_manage_screen.resizable(False, False)
@@ -1023,6 +1023,8 @@ class Screens:
         self.tvw_type_manage.heading('escala_mutua', text='Escala Mútua')
         self.tvw_type_manage.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
+        self.update_tvw_type_manage()
+
         self.scr_tvw_type_manage = ttk.Scrollbar(self.frame_tvw_type_manage, command=self.tvw_type_manage.yview)
         self.scr_tvw_type_manage.pack(side=tk.LEFT, fill=tk.BOTH)
         self.tvw_type_manage.configure(yscroll=self.scr_tvw_type_manage.set)
@@ -1032,22 +1034,30 @@ class Screens:
 
         self.btn_create_type_manage = tk.Button(self.frame_tvw_type_button, text="Criar Tipo de Escala", font=("Arial", 10, "bold"),
                                                bg="#3CB371", fg="white", width=20, height=1, borderwidth=0,
-                                               command=self.open_create_user)
+                                               command=self.create_type)
         self.btn_create_type_manage.grid(row=0, column=0, padx=10, pady=10)
 
-        self.btn_editar_usuario = tk.Button(self.frame_tvw_type_button, text="Editar Tipo de Escala", font=("Arial", 10, "bold"),
+        self.btn_edit_type_manage = tk.Button(self.frame_tvw_type_button, text="Editar Tipo de Escala", font=("Arial", 10, "bold"),
                                             bg="Orange", fg="white", width=20, height=1, borderwidth=0,
-                                            command=self.open_edit_user)
-        self.btn_editar_usuario.grid(row=0, column=1, padx=10, pady=10)
+                                            command=self.edit_type)
+        self.btn_edit_type_manage.grid(row=0, column=1, padx=10, pady=10)
 
-        self.btn_excluir_usuario = tk.Button(self.frame_tvw_type_button, text="Excluir Tipo de Escala", font=("Arial", 10, "bold"),
+        self.btn_delete_type_manage = tk.Button(self.frame_tvw_type_button, text="Excluir Tipo de Escala", font=("Arial", 10, "bold"),
                                              bg="#E1523F", fg="white", width=20, height=1, borderwidth=0,
                                              command=self.delete_user)
-        self.btn_excluir_usuario.grid(row=0, column=2, padx=10, pady=10)
+        self.btn_delete_type_manage.grid(row=0, column=2, padx=10, pady=10)
 
-        self.btn_excluir_usuario = tk.Button(self.frame_tvw_type_button, text="Voltar", font=("Arial", 10, "bold"), bg="#FFF",
+        self.btn_back_type_manage = tk.Button(self.frame_tvw_type_button, text="Voltar", font=("Arial", 10, "bold"), bg="#FFF",
                                              fg="#000", width=20, height=1, borderwidth=0, command=self.type_manage_close)
-        self.btn_excluir_usuario.grid(row=0, column=3, padx=10, pady=10)
+        self.btn_back_type_manage.grid(row=0, column=3, padx=10, pady=10)
+
+    def update_tvw_type_manage(self):
+        for i in self.tvw_type_manage.get_children():
+            self.tvw_type_manage.delete(i)
+        query = "SELECT tipo_escala_id, nome_tipo_escala, CASE WHEN finais_semana = 0 THEN 'Não' WHEN finais_semana = 1 THEN 'Sim' END AS finais_semana, CASE WHEN feriados = 0 THEN 'Não' WHEN feriados = 1 THEN 'Sim' END AS feriados, CASE WHEN escala_mutua = 0 THEN 'Não' WHEN escala_mutua = 1 THEN 'Sim' END AS escala_mutua FROM tipo_escala;"
+        dados = bd.consultar(query)
+        for tupla in dados:
+            self.tvw_type_manage.insert('', tk.END, values=tupla)
 
     def CreateTypeScreen(self):
         self.create_screen = tk.Tk()
@@ -1060,7 +1070,7 @@ class Screens:
         self.center_frame_03 = tk.Frame(self.create_screen,bg='#94939B')
         self.center_frame_03.pack(fill=tk.BOTH, expand=True, padx=20, pady=20)
 
-        self.lbl_create = tk.Label(self.center_frame_03,text='CRIAR TIPO DE ESCALA',font=('Inter', 10, 'bold'),fg='#0B0B0B', bg='#94939B' )
+        self.lbl_create = tk.Label(self.center_frame_03,text='CRIAR TIPO DE ESCALA',font=('Inter', 20, 'bold'),fg='#0B0B0B', bg='#94939B' )
         self.lbl_create.pack(side=tk.TOP,padx=5,pady=10)
 
         self.lbl_name = tk.Label(self.center_frame_03, text="NOME DA ESCALA",font=('Inter', 10, 'bold'),fg='#FFF',bg='#94939B')
@@ -1072,41 +1082,41 @@ class Screens:
         self.frame_escolhas = tk.Frame(self.center_frame_03,bg='#94939B')
         self.frame_escolhas.pack(fill=tk.Y, expand=True, padx=10, pady=10,side=tk.TOP)
 
-        self.lbl_03 = tk.Label(self.frame_escolhas, text='CONTAR FINAIS DE SEMANA?', font=('Inter', 10, 'bold'),fg='#FFF', bg='#94939B')
+        self.lbl_03 = tk.Label(self.frame_escolhas, text='CONTAR FINAIS DE SEMANA?', font=('Inter', 10),fg='#FFF', bg='#94939B')
         self.lbl_03.grid(row=0, column=0, columnspan=3, sticky='n', pady=10)
 
-        radio_var_01 = tk.StringVar()
-        radio_var_02 = tk.StringVar()
-        radio_var_03 = tk.StringVar()
+        self.radio_var_01 = tk.StringVar()
+        self.radio_var_02 = tk.StringVar()
+        self.radio_var_03 = tk.StringVar()
 
         style = ttk.Style()
         style.configure("Custom.TRadiobutton", background="#94939B", foreground="white", font=("Inter", 10, "bold"))
 
-        self.radio_01 = ttk.Radiobutton(self.frame_escolhas, text="SIM", variable=radio_var_01, value="SIM_1",style="Custom.TRadiobutton")
+        self.radio_01 = ttk.Radiobutton(self.frame_escolhas, text="SIM", variable=self.radio_var_01, value=1, style="Custom.TRadiobutton")
         self.radio_01.grid(row=2, column=0, padx=10, pady=10, sticky='n')
-        self.radio_02 = ttk.Radiobutton(self.frame_escolhas, text="NÃO", variable=radio_var_01, value="NÃO_1",style="Custom.TRadiobutton")
+        self.radio_02 = ttk.Radiobutton(self.frame_escolhas, text="NÃO", variable=self.radio_var_01, value=0, style="Custom.TRadiobutton")
         self.radio_02.grid(row=2, column=1, padx=10, pady=10, sticky='n')
 
         self.lbl_04 = tk.Label(self.frame_escolhas, text='CONTAR FERIADOS?', font=('Inter', 10, 'bold'), fg='#FFF',bg='#94939B')
         self.lbl_04.grid(row=3, column=0, columnspan=2, sticky='nsew', pady=20)
 
-        self.radio_03 = ttk.Radiobutton(self.frame_escolhas, text="SIM", variable=radio_var_02, value="SIM_2",style="Custom.TRadiobutton")
+        self.radio_03 = ttk.Radiobutton(self.frame_escolhas, text="SIM", variable=self.radio_var_02, value=1, style="Custom.TRadiobutton")
         self.radio_03.grid(row=4, column=0, padx=10, pady=10, sticky='n')
-        self.radio_04 = ttk.Radiobutton(self.frame_escolhas, text="NÃO", variable=radio_var_02, value="NÃO_2",style="Custom.TRadiobutton")
+        self.radio_04 = ttk.Radiobutton(self.frame_escolhas, text="NÃO", variable=self.radio_var_02, value=0, style="Custom.TRadiobutton")
         self.radio_04.grid(row=4, column=1, padx=10, pady=10, sticky='n')
 
         self.lbl_05 = tk.Label(self.frame_escolhas, text='ESCALA MUTUA?', font=('Inter', 10, 'bold'), fg='#FFF',bg='#94939B')
         self.lbl_05.grid(row=5, column=0, columnspan=2, sticky='nsew', pady=20)
 
-        self.radio_06 = ttk.Radiobutton(self.frame_escolhas, text="SIM", variable=radio_var_03, value="SIM_2",style="Custom.TRadiobutton")
+        self.radio_06 = ttk.Radiobutton(self.frame_escolhas, text="SIM", variable=self.radio_var_03, value=1, style="Custom.TRadiobutton")
         self.radio_06.grid(row=6, column=0, padx=10, pady=10, sticky='n')
-        self.radio_07 = ttk.Radiobutton(self.frame_escolhas, text="NÃO", variable=radio_var_03, value="NÃO_2",style="Custom.TRadiobutton")
+        self.radio_07 = ttk.Radiobutton(self.frame_escolhas, text="NÃO", variable=self.radio_var_03, value=0, style="Custom.TRadiobutton")
         self.radio_07.grid(row=6, column=1, padx=10, pady=10, sticky='n')
 
         self.frame_button = tk.Frame(self.center_frame_03,bg='#94939B')
         self.frame_button.pack(fill=tk.Y, padx=10, pady=10,side=tk.TOP)
 
-        self.bttn_criar_02 = tk.Button(self.frame_button, text='CRIAR', font=('Inter', 10, 'bold'), fg='#FFF',bg='#3CB371',command='',borderwidth=0)
+        self.bttn_criar_02 = tk.Button(self.frame_button, text='CRIAR', font=('Inter', 10, 'bold'), fg='#FFF',bg='#3CB371',command=self.confirm_create_type_manage,borderwidth=0)
         self.bttn_criar_02.pack(side=tk.LEFT,pady=5,padx=10)
 
         self.bttn_clean = tk.Button(self.frame_button, text='LIMPAR', font=('Inter', 10, 'bold'), fg='#605F5F',bg='#FFFFFF',command='',borderwidth=0)
@@ -1114,6 +1124,44 @@ class Screens:
 
         self.bttn_voltar_02 = tk.Button(self.frame_button,text='VOLTAR',font=("Arial", 10, "bold"), bg="#E1523F",fg="white",borderwidth=0,command=self.type_close)
         self.bttn_voltar_02.pack(side=tk.LEFT, pady=5, padx=10)
+
+    def confirm_create_type_manage(self):
+        nome_escala = self.entry_nome_e.get()
+        finais_semana = self.radio_var_01.get()
+        feriados = self.radio_var_02.get()
+        escala_mutua = self.radio_var_03.get()
+
+        if nome_escala == "":
+            messagebox.showinfo("Insira um nome completo", "O campo nome da escala está incorreto!")
+            self.create_screen.deiconify()
+        elif escala_mutua == "":
+            messagebox.showinfo("Selecione um tipo", "Nenhuma seleção no escala mútua!")
+            self.create_screen.deiconify()
+        elif finais_semana == "":
+            messagebox.showinfo("Selecione um tipo", "Nenhuma seleção no finais de semana!")
+            self.create_screen.deiconify()
+        elif feriados == "":
+            messagebox.showinfo("Selecione um tipo", "Nenhuma seleção no feriados!")
+            self.create_screen.deiconify()
+        else:
+            query = 'SELECT nome_tipo_escala FROM tipo_escala;'
+            valores = bd.consultar_usuarios(query)
+            confirmar = False
+            for i in valores:
+                if nome_escala == i:
+                    confirmar = True
+                    break
+            if not confirmar:
+                query = f'INSERT INTO tipo_escala ("nome_tipo_escala", "feriados", "finais_semana", "escala_mutua") VALUES ("{nome_escala}", {feriados}, {finais_semana}, {escala_mutua});'
+                bd.inserir(query)
+                self.update_tvw_type_manage()
+                messagebox.showinfo("SUCESSO!", "Escala criada com sucesso!")
+                self.create_screen.destroy()
+                self.type_manage_screen.deiconify()
+            else:
+                messagebox.showinfo("Nome do tipo de escala já cadastrado",
+                                    "O Nome do tipo de escala já está cadastrado")
+                self.create_screen.deiconify()
 
     def EditeTypeScreen(self):
         self.edite_type = tk.Tk()
@@ -1151,17 +1199,17 @@ class Screens:
                                fg='#FFF', bg='#94939B')
         self.lbl_03.grid(row=0, column=0, columnspan=3, sticky='n', pady=10)
 
-        radio_var_01 = tk.StringVar()
-        radio_var_02 = tk.StringVar()
-        radio_var_03 = tk.StringVar()
+        self.radio_var_01 = tk.StringVar()
+        self.radio_var_02 = tk.StringVar()
+        self.radio_var_03 = tk.StringVar()
 
         style = ttk.Style()
         style.configure("Custom.TRadiobutton", background="#94939B", foreground="white", font=("Inter", 10, "bold"))
 
-        self.radioedit_01 = ttk.Radiobutton(self.frame_escolhas_01, text="SIM", variable=radio_var_01, value="SIM_1",
+        self.radioedit_01 = ttk.Radiobutton(self.frame_escolhas_01, text="SIM", variable=self.radio_var_01, value=1,
                                             style="Custom.TRadiobutton")
         self.radioedit_01.grid(row=2, column=0, padx=10, pady=10, sticky='n')
-        self.radioedit_02 = ttk.Radiobutton(self.frame_escolhas_01, text="NÃO", variable=radio_var_01, value="NÃO_1",
+        self.radioedit_02 = ttk.Radiobutton(self.frame_escolhas_01, text="NÃO", variable=self.radio_var_01, value=0,
                                             style="Custom.TRadiobutton")
         self.radioedit_02.grid(row=2, column=1, padx=10, pady=10, sticky='n')
 
@@ -1169,10 +1217,10 @@ class Screens:
                                bg='#94939B')
         self.lbl_04.grid(row=3, column=0, columnspan=2, sticky='nsew', pady=20)
 
-        self.radioedit_03 = ttk.Radiobutton(self.frame_escolhas_01, text="SIM", variable=radio_var_02, value="SIM_2",
+        self.radioedit_03 = ttk.Radiobutton(self.frame_escolhas_01, text="SIM", variable=self.radio_var_02, value=1,
                                             style="Custom.TRadiobutton")
         self.radioedit_03.grid(row=4, column=0, padx=10, pady=10, sticky='n')
-        self.radioedit_04 = ttk.Radiobutton(self.frame_escolhas_01, text="NÃO", variable=radio_var_02, value="NÃO_2",
+        self.radioedit_04 = ttk.Radiobutton(self.frame_escolhas_01, text="NÃO", variable=self.radio_var_02, value=0,
                                             style="Custom.TRadiobutton")
         self.radioedit_04.grid(row=4, column=1, padx=10, pady=10, sticky='n')
 
@@ -1180,10 +1228,10 @@ class Screens:
                                    bg='#94939B')
         self.lbl_05edit.grid(row=5, column=0, columnspan=2, sticky='nsew', pady=20)
 
-        self.radioedit_06 = ttk.Radiobutton(self.frame_escolhas_01, text="SIM", variable=radio_var_03, value="SIM_2",
+        self.radioedit_06 = ttk.Radiobutton(self.frame_escolhas_01, text="SIM", variable=self.radio_var_03, value=1,
                                             style="Custom.TRadiobutton")
         self.radioedit_06.grid(row=6, column=0, padx=10, pady=10, sticky='n')
-        self.radioedit_07 = ttk.Radiobutton(self.frame_escolhas_01, text="NÃO", variable=radio_var_03, value="NÃO_2",
+        self.radioedit_07 = ttk.Radiobutton(self.frame_escolhas_01, text="NÃO", variable=self.radio_var_03, value=0,
                                             style="Custom.TRadiobutton")
         self.radioedit_07.grid(row=6, column=1, padx=10, pady=10, sticky='n')
 
