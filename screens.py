@@ -1,15 +1,15 @@
 import tkinter as tk
+from calendar import monthrange
+from datetime import datetime
 ##from tkinter import PhotoImage, ttk, messagebox,RAISED, RIDGE
-from tkinter import ttk, messagebox
+from tkinter import messagebox, ttk
+
 import bcrypt
 import holidays
 from PIL import Image, ImageTk
 from tkcalendar import Calendar, DateEntry
+
 import bd_sistemas_de_escala as bd
-from calendar import monthrange
-from datetime import datetime
-
-
 
 
 class Screens:
@@ -361,11 +361,17 @@ class Screens:
         combo_var = tk.StringVar()
         self.combo_box = ttk.Combobox(self.middle_frame, values=self.Tipo_escala, state="readonly", font="30", width=28,
                                       height=5, textvariable=self.string_Var_comb_tipo_p)
-        self.combo_box.bind("<<ComboboxSelected>>", self.Dias_Escala_Entry)
+        self.combo_box.bind("<<ComboboxSelected>>", self.Aualizações_Atribuir)
         self.combo_box.pack(pady=20, padx=20, side=tk.LEFT)
         self.combo_box.current(0)
 
         self.entry_dias_var = tk.StringVar()
+
+        query = f'SELECT dias_escala FROM escala Where nome_escala Like "{self.combo_box.get()}";'
+        dados = bd.consultar(query)
+        for dias_escala in dados:
+            pass
+        self.entry_dias_var.set(dias_escala[0])
 
         self.middle_label = tk.Label(self.middle_frame, text='DIAS', font=('Inter', 10, 'bold'), fg='#FFF',bg='#94939B')
         self.middle_label.pack(side=tk.LEFT, pady=10, padx=10,)
@@ -427,12 +433,21 @@ class Screens:
         self.btt_add = tk.Button(self.frame_btn,text='ATRIBUIR',font=('Inter', 10, 'bold'), fg='#070707',bg='#D9D9D9',command=self.Atribuir,borderwidth=0)
         self.btt_add.pack(side=tk.TOP)
 
-    def Dias_Escala_Entry(self, event):
+    def Aualizações_Atribuir(self, event):
         query = f'SELECT dias_escala FROM escala Where nome_escala Like "{self.combo_box.get()}";'
         dados = bd.consultar(query)
         for dias_escala in dados:
             pass
         self.entry_dias_var.set(dias_escala[0])
+
+        self.tree.delete(*self.tree.get_children())
+
+        query = 'SELECT usuario_id, nome_completo, nome_usuario FROM usuario;'
+        dados = bd.consultar(query)
+        for tupla in dados:
+            self.tree.insert('', tk.END, values=(tupla[0], tupla[1],))
+
+
 
     def Atribuir(self):
         selecionado = self.tree.selection()
