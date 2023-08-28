@@ -156,7 +156,7 @@ class Screens:
             (self.img_reports, "Relatórios", self.reports),
             (self.img_user, "Usuários", self.user),
             (self.img_roster, "Atribuir", self.roster),
-            (self.img_roster_02, "Tipos", self.create),
+            (self.img_roster_02, "Tipos", self.type_manage),
             (self.img_edit, "Escalas", self.manage)
         ]
         button_width = max(img.width() for img, _, _ in button_images)
@@ -176,18 +176,6 @@ class Screens:
             )
             button.pack(side=tk.LEFT, padx=10, pady=10, expand=True, fill=tk.BOTH)
             button.config(width=button_width)
-
-    def roster(self):
-        self.main_screen.destroy()
-        self.RosterScreen()
-
-    def calendar(self):
-        self.main_screen.destroy()
-        self.CalendarScreen()
-
-    def reports(self):
-        self.main_screen.destroy()
-        self.ReportScreen()
 
     # USER SCREEN
     def user(self):
@@ -213,6 +201,7 @@ class Screens:
     def voltar_edit_user(self):
         self.edit_user.destroy()
         self.user_screen.deiconify()
+    # END User Screen
 
     # Manage Roster Screen
     def manage(self):
@@ -240,41 +229,61 @@ class Screens:
     def voltar_edit_roster(self):
         self.edit_roster_screen.destroy()
         self.roster_manage.deiconify()
+    # END Manage Roster
+
+    # Type Manage Screen
+    def type_manage(self):
+        self.main_screen.destroy()
+        self.TypeManage()
 
     def create_type(self):
-        self.type_manage.destroy()
+        self.type_manage_screen.destroy()
         self.CreateTypeScreen()
 
     def edit_type(self):
-        self.type_manage.destroy()
+        self.type_manage_screen.destroy()
         self.EditeTypeScreen()
 
     def type_close(self):
         self.create_screen.destroy()
         self.TypeManage()
 
-    def type_manage_close(self):
-        self.type_manage.destroy()
+    def voltar_type_manage(self):
+        self.type_manage_screen.destroy()
         self.MainScreen()
 
-    def voltar_calendar(self):
-        self.calendar_screen.destroy()
+    def type_manage_close(self):
+        self.type_manage_screen.destroy()
         self.MainScreen()
+    # END Type Manage
+
+    def roster(self):
+        self.main_screen.destroy()
+        self.RosterScreen()
 
     def voltar_roster(self):
         self.roster_screen.destroy()
         self.MainScreen()
 
+    def calendar(self):
+        self.main_screen.destroy()
+        self.CalendarScreen()
+
+    def voltar_calendar(self):
+        self.calendar_screen.destroy()
+        self.MainScreen()
+
+    def reports(self):
+        self.main_screen.destroy()
+        self.ReportScreen()
+
     def voltar_create(self):
         self.create_screen.destroy()
         self.MainScreen()
+
     def voltar_report(self):
         self.report_screen.destroy()
         self.MainScreen()
-
-    def create(self):
-        self.main_screen.destroy()
-        self.TypeManage()
 
     def Atribuir_Escala(self, event):
         # print(self.text1.get())
@@ -515,10 +524,10 @@ class Screens:
         self.buttons_frame = tk.Frame(self.center_frame, bg='#94939B')
         self.buttons_frame.pack(side=tk.BOTTOM, padx=10, pady=10)
 
-        self.bttn_back = tk.Button(self.buttons_frame, text='VOLTAR', font=("Arial", 10), bg="#E1523F", fg="white",command=self.voltar_calendar, borderwidth=0)
+        self.bttn_back = tk.Button(self.buttons_frame, text='VOLTAR', font=("Arial", 10, "bold"), bg="#FFF", fg="#000",command=self.voltar_calendar, borderwidth=0)
         self.bttn_back.pack(side=tk.LEFT, pady=10, padx=15)
 
-        self.bttn_verificar = tk.Button(self.buttons_frame,text='VERIFICAR', font=("Arial", 10), bg="#3CB371",fg="white",command=self.Aplica_Calendario,borderwidth=0)
+        self.bttn_verificar = tk.Button(self.buttons_frame,text='VERIFICAR', font=("Arial", 10, "bold"), bg="#3CB371",fg="white",command=self.Aplica_Calendario,borderwidth=0)
         self.bttn_verificar.pack(side=tk.LEFT, pady=10, padx=15)
         self.calendar_ferias()
 
@@ -741,16 +750,16 @@ class Screens:
         self.frame_tvw_button = tk.Frame(self.frm, bg='#94939B')
         self.frame_tvw_button.pack(side=tk.BOTTOM)
 
-        self.btn_cadastrar_usuario = tk.Button(self.frame_tvw_button, text="Criar Usuário", font=("Arial", 10), bg="#3CB371",fg="white", width=20, height=1,borderwidth=0,command=self.open_create_user)
+        self.btn_cadastrar_usuario = tk.Button(self.frame_tvw_button, text="Criar Usuário", font=("Arial", 10, "bold"), bg="#3CB371",fg="white", width=20, height=1,borderwidth=0,command=self.open_create_user)
         self.btn_cadastrar_usuario.grid(row=0,column=0,padx=10,pady=10)
 
-        self.btn_editar_usuario = tk.Button(self.frame_tvw_button, text="Editar Usuário", font=("Arial", 10), bg="Orange", fg="white",width=20, height=1,borderwidth=0,command=self.open_edit_user)
+        self.btn_editar_usuario = tk.Button(self.frame_tvw_button, text="Editar Usuário", font=("Arial", 10, "bold"), bg="Orange", fg="white",width=20, height=1,borderwidth=0,command=self.open_edit_user)
         self.btn_editar_usuario.grid(row=0,column=1,padx=10,pady=10)
 
-        self.btn_excluir_usuario = tk.Button(self.frame_tvw_button, text="Excluir Usuário", font=("Arial", 10), bg="#E1523F",fg="white", width=20, height=1,borderwidth=0,command=self.delete_user)
+        self.btn_excluir_usuario = tk.Button(self.frame_tvw_button, text="Excluir Usuário", font=("Arial", 10, "bold"), bg="#E1523F",fg="white", width=20, height=1,borderwidth=0,command=self.delete_user)
         self.btn_excluir_usuario.grid(row=0,column=2,padx=10,pady=10)
 
-        self.btn_excluir_usuario = tk.Button(self.frame_tvw_button, text="Voltar", font=("Arial", 10),bg="#E1523F", fg="white", width=20, height=1, borderwidth=0, command=self.voltar_user)
+        self.btn_excluir_usuario = tk.Button(self.frame_tvw_button, text="Voltar", font=("Arial", 10, "bold"),bg="#FFF", fg="#000", width=20, height=1, borderwidth=0, command=self.voltar_user)
         self.btn_excluir_usuario.grid(row=0, column=3, padx=10, pady=10)
 
     def update_tvw_user(self):
@@ -803,9 +812,9 @@ class Screens:
         self.frm_bttn_03 = tk.Frame(self.center_frame_04, bg='#94939B')
         self.frm_bttn_03.pack(side=tk.BOTTOM, expand=True, padx=10, pady=10)
 
-        self.btn_conf  = tk.Button(self.frm_bttn_03, text="Confirmar", command=self.confirm_create_user,font=("Arial", 10), bg="#3CB371",fg="white", width=10, height=1,borderwidth=0).pack(side='left', padx=15,pady=10)
-        self.btn_limp = tk.Button(self.frm_bttn_03, text="Limpar", command="", font=("Arial", 10), bg="Orange", fg="white",width=10, height=1,borderwidth=0).pack(side='left', padx=15,pady=10)
-        self.btn_cancel = tk.Button(self.frm_bttn_03, text="Cancelar", command=self.voltar_create_user, font=("Arial", 10), bg="#E1523F",fg="white", width=10, height=1,borderwidth=0).pack(side='left', padx=15, pady=10)
+        self.btn_conf  = tk.Button(self.frm_bttn_03, text="Confirmar", command=self.confirm_create_user,font=("Arial", 10, "bold"), bg="#3CB371",fg="white", width=10, height=1,borderwidth=0).pack(side='left', padx=15,pady=10)
+        self.btn_limp = tk.Button(self.frm_bttn_03, text="Limpar", command="", font=("Arial", 10, "bold"), bg="Orange", fg="white",width=10, height=1,borderwidth=0).pack(side='left', padx=15,pady=10)
+        self.btn_cancel = tk.Button(self.frm_bttn_03, text="Cancelar", command=self.voltar_create_user, font=("Arial", 10, "bold"), bg="#E1523F",fg="white", width=10, height=1,borderwidth=0).pack(side='left', padx=15, pady=10)
 
     def confirm_create_user(self):
         full_name = self.full_name_entry.get()
@@ -917,9 +926,9 @@ class Screens:
             self.frm_bttn_02 = tk.Frame(self.center_frame_05,bg='#94939B')
             self.frm_bttn_02.pack(side=tk.BOTTOM,expand=True,padx=10,pady=10)
 
-            self.btn_conf  = tk.Button(self.frm_bttn_02, text="Confirmar", command=self.confirm_edit_user,font=("Arial", 10), bg="#3CB371",fg="white", width=10, height=1,borderwidth=0).pack(side='left', padx=15,pady=10)
-            self.btn_limp = tk.Button(self.frm_bttn_02, text="Limpar", command="", font=("Arial", 10), bg="Orange", fg="white",width=10, height=1,borderwidth=0).pack(side='left', padx=15,pady=10)
-            self.btn_cancel = tk.Button(self.frm_bttn_02, text="Cancelar", command=self.voltar_edit_user, font=("Arial", 10), bg="#E1523F",fg="white", width=10, height=1,borderwidth=0).pack(side='left', padx=15, pady=10)
+            self.btn_conf  = tk.Button(self.frm_bttn_02, text="Confirmar", command=self.confirm_edit_user,font=("Arial", 10, "bold"), bg="#3CB371",fg="white", width=10, height=1,borderwidth=0).pack(side='left', padx=15,pady=10)
+            self.btn_limp = tk.Button(self.frm_bttn_02, text="Limpar", command="", font=("Arial", 10, "bold"), bg="Orange", fg="white",width=10, height=1,borderwidth=0).pack(side='left', padx=15,pady=10)
+            self.btn_cancel = tk.Button(self.frm_bttn_02, text="Cancelar", command=self.voltar_edit_user, font=("Arial", 10, "bold"), bg="#E1523F",fg="white", width=10, height=1,borderwidth=0).pack(side='left', padx=15, pady=10)
 
     def confirm_edit_user(self):
         self.selecionado = self.tvw_usuario.selection()
@@ -983,60 +992,62 @@ class Screens:
         self.user_screen.deiconify()
 
     def TypeManage(self):
-        self.type_manage = tk.Tk()
-        self.type_manage.title("Gerenciar Escalas")
-        self.type_manage.geometry('1000x600')
-        self.type_manage.configure(bg='#D9D9D9')
-        self.type_manage.resizable(False, False)
-        self.type_manage.protocol("WM_DELETE_WINDOW", self.type_manage_close)
+        self.type_manage_screen = tk.Tk()
+        self.type_manage_screen.title("Usuarios")
+        self.type_manage_screen.geometry('800x620')
+        self.type_manage_screen.configure(bg='#D9D9D9')
+        self.type_manage_screen.resizable(False, False)
+        self.type_manage_screen.protocol("WM_DELETE_WINDOW", self.voltar_type_manage)
 
-        self.lbl_07 = tk.Label(self.type_manage, text='GERENCIAR TIPOS DE ESCALAS', font=('Inter', 18, 'bold'),
-                               fg='#0B0B0B', bg='#D9D9D9')
-        self.lbl_07.pack(side=tk.TOP, pady=(20))
+        self.lbl_manage_name = tk.Label(self.type_manage_screen, text='TIPO DE ESCALAS', font=('Inter', 18, 'bold'), fg='#0B0B0B',
+                                 bg='#D9D9D9')
+        self.lbl_manage_name.pack(side=tk.TOP, pady=(20, 5))
 
-        self.frm_06 = tk.Frame(self.type_manage, bg='#94939B')
-        self.frm_06.pack(pady=10, padx=10, expand=True, fill=tk.BOTH)
+        self.frm_type_manage = tk.Frame(self.type_manage_screen, bg='#94939B')
+        self.frm_type_manage.pack(pady=10, padx=10, expand=True, fill=tk.BOTH)
 
-        self.frame_tvw_type = tk.Frame(self.frm_06, bg='#94939B')
-        self.frame_tvw_type.pack(expand=True, fill=tk.BOTH, padx=8, pady=(10, 8))
+        self.frame_tvw_type_manage = tk.Frame(self.frm_type_manage, bg='#94939B')
+        self.frame_tvw_type_manage.pack(pady=20, padx=20, expand=True, fill=tk.BOTH)
 
-        self.tvw_tipo_escala = ttk.Treeview(self.frame_tvw_type, columns=(
-        'id', 'nome tipo de escala', 'finais de semana', 'feriados', 'escala mutua'), show='headings')
-        self.tvw_tipo_escala.column('id', width=40)
-        self.tvw_tipo_escala.column('nome tipo de escala', width=250)
-        self.tvw_tipo_escala.column('finais de semana', width=125)
-        self.tvw_tipo_escala.column('feriados', width=125)
-        self.tvw_tipo_escala.column('escala mutua', width=125)
-        self.tvw_tipo_escala.heading('id', text='Id')
-        self.tvw_tipo_escala.heading('nome tipo de escala', text='Nome da Escala')
-        self.tvw_tipo_escala.heading('finais de semana', text='Finais de Semana')
-        self.tvw_tipo_escala.heading('feriados', text='Feriados')
-        self.tvw_tipo_escala.heading('escala mutua', text='Escala Mútua')
-        self.tvw_tipo_escala.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
-        # self.atualizar_tvw_tipo_escala()
+        self.tvw_type_manage = ttk.Treeview(self.frame_tvw_type_manage, columns=('tipo_id', 'nome_tipo_escala', 'finais_semana', 'feriados', 'escala_mutua'),
+                                        show='headings')
+        self.tvw_type_manage.column('tipo_id', width=40)
+        self.tvw_type_manage.column('nome_tipo_escala', width=250)
+        self.tvw_type_manage.column('finais_semana', width=125)
+        self.tvw_type_manage.column('feriados', width=125)
+        self.tvw_type_manage.column('escala_mutua', width=125)
+        self.tvw_type_manage.heading('tipo_id', text='Id')
+        self.tvw_type_manage.heading('nome_tipo_escala', text='Nome do Tipo de Escala')
+        self.tvw_type_manage.heading('finais_semana', text='Finais de Semana')
+        self.tvw_type_manage.heading('feriados', text='Feriados')
+        self.tvw_type_manage.heading('escala_mutua', text='Escala Mútua')
+        self.tvw_type_manage.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
-        self.scr_escala_type = ttk.Scrollbar(self.frame_tvw_type, command=self.tvw_tipo_escala.yview)
-        self.scr_escala_type.pack(side=tk.LEFT, fill=tk.BOTH)
-        self.tvw_tipo_escala.configure(yscroll=self.scr_escala_type.set)
+        self.scr_tvw_type_manage = ttk.Scrollbar(self.frame_tvw_type_manage, command=self.tvw_type_manage.yview)
+        self.scr_tvw_type_manage.pack(side=tk.LEFT, fill=tk.BOTH)
+        self.tvw_type_manage.configure(yscroll=self.scr_tvw_type_manage.set)
 
-        self.frame_button_02 = tk.Frame(self.frm_06, bg='#94939B')
-        self.frame_button_02.pack(side=tk.BOTTOM)
+        self.frame_tvw_type_button = tk.Frame(self.frm_type_manage, bg='#94939B')
+        self.frame_tvw_type_button.pack(side=tk.BOTTOM)
 
-        self.btn_create_01 = tk.Button(self.frame_button_02, text="Criar Tipo", font=("Arial", 10), bg="#3CB371",
-                                       fg="white", width=20, height=1, borderwidth=0, command=self.create_type)
-        self.btn_create_01.grid(row=0, column=0, padx=10, pady=10)
+        self.btn_create_type_manage = tk.Button(self.frame_tvw_type_button, text="Criar Tipo de Escala", font=("Arial", 10, "bold"),
+                                               bg="#3CB371", fg="white", width=20, height=1, borderwidth=0,
+                                               command=self.open_create_user)
+        self.btn_create_type_manage.grid(row=0, column=0, padx=10, pady=10)
 
-        self.btn_edit_01 = tk.Button(self.frame_button_02, text="Editar Tipo", font=("Arial", 10), bg="Orange",
-                                     fg="white", width=20, height=1, borderwidth=0, command=self.edit_type)
-        self.btn_edit_01.grid(row=0, column=1, padx=10, pady=10)
+        self.btn_editar_usuario = tk.Button(self.frame_tvw_type_button, text="Editar Tipo de Escala", font=("Arial", 10, "bold"),
+                                            bg="Orange", fg="white", width=20, height=1, borderwidth=0,
+                                            command=self.open_edit_user)
+        self.btn_editar_usuario.grid(row=0, column=1, padx=10, pady=10)
 
-        self.btn_exclude_01 = tk.Button(self.frame_button_02, text="Desativar", font=("Arial", 10), bg="#E1523F",
-                                        fg="white", width=20, height=1, borderwidth=0, command='')
-        self.btn_exclude_01.grid(row=0, column=2, padx=10, pady=10)
+        self.btn_excluir_usuario = tk.Button(self.frame_tvw_type_button, text="Excluir Tipo de Escala", font=("Arial", 10, "bold"),
+                                             bg="#E1523F", fg="white", width=20, height=1, borderwidth=0,
+                                             command=self.delete_user)
+        self.btn_excluir_usuario.grid(row=0, column=2, padx=10, pady=10)
 
-        self.bttn_return_01 = tk.Button(self.frame_button_02, text="Voltar", font=("Arial", 10), bg="#E1523F",
-                                        fg="white", width=20, height=1, borderwidth=0, command=self.type_manage_close)
-        self.bttn_return_01.grid(row=0, column=3, padx=10, pady=10)
+        self.btn_excluir_usuario = tk.Button(self.frame_tvw_type_button, text="Voltar", font=("Arial", 10, "bold"), bg="#FFF",
+                                             fg="#000", width=20, height=1, borderwidth=0, command=self.type_manage_close)
+        self.btn_excluir_usuario.grid(row=0, column=3, padx=10, pady=10)
 
     def CreateTypeScreen(self):
         self.create_screen = tk.Tk()
@@ -1057,12 +1068,6 @@ class Screens:
 
         self.entry_nome_e = tk.Entry(self.center_frame_03, width=59)
         self.entry_nome_e.pack(side=tk.TOP, padx=5, pady=10)
-
-        self.lbl_dias = tk.Label(self.center_frame_03,text='QUANTOS DIAS?',font=('Inter', 10, 'bold'),fg='#FFF',bg='#94939B')
-        self.lbl_dias.pack(side=tk.TOP, padx=5, pady=10, fill=tk.BOTH)
-
-        self.entry_dias_02 = tk.Entry(self.center_frame_03, width=59)
-        self.entry_dias_02.pack(side=tk.TOP, padx=5, pady=10,)
 
         self.frame_escolhas = tk.Frame(self.center_frame_03,bg='#94939B')
         self.frame_escolhas.pack(fill=tk.Y, expand=True, padx=10, pady=10,side=tk.TOP)
@@ -1107,7 +1112,7 @@ class Screens:
         self.bttn_clean = tk.Button(self.frame_button, text='LIMPAR', font=('Inter', 10, 'bold'), fg='#605F5F',bg='#FFFFFF',command='',borderwidth=0)
         self.bttn_clean.pack(side=tk.LEFT,pady=5,padx=10)
 
-        self.bttn_voltar_02 = tk.Button(self.frame_button,text='VOLTAR',font=("Arial", 10), bg="#E1523F",fg="white",borderwidth=0,command=self.type_close)
+        self.bttn_voltar_02 = tk.Button(self.frame_button,text='VOLTAR',font=("Arial", 10, "bold"), bg="#E1523F",fg="white",borderwidth=0,command=self.type_close)
         self.bttn_voltar_02.pack(side=tk.LEFT, pady=5, padx=10)
 
     def EditeTypeScreen(self):
@@ -1193,7 +1198,7 @@ class Screens:
                                        bg='#FFFFFF', command='', borderwidth=0)
         self.bttn_clean_01.pack(side=tk.LEFT, pady=5, padx=10)
 
-        self.bttn_voltar_03 = tk.Button(self.frame_button_03, text='VOLTAR', font=("Arial", 10), bg="#E1523F",
+        self.bttn_voltar_03 = tk.Button(self.frame_button_03, text='VOLTAR', font=("Arial", 10, "bold"), bg="#E1523F",
                                         fg="white", borderwidth=0, command='')
         self.bttn_voltar_03.pack(side=tk.LEFT, pady=5, padx=10)
 
@@ -1238,16 +1243,16 @@ class Screens:
         self.frame_button = tk.Frame(self.frm_01, bg='#94939B')
         self.frame_button.pack(side=tk.BOTTOM)
 
-        self.btn_create = tk.Button(self.frame_button,text="Criar Escala", font=("Arial", 10), bg="#3CB371",fg="white", width=20, height=1,borderwidth=0,command=self.create_roster)
+        self.btn_create = tk.Button(self.frame_button,text="Criar Escala", font=("Arial", 10, "bold"), bg="#3CB371",fg="white", width=20, height=1,borderwidth=0,command=self.create_roster)
         self.btn_create.grid(row=0, column=0, padx=10, pady=10)
 
-        self.btn_edit = tk.Button(self.frame_button, text="Editar Escala", font=("Arial", 10), bg="Orange", fg="white",width=20, height=1,borderwidth=0, command=self.edit_roster)
+        self.btn_edit = tk.Button(self.frame_button, text="Editar Escala", font=("Arial", 10, "bold"), bg="Orange", fg="white",width=20, height=1,borderwidth=0, command=self.edit_roster)
         self.btn_edit.grid(row=0, column=1, padx=10, pady=10)
 
-        self.btn_exclude = tk.Button(self.frame_button, text="Excluir Escala", font=("Arial", 10),bg="#E1523F", fg="white", width=20, height=1, borderwidth=0, command=self.delete_roster)
+        self.btn_exclude = tk.Button(self.frame_button, text="Excluir Escala", font=("Arial", 10, "bold"),bg="#E1523F", fg="white", width=20, height=1, borderwidth=0, command=self.delete_roster)
         self.btn_exclude.grid(row=0, column=2, padx=10, pady=10)
 
-        self.bttn_return = tk.Button(self.frame_button,text="Voltar", font=("Arial", 10),bg="#E1523F", fg="white", width=20, height=1, borderwidth=0, command=self.voltar_manage)
+        self.bttn_return = tk.Button(self.frame_button,text="Voltar", font=("Arial", 10, "bold"),bg="#FFF", fg="#000", width=20, height=1, borderwidth=0, command=self.voltar_manage)
         self.bttn_return.grid(row=0, column=3, padx=10, pady=10)
 
     def update_tvw_roster(self):
@@ -1305,13 +1310,13 @@ class Screens:
         self.frm_bttn = tk.Frame(self.center_frame_06,bg='#94939B')
         self.frm_bttn.pack(side=tk.BOTTOM,pady=10,padx=10,expand=True)
 
-        self.bttn_confirmar = tk.Button(self.frm_bttn,text="Confirmar", command=self.cofirm_create_roster,font=("Arial", 10), bg="#3CB371",fg="white", width=10, height=1,borderwidth=0)
+        self.bttn_confirmar = tk.Button(self.frm_bttn,text="Confirmar", command=self.cofirm_create_roster,font=("Arial", 10, "bold"), bg="#3CB371",fg="white", width=10, height=1,borderwidth=0)
         self.bttn_confirmar.pack(side=tk.LEFT,padx=15,pady=10)
 
-        self.bttn_limpar = tk.Button(self.frm_bttn, text="Limpar", command="", font=("Arial", 10), bg="Orange", fg="white",width=10, height=1,borderwidth=0)
+        self.bttn_limpar = tk.Button(self.frm_bttn, text="Limpar", command="", font=("Arial", 10, "bold"), bg="Orange", fg="white",width=10, height=1,borderwidth=0)
         self.bttn_limpar.pack(side=tk.LEFT,padx=15,pady=10)
 
-        self.btn_cancelar = tk.Button(self.frm_bttn, text="Cancelar", command=self.voltar_create_roster, font=("Arial", 10),bg="#E1523F", fg="white", width=10, height=1, borderwidth=0)
+        self.btn_cancelar = tk.Button(self.frm_bttn, text="Cancelar", command=self.voltar_create_roster, font=("Arial", 10, "bold"),bg="#E1523F", fg="white", width=10, height=1, borderwidth=0)
         self.btn_cancelar.pack(side=tk.LEFT,padx=15,pady=10)
 
     def cofirm_create_roster(self):
@@ -1425,13 +1430,13 @@ class Screens:
             self.frm_bttn_04 = tk.Frame(self.center_frame_07, bg='#94939B')
             self.frm_bttn_04.pack(side=tk.BOTTOM, pady=10, padx=10, expand=True)
 
-            self.bttn_confirmar_edit = tk.Button(self.frm_bttn_04, text="Confirmar", command=self.confirm_roster_edit, font=("Arial", 10), bg="#3CB371",fg="white", width=10, height=1, borderwidth=0)
+            self.bttn_confirmar_edit = tk.Button(self.frm_bttn_04, text="Confirmar", command=self.confirm_roster_edit, font=("Arial", 10, "bold"), bg="#3CB371",fg="white", width=10, height=1, borderwidth=0)
             self.bttn_confirmar_edit.pack(side=tk.LEFT, padx=15, pady=10)
 
-            self.bttn_limpar_edit = tk.Button(self.frm_bttn_04, text="Limpar", command="", font=("Arial", 10), bg="Orange",fg="white", width=10, height=1, borderwidth=0)
+            self.bttn_limpar_edit = tk.Button(self.frm_bttn_04, text="Limpar", command="", font=("Arial", 10, "bold"), bg="Orange",fg="white", width=10, height=1, borderwidth=0)
             self.bttn_limpar_edit.pack(side=tk.LEFT, padx=15, pady=10)
 
-            self.btn_cancelar_edit = tk.Button(self.frm_bttn_04, text="Cancelar", command=self.voltar_edit_roster, font=("Arial", 10),bg="#E1523F", fg="white", width=10, height=1, borderwidth=0)
+            self.btn_cancelar_edit = tk.Button(self.frm_bttn_04, text="Cancelar", command=self.voltar_edit_roster, font=("Arial", 10, "bold"),bg="#E1523F", fg="white", width=10, height=1, borderwidth=0)
             self.btn_cancelar_edit.pack(side=tk.LEFT, padx=15, pady=10)
 
     def confirm_roster_edit(self):

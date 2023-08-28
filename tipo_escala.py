@@ -42,9 +42,8 @@ class Tela:
         self.frame_tvw_usuario.place(x=10, y=10)
 
         self.tvw_tipo_escala = ttk.Treeview(self.frame_tvw_usuario,
-                                            columns=('id', 'nome tipo de escala', 'finais de semana', 'feriados',
-                                                     'escala mutua'),
-                                            show='headings')
+                                       columns=('id', 'nome tipo de escala', 'finais de semana', 'feriados', 'escala mutua'),
+                                       show='headings')
         self.tvw_tipo_escala.column('id', width=40)
         self.tvw_tipo_escala.column('nome tipo de escala', width=250)
         self.tvw_tipo_escala.column('finais de semana', width=125)
@@ -56,24 +55,7 @@ class Tela:
         self.tvw_tipo_escala.heading('feriados', text='Feriados')
         self.tvw_tipo_escala.heading('escala mutua', text='Escala Mútua')
         self.tvw_tipo_escala.pack(side=tk.LEFT)
-
-        self.update_tvw_type_manage()
-
-        # self.tvw_tipo_escala = ttk.Treeview(self.frame_tvw_usuario,
-        #                                columns=('id', 'nome tipo de escala', 'finais de semana', 'feriados', 'escala mutua'),
-        #                                show='headings')
-        # self.tvw_tipo_escala.column('id', width=40)
-        # self.tvw_tipo_escala.column('nome tipo de escala', width=250)
-        # self.tvw_tipo_escala.column('finais de semana', width=125)
-        # self.tvw_tipo_escala.column('feriados', width=125)
-        # self.tvw_tipo_escala.column('escala mutua', width=125)
-        # self.tvw_tipo_escala.heading('id', text='Id')
-        # self.tvw_tipo_escala.heading('nome tipo de escala', text='Nome da Escala')
-        # self.tvw_tipo_escala.heading('finais de semana', text='Finais de Semana')
-        # self.tvw_tipo_escala.heading('feriados', text='Feriados')
-        # self.tvw_tipo_escala.heading('escala mutua', text='Escala Mútua')
-        # self.tvw_tipo_escala.pack(side=tk.LEFT)
-        # self.atualizar_tvw_tipo_escala()
+        self.atualizar_tvw_tipo_escala()
 
         self.scr_escala = ttk.Scrollbar(self.frame_tvw_usuario, command=self.tvw_tipo_escala.yview)
         self.scr_escala.pack(side=tk.LEFT, fill=tk.BOTH)
