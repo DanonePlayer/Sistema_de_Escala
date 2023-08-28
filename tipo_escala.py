@@ -40,9 +40,11 @@ class Tela:
 
         self.frame_tvw_usuario = tk.Frame(self.frm)
         self.frame_tvw_usuario.place(x=10, y=10)
+
         self.tvw_tipo_escala = ttk.Treeview(self.frame_tvw_usuario,
-                                       columns=('id', 'nome tipo de escala', 'finais de semana', 'feriados', 'escala mutua'),
-                                       show='headings')
+                                            columns=('id', 'nome tipo de escala', 'finais de semana', 'feriados',
+                                                     'escala mutua'),
+                                            show='headings')
         self.tvw_tipo_escala.column('id', width=40)
         self.tvw_tipo_escala.column('nome tipo de escala', width=250)
         self.tvw_tipo_escala.column('finais de semana', width=125)
@@ -54,7 +56,24 @@ class Tela:
         self.tvw_tipo_escala.heading('feriados', text='Feriados')
         self.tvw_tipo_escala.heading('escala mutua', text='Escala Mútua')
         self.tvw_tipo_escala.pack(side=tk.LEFT)
-        self.atualizar_tvw_tipo_escala()
+
+        self.update_tvw_type_manage()
+
+        # self.tvw_tipo_escala = ttk.Treeview(self.frame_tvw_usuario,
+        #                                columns=('id', 'nome tipo de escala', 'finais de semana', 'feriados', 'escala mutua'),
+        #                                show='headings')
+        # self.tvw_tipo_escala.column('id', width=40)
+        # self.tvw_tipo_escala.column('nome tipo de escala', width=250)
+        # self.tvw_tipo_escala.column('finais de semana', width=125)
+        # self.tvw_tipo_escala.column('feriados', width=125)
+        # self.tvw_tipo_escala.column('escala mutua', width=125)
+        # self.tvw_tipo_escala.heading('id', text='Id')
+        # self.tvw_tipo_escala.heading('nome tipo de escala', text='Nome da Escala')
+        # self.tvw_tipo_escala.heading('finais de semana', text='Finais de Semana')
+        # self.tvw_tipo_escala.heading('feriados', text='Feriados')
+        # self.tvw_tipo_escala.heading('escala mutua', text='Escala Mútua')
+        # self.tvw_tipo_escala.pack(side=tk.LEFT)
+        # self.atualizar_tvw_tipo_escala()
 
         self.scr_escala = ttk.Scrollbar(self.frame_tvw_usuario, command=self.tvw_tipo_escala.yview)
         self.scr_escala.pack(side=tk.LEFT, fill=tk.BOTH)
@@ -74,6 +93,14 @@ class Tela:
                                             fg="white", width=17, height=1)
         self.lbl_excluir_usuario.place(x=440, y=250)
         self.lbl_excluir_usuario.bind("<Button-1>", self.excluir_tipo_escala)
+
+    def update_tvw_type_manage(self):
+        for i in self.tvw_tipo_escala.get_children():
+            self.tvw_tipo_escala.delete(i)
+        query = "SELECT tipo_escala_id, nome_tipo_escala, CASE WHEN finais_semana = 0 THEN 'Não' WHEN finais_semana = 1 THEN 'Sim' END AS finais_semana, CASE WHEN feriados = 0 THEN 'Não' WHEN feriados = 1 THEN 'Sim' END AS feriados, CASE WHEN escala_mutua = 0 THEN 'Não' WHEN escala_mutua = 1 THEN 'Sim' END AS escala_mutua FROM tipo_escala;"
+        dados = bd.consultar(query)
+        for tupla in dados:
+            self.tvw_tipo_escala.insert('', tk.END, values=tupla)
 
     def atualizar_tvw_tipo_escala(self):
         for i in self.tvw_tipo_escala.get_children():
