@@ -92,56 +92,90 @@ class Tela:
         for tupla in dados:
             self.tvw_tipo_escala.insert('', tk.END, values=tupla)
 
-    def criar_tipo_escala(self, event):
-        self.janela_criar_escala = tk.Toplevel()
-        self.janela_criar_escala.title("Criar Tipo de Escala")
-        self.janela_criar_escala.grab_set()
-        self.janela_criar_escala.geometry("600x400")
+    def type_close(self):
+        self.create_screen.destroy()
+        self.janela_escala.deiconify()
 
-        self.lbl_nome_escala = tk.Label(self.janela_criar_escala, text="Nome do tipo de Escala:")
-        self.lbl_nome_escala.place(x=10, y=10)
-        self.entry_nome_escala = tk.Entry(self.janela_criar_escala, borderwidth=2)
-        self.entry_nome_escala.place(x=10, y=30)
+    def criar_tipo_escala(self, event):
+        self.create_screen = tk.Toplevel()
+        self.create_screen.title("Criar Tipo de Escala")
+        self.create_screen.grab_set()
+        self.create_screen.geometry("462x550")
+        self.create_screen.configure(bg='#D9D9D9')
+        self.create_screen.resizable(False, False)
+        self.create_screen.protocol("WM_DELETE_WINDOW", self.type_close)
+
+        self.center_frame = tk.Frame(self.create_screen, bg='#94939B')
+        self.center_frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=20)
+
+        self.lbl_create = tk.Label(self.center_frame, text='CRIAR TIPO DE ESCALA', font=('Inter', 20, 'bold'),
+                                   fg='#0B0B0B', bg='#94939B')
+        self.lbl_create.pack(side=tk.TOP, padx=5, pady=10)
+
+        self.lbl_nome_escala = tk.Label(self.center_frame, text="NOME DO TIPO DE ESCALA:",font=('Inter', 10, 'bold'),fg='#FFF',bg='#94939B')
+        self.lbl_nome_escala.pack(side=tk.TOP,pady=5,padx=10)
+
+        self.entry_nome_escala = tk.Entry(self.center_frame,  width=59)
+        self.entry_nome_escala.pack(side=tk.TOP, padx=5, pady=10)
+
+        self.frame_escolhas = tk.Frame(self.center_frame, bg='#94939B')
+        self.frame_escolhas.pack(fill=tk.Y, expand=True, padx=10, pady=10, side=tk.TOP)
 
         self.int_var_finais_semana = tk.IntVar()
         self.int_var_feriados = tk.IntVar()
         self.int_var_escala_mutua = tk.IntVar()
 
-        self.lbl_cont_final_semana = tk.Label(self.janela_criar_escala, text="Contará os finais de semana?")
-        self.lbl_cont_final_semana.place(x=10, y=60)
+        style = ttk.Style()
+        style.configure("Custom.TRadiobutton", background="#94939B", foreground="white", font=("Inter", 10, "bold"))
 
-        self.rbtn_cont_final_semanas = tk.Radiobutton(self.janela_criar_escala, text="Sim", variable=self.int_var_finais_semana,
-                                                      value=1)
-        self.rbtn_cont_final_semanas.place(x=10, y=80)
+        self.lbl_cont_final_semana = tk.Label(self.frame_escolhas, text="CONTAR FINAIS DE SEMANA?", font=('Inter', 10), fg='#FFF', bg='#94939B')
+        self.lbl_cont_final_semana.grid(row=0, column=0, columnspan=3, sticky='n', pady=10)
 
-        self.rbtn_cont_final_semanan = tk.Radiobutton(self.janela_criar_escala, text="Não", variable=self.int_var_finais_semana,
-                                                      value=0)
-        self.rbtn_cont_final_semanan.place(x=90, y=80)
+        self.rbtn_cont_final_semanas = ttk.Radiobutton(self.frame_escolhas, text="Sim", variable=self.int_var_finais_semana,
+                                                      value=1, style="Custom.TRadiobutton")
+        self.rbtn_cont_final_semanas.grid(row=2, column=0, padx=10, pady=10, sticky='n')
 
-        self.lbl_cont_ferias = tk.Label(self.janela_criar_escala, text="Contará os feriados?")
-        self.lbl_cont_ferias.place(x=10, y=100)
+        self.rbtn_cont_final_semanan = ttk.Radiobutton(self.frame_escolhas, text="Não", variable=self.int_var_finais_semana,
+                                                      value=0, style="Custom.TRadiobutton")
+        self.rbtn_cont_final_semanan.grid(row=2, column=1, padx=10, pady=10, sticky='n')
 
-        self.rbtn_cont_feriass = tk.Radiobutton(self.janela_criar_escala, text="Sim", variable=self.int_var_feriados,
-                                                value=1)
-        self.rbtn_cont_feriass.place(x=10, y=120)
+        self.lbl_cont_ferias = tk.Label(self.frame_escolhas, text="CONTAR FERIADOS?", font=('Inter', 10, 'bold'), fg='#FFF',bg='#94939B')
+        self.lbl_cont_ferias.grid(row=3, column=0, columnspan=2, sticky='nsew', pady=20)
 
-        self.rbtn_cont_feriasn = tk.Radiobutton(self.janela_criar_escala, text="Não", variable=self.int_var_feriados,
-                                                value=0)
-        self.rbtn_cont_feriasn.place(x=90, y=120)
+        self.rbtn_cont_feriass = ttk.Radiobutton(self.frame_escolhas, text="Sim", variable=self.int_var_feriados,
+                                                value=1, style="Custom.TRadiobutton")
+        self.rbtn_cont_feriass.grid(row=4, column=0, padx=10, pady=10, sticky='n')
 
-        self.lbl_cont_escala_mutua = tk.Label(self.janela_criar_escala, text="A Escala será mútua?")
-        self.lbl_cont_escala_mutua.place(x=10, y=140)
+        self.rbtn_cont_feriasn = ttk.Radiobutton(self.frame_escolhas, text="Não", variable=self.int_var_feriados,
+                                                value=0, style="Custom.TRadiobutton")
+        self.rbtn_cont_feriasn.grid(row=4, column=1, padx=10, pady=10, sticky='n')
 
-        self.rbtn_cont_escala_mutuas = tk.Radiobutton(self.janela_criar_escala, text="Sim", variable=self.int_var_escala_mutua,
-                                                value=1)
-        self.rbtn_cont_escala_mutuas.place(x=10, y=160)
+        self.lbl_cont_escala_mutua = tk.Label(self.frame_escolhas, text="ESCALA MUTUA?",
+                                              font=('Inter', 10, 'bold'), fg='#FFF',bg='#94939B')
+        self.lbl_cont_escala_mutua.grid(row=5, column=0, columnspan=2, sticky='nsew', pady=20)
 
-        self.rbtn_cont_escala_mutuan = tk.Radiobutton(self.janela_criar_escala, text="Não", variable=self.int_var_escala_mutua,
-                                                value=0)
-        self.rbtn_cont_escala_mutuan.place(x=90, y=160)
+        self.rbtn_cont_escala_mutuas = ttk.Radiobutton(self.frame_escolhas, text="Sim", variable=self.int_var_escala_mutua,
+                                                value=1, style="Custom.TRadiobutton")
+        self.rbtn_cont_escala_mutuas.grid(row=6, column=0, padx=10, pady=10, sticky='n')
 
-        self.btn_ok = tk.Button(self.janela_criar_escala, text='Criar', width=15, command=self.button_criar_tipo_escala)
-        self.btn_ok.place(x=10, y=190)
+        self.rbtn_cont_escala_mutuan = ttk.Radiobutton(self.frame_escolhas, text="Não", variable=self.int_var_escala_mutua,
+                                                value=0, style="Custom.TRadiobutton")
+        self.rbtn_cont_escala_mutuan.grid(row=6, column=1, padx=10, pady=10, sticky='n')
+
+        self.frame_button = tk.Frame(self.center_frame, bg='#94939B')
+        self.frame_button.pack(fill=tk.Y, padx=10, pady=10, side=tk.TOP)
+
+        self.bttn_criar = tk.Button(self.frame_button, text='CRIAR', font=('Inter', 10, 'bold'), fg='#FFF',
+                                       bg='#3CB371', command=self.button_criar_tipo_escala, borderwidth=0, width=10)
+        self.bttn_criar.pack(side=tk.LEFT, pady=5, padx=10)
+
+        self.bttn_clean = tk.Button(self.frame_button, text='LIMPAR', font=('Inter', 10, 'bold'), fg='#605F5F',
+                                    bg='#FFFFFF', command='', borderwidth=0, width=10)
+        self.bttn_clean.pack(side=tk.LEFT, pady=5, padx=10)
+
+        self.bttn_voltar = tk.Button(self.frame_button, text='VOLTAR', font=("Arial", 10, "bold"), bg="#E1523F",
+                                        fg="white", borderwidth=0, command=self.type_close, width=10)
+        self.bttn_voltar.pack(side=tk.LEFT, pady=5, padx=10)
 
     def button_criar_tipo_escala(self):
         nome_escala = self.entry_nome_escala.get()
@@ -174,86 +208,189 @@ class Tela:
                 bd.inserir(query)
                 self.atualizar_tvw_tipo_escala()
                 messagebox.showinfo("SUCESSO!", "Escala criada com sucesso!")
-                self.janela_criar_escala.destroy()
+                self.create_screen.destroy()
                 self.janela_escala.deiconify()
             else:
                 messagebox.showinfo("Nome do tipo de escala já cadastrado", "O Nome do tipo de escala já está cadastrado")
-                self.janela_criar_escala.deiconify()
+                self.create_screen.deiconify()
+
+    def type_edit_close(self):
+        self.edite_type.destroy()
+        self.janela_escala.deiconify()
 
     def editar_tipo_escala(self, event):
         selecionado = self.tvw_tipo_escala.selection()
-        lista = self.tvw_tipo_escala.item(selecionado, "values")
-        # query = f"SELECT * FROM escala WHERE escala_id = {lista[0]};"
-        # lista = bd.consultar_usuarios(query)
-        if selecionado != ():
-            self.edit_escala = tk.Toplevel()
-            self.edit_escala.title("Editar Tipo de Escala")
-            self.edit_escala.grab_set()
-            self.edit_escala.geometry("600x400")
+        tupla = self.tvw_tipo_escala.item(selecionado, "values")
 
-            self.lbl_nome_escala = tk.Label(self.edit_escala, text="Nome do Tipo de Escala:")
-            self.lbl_nome_escala.place(x=10, y=10)
-            self.entry_nome_escala = tk.Entry(self.edit_escala, borderwidth=2)
-            self.entry_nome_escala.place(x=10, y=30)
-            self.entry_nome_escala.insert(0, lista[1])
+        if selecionado != ():
+            self.edite_type = tk.Toplevel()
+            self.edite_type.title("Criar Tipo de Escala")
+            self.edite_type.grab_set()
+            self.edite_type.geometry("462x550")
+            self.edite_type.configure(bg='#D9D9D9')
+            self.edite_type.resizable(False, False)
+            self.edite_type.protocol("WM_DELETE_WINDOW", self.type_edit_close)
+
+            self.lista = list(tupla)
+            for i in range(len(self.lista)):
+                if self.lista[i] == "Não":
+                    self.lista[i] = 0
+                elif self.lista[i] == "Sim":
+                    self.lista[i] = 1
+
+            self.center_frame = tk.Frame(self.edite_type, bg='#94939B')
+            self.center_frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=20)
+
+            self.lbl_create = tk.Label(self.center_frame, text='CRIAR TIPO DE ESCALA', font=('Inter', 20, 'bold'),
+                                       fg='#0B0B0B', bg='#94939B')
+            self.lbl_create.pack(side=tk.TOP, padx=5, pady=10)
+
+            self.lbl_nome_escala = tk.Label(self.center_frame, text="NOME DO TIPO DE ESCALA:",
+                                            font=('Inter', 10, 'bold'), fg='#FFF', bg='#94939B')
+            self.lbl_nome_escala.pack(side=tk.TOP, pady=5, padx=10)
+
+            self.entry_nome_escala = tk.Entry(self.center_frame, width=59)
+            self.entry_nome_escala.pack(side=tk.TOP, padx=5, pady=10)
+
+            self.frame_escolhas = tk.Frame(self.center_frame, bg='#94939B')
+            self.frame_escolhas.pack(fill=tk.Y, expand=True, padx=10, pady=10, side=tk.TOP)
 
             self.int_var_finais_semana = tk.IntVar()
             self.int_var_feriados = tk.IntVar()
             self.int_var_escala_mutua = tk.IntVar()
 
-            self.lbl_cont_final_semana = tk.Label(self.edit_escala, text="Contará os finais de semana?")
-            self.lbl_cont_final_semana.place(x=10, y=70)
+            style = ttk.Style()
+            style.configure("Custom.TRadiobutton", background="#94939B", foreground="white", font=("Inter", 10, "bold"))
 
-            self.rbtn_cont_final_semanas = tk.Radiobutton(self.edit_escala, text="Sim",
-                                                          variable=self.int_var_finais_semana, value=1)
-            self.rbtn_cont_final_semanas.place(x=10, y=90)
+            self.lbl_cont_final_semana = tk.Label(self.frame_escolhas, text="CONTAR FINAIS DE SEMANA?",
+                                                  font=('Inter', 10), fg='#FFF', bg='#94939B')
+            self.lbl_cont_final_semana.grid(row=0, column=0, columnspan=3, sticky='n', pady=10)
 
-            self.rbtn_cont_final_semanan = tk.Radiobutton(self.edit_escala, text="Não",
-                                                          variable=self.int_var_finais_semana, value=0)
-            self.rbtn_cont_final_semanan.place(x=90, y=90)
+            self.rbtn_cont_final_semanas = ttk.Radiobutton(self.frame_escolhas, text="Sim",
+                                                           variable=self.int_var_finais_semana,
+                                                           value=1, style="Custom.TRadiobutton")
+            self.rbtn_cont_final_semanas.grid(row=2, column=0, padx=10, pady=10, sticky='n')
 
-            if lista[2] == "1":
+            self.rbtn_cont_final_semanan = ttk.Radiobutton(self.frame_escolhas, text="Não",
+                                                           variable=self.int_var_finais_semana,
+                                                           value=0, style="Custom.TRadiobutton")
+            self.rbtn_cont_final_semanan.grid(row=2, column=1, padx=10, pady=10, sticky='n')
+
+            if self.lista[2] == 1:
                 self.int_var_finais_semana.set(1)
             else:
                 self.int_var_finais_semana.set(0)
 
-            self.lbl_cont_ferias = tk.Label(self.edit_escala, text="Contará os feriados?")
-            self.lbl_cont_ferias.place(x=10, y=130)
+            self.lbl_cont_ferias = tk.Label(self.frame_escolhas, text="CONTAR FERIADOS?", font=('Inter', 10, 'bold'),
+                                            fg='#FFF', bg='#94939B')
+            self.lbl_cont_ferias.grid(row=3, column=0, columnspan=2, sticky='nsew', pady=20)
 
-            self.rbtn_cont_feriass = tk.Radiobutton(self.edit_escala, text="Sim", variable=self.int_var_feriados,
-                                                    value=1)
-            self.rbtn_cont_feriass.place(x=10, y=150)
+            self.rbtn_cont_feriass = ttk.Radiobutton(self.frame_escolhas, text="Sim", variable=self.int_var_feriados,
+                                                     value=1, style="Custom.TRadiobutton")
+            self.rbtn_cont_feriass.grid(row=4, column=0, padx=10, pady=10, sticky='n')
 
-            self.rbtn_cont_feriasn = tk.Radiobutton(self.edit_escala, text="Não", variable=self.int_var_feriados,
-                                                    value=0)
-            self.rbtn_cont_feriasn.place(x=90, y=150)
+            self.rbtn_cont_feriasn = ttk.Radiobutton(self.frame_escolhas, text="Não", variable=self.int_var_feriados,
+                                                     value=0, style="Custom.TRadiobutton")
+            self.rbtn_cont_feriasn.grid(row=4, column=1, padx=10, pady=10, sticky='n')
 
-            if lista[3] == "1":
+            if self.lista[3] == 1:
                 self.int_var_feriados.set(1)
             else:
                 self.int_var_feriados.set(0)
 
-            self.lbl_cont_escala_mutua = tk.Label(self.edit_escala, text="Escala será mútua?")
-            self.lbl_cont_escala_mutua.place(x=10, y=190)
+            self.lbl_cont_escala_mutua = tk.Label(self.frame_escolhas, text="ESCALA MUTUA?",
+                                                  font=('Inter', 10, 'bold'), fg='#FFF', bg='#94939B')
+            self.lbl_cont_escala_mutua.grid(row=5, column=0, columnspan=2, sticky='nsew', pady=20)
 
-            self.rbtn_cont_escala_mutuas = tk.Radiobutton(self.edit_escala, text="Sim", variable=self.int_var_escala_mutua,
-                                                    value=1)
-            self.rbtn_cont_escala_mutuas.place(x=10, y=210)
+            self.rbtn_cont_escala_mutuas = ttk.Radiobutton(self.frame_escolhas, text="Sim",
+                                                           variable=self.int_var_escala_mutua,
+                                                           value=1, style="Custom.TRadiobutton")
+            self.rbtn_cont_escala_mutuas.grid(row=6, column=0, padx=10, pady=10, sticky='n')
 
-            self.rbtn_cont_escala_mutuan = tk.Radiobutton(self.edit_escala, text="Não", variable=self.int_var_escala_mutua,
-                                                    value=0)
-            self.rbtn_cont_escala_mutuan.place(x=90, y=210)
+            self.rbtn_cont_escala_mutuan = ttk.Radiobutton(self.frame_escolhas, text="Não",
+                                                           variable=self.int_var_escala_mutua,
+                                                           value=0, style="Custom.TRadiobutton")
+            self.rbtn_cont_escala_mutuan.grid(row=6, column=1, padx=10, pady=10, sticky='n')
 
-            if lista[4] == "1":
+            if self.lista[4] == 1:
                 self.int_var_escala_mutua.set(1)
             else:
                 self.int_var_escala_mutua.set(0)
 
-            self.btn_ok = tk.Button(self.edit_escala, text='Editar', command=self.button_editar_escala)
-            self.btn_ok.place(x=100, y=250)
+            self.frame_button = tk.Frame(self.center_frame, bg='#94939B')
+            self.frame_button.pack(fill=tk.Y, padx=10, pady=10, side=tk.TOP)
 
-            self.btn_not_ok = tk.Button(self.edit_escala, text='Cancelar', command=self.edit_escala.destroy)
-            self.btn_not_ok.place(x=200, y=250)
+            self.bttn_criar = tk.Button(self.frame_button, text='CRIAR', font=('Inter', 10, 'bold'), fg='#FFF',
+                                        bg='#3CB371', command=self.button_criar_tipo_escala, borderwidth=0, width=10)
+            self.bttn_criar.pack(side=tk.LEFT, pady=5, padx=10)
+
+            self.bttn_clean = tk.Button(self.frame_button, text='LIMPAR', font=('Inter', 10, 'bold'), fg='#605F5F',
+                                        bg='#FFFFFF', command='', borderwidth=0, width=10)
+            self.bttn_clean.pack(side=tk.LEFT, pady=5, padx=10)
+
+            self.bttn_voltar = tk.Button(self.frame_button, text='VOLTAR', font=("Arial", 10, "bold"), bg="#E1523F",
+                                         fg="white", borderwidth=0, command=self.type_close, width=10)
+            self.bttn_voltar.pack(side=tk.LEFT, pady=5, padx=10)
+
+            # self.int_var_finais_semana_edit = tk.IntVar()
+            # self.int_var_feriados_edit = tk.IntVar()
+            # self.int_var_escala_mutua_edit = tk.IntVar()
+            #
+            # #style = ttk.Style()
+            # #style.configure("Custom.TRadiobutton", background="Pink", foreground="white", font=("Inter", 10, "bold"))
+            #
+            # self.lbl_cont_final_semana = tk.Label(self.edit_escala, text="Contará os finais de semana?")
+            # self.lbl_cont_final_semana.place(x=10, y=70)
+            #
+            # self.rbtn_cont_final_semanas = tk.Radiobutton(self.edit_escala, text="Sim", variable=self.int_var_finais_semana, value=1,background="Pink", foreground="white", font=("Inter", 10, "bold"))
+            # self.rbtn_cont_final_semanas.place(x=10, y=90)
+            #
+            # self.rbtn_cont_final_semanan = tk.Radiobutton(self.edit_escala, text="Não",
+            #                                               variable=self.int_var_finais_semana, value=0,background="Pink", foreground="white", font=("Inter", 10, "bold"))
+            # self.rbtn_cont_final_semanan.place(x=90, y=90)
+            #
+            # if lista[2] == "1":
+            #     self.int_var_finais_semana.set(1)
+            # else:
+            #     self.int_var_finais_semana.set(0)
+            #
+            # self.lbl_cont_ferias = tk.Label(self.edit_escala, text="Contará os feriados?")
+            # self.lbl_cont_ferias.place(x=10, y=130)
+            #
+            # self.rbtn_cont_feriass = tk.Radiobutton(self.edit_escala, text="Sim", variable=self.int_var_feriados,
+            #                                         value=1)
+            # self.rbtn_cont_feriass.place(x=10, y=150)
+            #
+            # self.rbtn_cont_feriasn = tk.Radiobutton(self.edit_escala, text="Não", variable=self.int_var_feriados,
+            #                                         value=0)
+            # self.rbtn_cont_feriasn.place(x=90, y=150)
+            #
+            # if lista[3] == "1":
+            #     self.int_var_feriados.set(1)
+            # else:
+            #     self.int_var_feriados.set(0)
+            #
+            # self.lbl_cont_escala_mutua = tk.Label(self.edit_escala, text="Escala será mútua?")
+            # self.lbl_cont_escala_mutua.place(x=10, y=190)
+            #
+            # self.rbtn_cont_escala_mutuas = tk.Radiobutton(self.edit_escala, text="Sim", variable=self.int_var_escala_mutua,
+            #                                         value=1)
+            # self.rbtn_cont_escala_mutuas.place(x=10, y=210)
+            #
+            # self.rbtn_cont_escala_mutuan = tk.Radiobutton(self.edit_escala, text="Não", variable=self.int_var_escala_mutua,
+            #                                         value=0)
+            # self.rbtn_cont_escala_mutuan.place(x=90, y=210)
+            #
+            # if lista[4] == "1":
+            #     self.int_var_escala_mutua.set(1)
+            # else:
+            #     self.int_var_escala_mutua.set(0)
+            #
+            # self.btn_ok = tk.Button(self.edit_escala, text='Editar', command=self.button_editar_escala)
+            # self.btn_ok.place(x=100, y=250)
+            #
+            # self.btn_not_ok = tk.Button(self.edit_escala, text='Cancelar', command=self.edit_escala.destroy)
+            # self.btn_not_ok.place(x=200, y=250)
 
     def button_editar_escala(self):
         selecionado = self.tvw_tipo_escala.selection()
