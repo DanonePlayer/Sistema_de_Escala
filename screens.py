@@ -1675,13 +1675,63 @@ class Screens:
         self.report_screen.protocol("WM_DELETE_WINDOW", self.voltar_report)
 
     def verifica_termino_escalas(self):
+        chave_mes = 0
+        chave_ano = 0 #OUTRO DIA FAÇO ESSE PQP
         data_atual = datetime.now()
         data_completa = data_atual.strftime("%d/%m/%Y")#%H:%M:%S
 
-        print("O dia atual é:", data_completa)
-        data_completa = data_atual.strftime("%d/%m/%Y")  # %H:%M:%S
+        # print("O dia atual é:", data_completa)
 
-        print("O dia atual é:", data_completa)
+        query = f"SELECT escala_id, data_inicio FROM usuario_escala;"
+        dados = bd.consultar_usuarios(query)
+
+        if dados != []:
+            
+            pares = [(dados[i], dados[i + 1]) for i in range(0, len(dados), 2)]
+
+            for dados in pares:
+                id = dados[0]
+
+                query = f"SELECT dias_escala FROM escala WHERE escala_id = {id};"
+                dias_escala = bd.consultar_usuarios(query)
+                # print(dias_escala)
+
+                data = dados[1]
+                
+                data = datetime.strptime(data, "%d/%m/%Y")
+
+                Ultimo_dia_mes = data.replace(day=monthrange(data.year, data.month)[1])
+
+                data = str(dados[1])
+                data = data.split("/")
+                # print(data)
+
+                for cont in range(dias_escala[0]):
+                    dia = int(data[0]) + cont + 1
+                    
+                    if Ultimo_dia_mes.day == dia:
+                        mês = int(data[1]) + 1
+                        chave_mes = 1
+                
+                data[0] = dia
+
+                if chave_mes == 1:
+                    data[1] = mês
+
+                data_fim = '/'.join(map(str, data))
+
+
+
+            # print(data_fim)
+        
+            data_fim = datetime.strptime(data_fim, "%d/%m/%Y")
+            if data_fim < data_atual:
+                data_fim_s = data_fim.strftime("%d/%m/%Y")#%H:%M:%S
+                query = f"DELETE FROM usuario_escala WHERE data_inicio = {data_fim_s};"
+                dias_escala = bd.deletar(query)
+                
+
+                # print(Ultimo_dia_mes.day)
 
 janela = tk.Tk()
 Screens(janela)
