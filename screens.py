@@ -1676,18 +1676,12 @@ class Screens:
 
     def verifica_termino_escalas(self):
         data_atual = datetime.now()
-<<<<<<< Updated upstream
         data_completa = data_atual.strftime("%d/%m/%Y")#%H:%M:%S
 
         print("O dia atual é:", data_completa)
-
-
-
-=======
         data_completa = data_atual.strftime("%d/%m/%Y")  # %H:%M:%S
 
         print("O dia atual é:", data_completa)
->>>>>>> Stashed changes
 
 janela = tk.Tk()
 Screens(janela)
