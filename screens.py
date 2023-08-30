@@ -1,6 +1,6 @@
 import tkinter as tk
 from calendar import monthrange
-from datetime import datetime
+from datetime import datetime, timedelta
 ##from tkinter import PhotoImage, ttk, messagebox,RAISED, RIDGE
 from tkinter import messagebox, ttk
 
@@ -138,12 +138,12 @@ class Screens:
         self.left_lbl_02 = tk.Label(self.left_frm_2, image=self.img_pf_02, height=425, width=336, bg='#94939B')
         self.left_lbl_02.pack(side=tk.TOP,padx=10,pady=10)
 
-        self.img_calendar = ImageTk.PhotoImage(Image.open((f'Images/calendar_icon.png')))
-        self.img_user = ImageTk.PhotoImage(Image.open((f'Images/user_icon.png')))
-        self.img_roster = ImageTk.PhotoImage(Image.open((f'Images/roster_icon.png')))
-        self.img_roster_02 = ImageTk.PhotoImage(Image.open(f'Images/roster_icon_02.png'))
-        self.img_reports = ImageTk.PhotoImage(Image.open((f'Images/chart-bar.png')))
-        self.img_edit = ImageTk.PhotoImage(Image.open((f'Images/calendar-minus.png')))
+        self.img_calendar = ImageTk.PhotoImage(Image.open((f'images/calendar_icon.png')))
+        self.img_user = ImageTk.PhotoImage(Image.open((f'images/user_icon.png')))
+        self.img_roster = ImageTk.PhotoImage(Image.open((f'images/roster_icon.png')))
+        self.img_roster_02 = ImageTk.PhotoImage(Image.open(f'images/roster_icon_02.png'))
+        self.img_reports = ImageTk.PhotoImage(Image.open((f'images/chart-bar.png')))
+        self.img_edit = ImageTk.PhotoImage(Image.open((f'images/calendar-minus.png')))
 
 
         self.top_frame = tk.Frame(self.right_frm_2,bg='#565656')
@@ -724,6 +724,7 @@ class Screens:
             for i in range(0, dias_de_escala):
                 self.cal_show.calevent_create(escala_ecolha_dia + self.cal_show.timedelta(days=i), 'escalas', 'escala')
 
+            self.calendar_ferias()
 
             for final_semana in vetor_finais_semana:
                 self.cal_show.calevent_create(final_semana, "final_semana", "final_semana")
@@ -1457,8 +1458,16 @@ class Screens:
         self.lbl_type = tk.Label(self.center_frame_06,text='Tipo da Escala',bg='#94939B',font=('Inter', 18, 'bold'))
         self.lbl_type.pack(side=tk.TOP,pady=10,padx=20)
 
+        query = 'SELECT nome_tipo_escala FROM tipo_escala;'
+        dados = bd.consultar(query)
+
+        self.tipo_escala = []
+        for tupla in dados:
+            for tipo_escala in tupla:
+                self.tipo_escala.append(tipo_escala)
+
         self.roster_type_var = tk.StringVar()
-        self.roster_type_combobox = ttk.Combobox(self.center_frame_06, textvariable=self.roster_type_var,values=["Sobreaviso", "Missão"])
+        self.roster_type_combobox = ttk.Combobox(self.center_frame_06, textvariable=self.roster_type_var,values=self.tipo_escala)
         self.roster_type_combobox.pack(side=tk.TOP, pady=10, padx=40, fill=tk.BOTH)
 
         self.lbl_data_inicio = tk.Label(self.center_frame_06, text="Data de início da escala",bg='#94939B',font=('Inter', 18, 'bold'))
@@ -1688,7 +1697,7 @@ class Screens:
         if dados != []:
             
             pares = [(dados[i], dados[i + 1]) for i in range(0, len(dados), 2)]
-
+            print(pares)
             for dados in pares:
                 id = dados[0]
 
@@ -1706,32 +1715,7 @@ class Screens:
                 data = data.split("/")
                 # print(data)
 
-                for cont in range(dias_escala[0]):
-                    dia = int(data[0]) + cont + 1
-                    
-                    if Ultimo_dia_mes.day == dia:
-                        mês = int(data[1]) + 1
-                        chave_mes = 1
-                
-                data[0] = dia
 
-                if chave_mes == 1:
-                    data[1] = mês
-
-                data_fim = '/'.join(map(str, data))
-
-
-
-            # print(data_fim)
-        
-            data_fim = datetime.strptime(data_fim, "%d/%m/%Y")
-            if data_fim < data_atual:
-                data_fim_s = data_fim.strftime("%d/%m/%Y")#%H:%M:%S
-                query = f"DELETE FROM usuario_escala WHERE data_inicio = {data_fim_s};"
-                dias_escala = bd.deletar(query)
-                
-
-                # print(Ultimo_dia_mes.day)
 
 janela = tk.Tk()
 Screens(janela)
