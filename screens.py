@@ -395,6 +395,8 @@ class Screens:
         self.cal_atrib = Calendar(self.calendar_frame_02, locale='pt_BR', date_pattern='dd/MM/yyyy')
         self.cal_atrib.pack(side=tk.TOP, expand=True, fill=tk.BOTH)
 
+        self.calendar_ferias(2)
+
         self.bottom_frame_02 = tk.Frame(self.center_frame_02)
         self.bottom_frame_02.pack(side=tk.TOP,pady=10)
 
@@ -551,26 +553,46 @@ class Screens:
 
         self.bttn_verificar = tk.Button(self.buttons_frame,text='VERIFICAR', font=("Arial", 10, "bold"), bg="#3CB371",fg="white",command=self.Aplica_Calendario,borderwidth=0)
         self.bttn_verificar.pack(side=tk.LEFT, pady=10, padx=15)
-        self.calendar_ferias()
+        self.calendar_ferias(1)
 
 
-    def calendar_ferias(self):
-        cor_escolhida_ferias = "#FF7F50"
-        date = self.cal_show.datetime.today()
-        # print(date)
-        feriados= holidays.Brazil()
-        ano_feriado = str(date).split("-")[0]
-        vetor_feriados = []
-        for feriado in feriados[f"{ano_feriado}-01-01": f'{ano_feriado}-12-31']:
-            dia = str(feriado).split("-")[2]
-            mes = str(feriado).split("-")[1]
-            ano = str(feriado).split("-")[0]
-            feriados = self.cal_show.datetime(year=int(ano), month=int(mes), day=int(dia))
-            #print(feriados)
-            vetor_feriados.append(feriados)
-        for feriados1 in vetor_feriados:
-            self.cal_show.calevent_create(feriados1 , 'Ferias', 'Ferias')
-        self.cal_show.tag_config('Ferias', background=cor_escolhida_ferias, foreground='white')
+    def calendar_ferias(self, numb):
+        if numb == 1:
+            cor_escolhida_ferias = "#FF7F50"
+            date = self.cal_show.datetime.today()
+            # print(date)
+            feriados= holidays.Brazil()
+            ano_feriado = str(date).split("-")[0]
+            vetor_feriados = []
+            for feriado in feriados[f"{ano_feriado}-01-01": f'{ano_feriado}-12-31']:
+                dia = str(feriado).split("-")[2]
+                mes = str(feriado).split("-")[1]
+                ano = str(feriado).split("-")[0]
+                feriados = self.cal_show.datetime(year=int(ano), month=int(mes), day=int(dia))
+                #print(feriados)
+                vetor_feriados.append(feriados)
+            for feriados1 in vetor_feriados:
+                self.cal_show.calevent_create(feriados1 , 'Ferias', 'Ferias')
+            self.cal_show.tag_config('Ferias', background=cor_escolhida_ferias, foreground='white')
+
+        elif numb == 2:
+                cor_escolhida_ferias = "#FF7F50"
+                date = self.cal_atrib.datetime.today()
+                # print(date)
+                feriados= holidays.Brazil()
+                ano_feriado = str(date).split("-")[0]
+                vetor_feriados = []
+                for feriado in feriados[f"{ano_feriado}-01-01": f'{ano_feriado}-12-31']:
+                    dia = str(feriado).split("-")[2]
+                    mes = str(feriado).split("-")[1]
+                    ano = str(feriado).split("-")[0]
+                    feriados = self.cal_atrib.datetime(year=int(ano), month=int(mes), day=int(dia))
+                    #print(feriados)
+                    vetor_feriados.append(feriados)
+                for feriados1 in vetor_feriados:
+                    self.cal_atrib.calevent_create(feriados1 , 'Ferias', 'Ferias')
+                self.cal_atrib.tag_config('Ferias', background=cor_escolhida_ferias, foreground='white')
+    
 
 
     def Aplica_Calendario(self):
@@ -589,7 +611,7 @@ class Screens:
             for id in tupla:
                 self.id_usu_escala = id
         # print(self.id_usu_escala)
-        self.calendar_ferias()
+        self.calendar_ferias(1)
         if self.id_usu_escala != 0:
             # print(self.id_usu_escala)
             query = f'SELECT data_inicio FROM usuario_escala WHERE usuario_escala_id = {self.id_usu_escala};'
@@ -725,7 +747,7 @@ class Screens:
                 self.cal_show.calevent_create(escala_ecolha_dia + self.cal_show.timedelta(days=i), 'escalas', 'escala')
 
             if conta_feriados == 1:
-                self.calendar_ferias()
+                self.calendar_ferias(1)
 
             for final_semana in vetor_finais_semana:
                 self.cal_show.calevent_create(final_semana, "final_semana", "final_semana")
