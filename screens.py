@@ -724,7 +724,8 @@ class Screens:
             for i in range(0, dias_de_escala):
                 self.cal_show.calevent_create(escala_ecolha_dia + self.cal_show.timedelta(days=i), 'escalas', 'escala')
 
-            self.calendar_ferias()
+            if conta_feriados == 1:
+                self.calendar_ferias()
 
             for final_semana in vetor_finais_semana:
                 self.cal_show.calevent_create(final_semana, "final_semana", "final_semana")
