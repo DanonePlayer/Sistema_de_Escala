@@ -28,7 +28,7 @@ class Tela:
         self.lbl_novaprog.place(x=10, y=50)
         self.lbl_novaprog.bind("<Button-1>", self.Nova_programacao)
 
-        self.imgicon = tk.PhotoImage(file="../Images/a.png", height=222)
+        self.imgicon = tk.PhotoImage(file="../images/a.png", height=222)
         self.janelaprincipal.iconphoto(False, self.imgicon)
 
 

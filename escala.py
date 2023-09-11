@@ -27,7 +27,7 @@ class Tela:
         self.lbl_novaprog.place(x=10, y=50)
         self.lbl_novaprog.bind("<Button-1>", self.Atribuir_Escala)
 
-        self.imgicon = tk.PhotoImage(file="Images/a.png", height=222)
+        self.imgicon = tk.PhotoImage(file="images/a.png", height=222)
         self.janelaprincipal.iconphoto(False, self.imgicon)
 
         self.lbl_verifica_escala = tk.Label(self.frm_cima, text="Verificar Escalas", font=("Arial",14), bg="#3CB371", fg="white", width=20, height=1)

@@ -92,6 +92,7 @@ class Screens:
             else:
                 messagebox.showinfo("Dados incorretos", "Usuário ou senha inválido")
 
+
     def limpar_entry(self, event):
         entry = event.widget
         if entry.get() == "Nome de Usuario" or entry.get() == "Senha":
@@ -418,31 +419,66 @@ class Screens:
         self.entry_pesquisa.pack(side=tk.LEFT,pady=10,fill=tk.X)
         self.entry_pesquisa.insert(0, "Pesquisar")
 
-        self.bttn_pesquisa = tk.Button(self.frame_pesquisa,command='',borderwidth=0)
+        self.entry_pesquisa.bind("<FocusIn>", self.limpar_entry_entry_pesquisa)
+        self.entry_pesquisa.bind("<FocusOut>", self.restaurar_entry_pesquisa)
+
+        self.image_pesquisa = tk.PhotoImage(file="images/lupa.png")
+        self.bttn_pesquisa = tk.Button(self.frame_pesquisa, text="O", image=self.image_pesquisa, width=16,
+                                  command=self.pesquisar_tree_users)
         self.bttn_pesquisa.pack(side=tk.LEFT,pady=10,fill=tk.X)
+
+        self.image_refresh = tk.PhotoImage(file="images/refresh.png")
+        self.bttn_refresh = tk.Button(self.frame_pesquisa, text="O", image=self.image_refresh, width=16,
+                                  command=self.atualizar_tree_users)
+        self.bttn_refresh.pack(side=tk.LEFT,pady=10,fill=tk.X)
+        # self.imagem_refresh_eleicao = tk.PhotoImage(file="imgs/refresh.png")
+        # self.btn_refresh_eleicao = tk.Button(self.frm_pesq, image=self.imagem_refresh_eleicao,
+        #                                      width=16,
+        #                                      command=self.atualizar_tvw_eleicao)
+        # self.btn_refresh_eleicao.grid(column=3, row=0, padx=3)
+
+        #self.bttn_pesquisa = tk.Button(self.frame_pesquisa,command='',borderwidth=0)
+        #self.bttn_pesquisa.pack(side=tk.LEFT,pady=10,fill=tk.X)
 
         self.frame_tvw_usuario_01 = tk.Frame(self.frame_right,bg='#94939B')
         self.frame_tvw_usuario_01.pack(side=tk.TOP, expand=True,fill=tk.Y)
 
-        self.tree = ttk.Treeview(self.frame_tvw_usuario_01, columns=("ID", "Nome"), show="headings")
-        self.tree.heading("ID", text="ID")
-        self.tree.heading("Nome", text="Nome")
+        self.tree = ttk.Treeview(self.frame_tvw_usuario_01, columns=("Nome"), show="headings")
+        self.tree.column('Nome', width=400)
+        self.tree.heading("Nome", text="Nome Completo")
         self.tree.pack(side=tk.LEFT,fill=tk.BOTH,pady=10,expand=True)
+
+        self.atualizar_tree_users()
 
         self.scrollbar = ttk.Scrollbar(self.frame_tvw_usuario_01, orient="vertical", command=self.tree.yview)
         self.scrollbar.pack(side=tk.LEFT,fill=tk.BOTH,pady=10)
         self.tree.configure(yscrollcommand=self.scrollbar.set)
-
-        query = 'SELECT usuario_id, nome_completo, nome_usuario FROM usuario;'
-        dados = bd.consultar(query)
-        for tupla in dados:
-            self.tree.insert('', tk.END, values=(tupla[0], tupla[1],))
 
         self.frame_btn = tk.Frame(self.frame_right,bg='#94939B')
         self.frame_btn.pack(side=tk.TOP,expand=True,fill=tk.X,pady=10)
 
         self.btt_add = tk.Button(self.frame_btn,text='ATRIBUIR',font=('Inter', 10, 'bold'), fg='#070707',bg='#D9D9D9',command=self.Atribuir,borderwidth=0)
         self.btt_add.pack(side=tk.TOP)
+
+    def pesquisar_tree_users(self):
+        busca = self.entry_pesquisa.get()
+        for i in self.tree.get_children():
+            self.tree.delete(i)
+        if busca == '' or busca == "Pesquisar":
+            self.atualizar_tree_users()
+        else:
+            query = f"SELECT nome_completo FROM usuario WHERE nome_completo LIKE '{busca}%';"
+            dados = bd.consultar(query)
+            for tupla in dados:
+                self.tree.insert('', tk.END, values=(tupla[0]))
+
+    def atualizar_tree_users(self):
+        for i in self.tree.get_children():
+            self.tree.delete(i)
+        query = 'SELECT nome_completo FROM usuario;'
+        dados = bd.consultar(query)
+        for tupla in dados:
+            self.tree.insert('', tk.END, values=(tupla[0]))
 
     def Aualizações_Atribuir(self, event):
         query = f'SELECT dias_escala FROM escala Where nome_escala Like "{self.combo_box.get()}";'
@@ -453,12 +489,21 @@ class Screens:
 
         self.tree.delete(*self.tree.get_children())
 
-        query = 'SELECT usuario_id, nome_completo, nome_usuario FROM usuario;'
+        query = 'SELECT nome_completo, nome_usuario FROM usuario;'
         dados = bd.consultar(query)
         for tupla in dados:
             self.tree.insert('', tk.END, values=(tupla[0], tupla[1],))
 
+    def limpar_entry_entry_pesquisa(self, event):
+        entry = event.widget
+        if entry.get() == "Pesquisar":
+            entry.delete(0, tk.END)
 
+    def restaurar_entry_pesquisa(self, event):
+        entry = event.widget
+        if not entry.get():
+            if entry == self.entry_pesquisa:
+                entry.insert(0, "Pesquisar")
 
     def Atribuir(self):
         selecionado = self.tree.selection()

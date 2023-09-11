@@ -22,7 +22,7 @@ class Tela:
         self.lbl_escalas.place(x=10, y=10)
         self.lbl_escalas.bind("<Button-1>", self.Cria_tipo_escalas)
 
-        self.imgicon = tk.PhotoImage(file="Images/a.png", height=222)
+        self.imgicon = tk.PhotoImage(file="images/a.png", height=222)
         self.janelaprincipal.iconphoto(False, self.imgicon)
 
         self.lbl_verifica_escala = tk.Label(self.frm_cima, text="Verificar Escalas", font=("Arial", 14), bg="#3CB371",
