@@ -951,6 +951,7 @@ class Screens:
         for tupla in dados:
             self.tvw_usuario.insert('', tk.END, values=tupla)
         self.cbx_cargo.set("")
+        self.entry_search.delete(0, "end")
 
     def CreateUserScreen(self):
         self.create_user = tk.Tk()
@@ -1185,18 +1186,65 @@ class Screens:
         self.type_manage_screen.resizable(False, False)
         self.type_manage_screen.protocol("WM_DELETE_WINDOW", self.voltar_type_manage)
 
-        self.lbl_manage_name = tk.Label(self.type_manage_screen, text='TIPO DE ESCALAS', font=('Inter', 18, 'bold'), fg='#0B0B0B',
-                                 bg='#D9D9D9')
+        self.frame_top_01 = tk.Frame(self.type_manage_screen, bg='#94939B')
+        self.frame_top_01.pack(side=tk.TOP, padx=10, fill=tk.X, pady=(10, 0))
+
+        self.lbl_manage_name = tk.Label(self.frame_top_01, text='TIPO DE ESCALAS', font=('Inter', 18, 'bold'),
+                                        fg='#0B0B0B', bg='#94939B')
         self.lbl_manage_name.pack(side=tk.TOP, pady=(20, 5))
 
+        self.lbl_filtro_type = tk.Label(self.frame_top_01, text='Filtro:', font=('Inter', 12, 'bold'), fg='#0B0B0B',
+                                        bg='#94939B')
+        self.lbl_filtro_type.pack(side=tk.LEFT, pady=5, padx=(20, 5))
+
+        self.cbx_cargo_type = ttk.Combobox(self.frame_top_01, text='ID', values=("Nome do Tipo de Escala", "Finais de Semana", "Feriados", "Escala mútua"), state="readonly")
+        self.cbx_cargo_type.pack(side=tk.LEFT, expand=True, fill=tk.X, padx=(5, 10), pady=2)
+
+        self.image_pesquisa_filtro = tk.PhotoImage(file="images/lupa.png")
+        self.bttn_pesquisa_filtro = tk.Button(self.frame_top_01, text="O", image=self.image_pesquisa_filtro, width=16,
+                                              command=self.filtro_tvw_type_manage)
+        self.bttn_pesquisa_filtro.pack(side=tk.LEFT, pady=5, fill=tk.X)
+
+        self.none = tk.Label(self.frame_top_01, text="", width=1, bg="#94939B")
+        self.none.pack(side=tk.LEFT, pady=5, fill=tk.X)
+
+        self.image_refresh_filtro = tk.PhotoImage(file="images/refresh.png")
+        self.bttn_refresh_filtro = tk.Button(self.frame_top_01, text="O", image=self.image_refresh_filtro, width=16,
+                                             command=self.update_tvw_type_manage)
+        self.bttn_refresh_filtro.pack(side=tk.LEFT, pady=5, fill=tk.X)
+
+        self.lbl_opt_type = tk.Label(self.frame_top_01, text='Pesquisar:', font=('Inter', 12, 'bold'), fg='#0B0B0B',
+                                     bg='#94939B')
+        self.lbl_opt_type.pack(side=tk.LEFT, pady=5, padx=(10, 5))
+
+        self.entry_search_type = tk.Entry(self.frame_top_01)
+        self.entry_search_type.pack(side=tk.LEFT, expand=True, fill=tk.X, padx=(5, 10), pady=5)
+
+        self.image_pesquisa = tk.PhotoImage(file="images/lupa.png")
+        self.bttn_pesquisa = tk.Button(self.frame_top_01, text="O", image=self.image_pesquisa, width=16,
+                                       command=self.pesquisar_type_manage)
+        self.bttn_pesquisa.pack(side=tk.LEFT, pady=5, fill=tk.X)
+
+        self.none = tk.Label(self.frame_top_01, text="", width=1, bg="#94939B")
+        self.none.pack(side=tk.LEFT, pady=5, fill=tk.X)
+
+        self.image_refresh = tk.PhotoImage(file="images/refresh.png")
+        self.bttn_refresh = tk.Button(self.frame_top_01, text="O", image=self.image_refresh, width=16,
+                                      command=self.update_tvw_type_manage)
+        self.bttn_refresh.pack(side=tk.LEFT, pady=5, fill=tk.X)
+
+        self.none2 = tk.Label(self.frame_top_01, text="", width=1, bg="#94939B")
+        self.none2.pack(side=tk.LEFT, pady=5, fill=tk.X)
+
         self.frm_type_manage = tk.Frame(self.type_manage_screen, bg='#94939B')
-        self.frm_type_manage.pack(pady=10, padx=10, expand=True, fill=tk.BOTH)
+        self.frm_type_manage.pack(pady=(0, 10), padx=10, expand=True, fill=tk.BOTH)
 
         self.frame_tvw_type_manage = tk.Frame(self.frm_type_manage, bg='#94939B')
         self.frame_tvw_type_manage.pack(pady=20, padx=20, expand=True, fill=tk.BOTH)
 
-        self.tvw_type_manage = ttk.Treeview(self.frame_tvw_type_manage, columns=('tipo_id', 'nome_tipo_escala', 'finais_semana', 'feriados', 'escala_mutua'),
-                                        show='headings')
+        self.tvw_type_manage = ttk.Treeview(self.frame_tvw_type_manage, columns=(
+            'tipo_id', 'nome_tipo_escala', 'finais_semana', 'feriados', 'escala_mutua'),
+                                            show='headings')
         self.tvw_type_manage.column('tipo_id', width=40)
         self.tvw_type_manage.column('nome_tipo_escala', width=250)
         self.tvw_type_manage.column('finais_semana', width=125)
@@ -1218,23 +1266,28 @@ class Screens:
         self.frame_tvw_type_button = tk.Frame(self.frm_type_manage, bg='#94939B')
         self.frame_tvw_type_button.pack(side=tk.BOTTOM)
 
-        self.btn_create_type_manage = tk.Button(self.frame_tvw_type_button, text="Criar Tipo de Escala", font=("Arial", 10, "bold"),
-                                               bg="#3CB371", fg="white", width=20, height=1, borderwidth=0,
-                                               command=self.create_type)
+        self.btn_create_type_manage = tk.Button(self.frame_tvw_type_button, text="Criar Tipo de Escala",
+                                                font=("Arial", 10, "bold"),
+                                                bg="#3CB371", fg="white", width=20, height=1, borderwidth=0,
+                                                command=self.create_type)
         self.btn_create_type_manage.grid(row=0, column=0, padx=10, pady=10)
 
-        self.btn_edit_type_manage = tk.Button(self.frame_tvw_type_button, text="Editar Tipo de Escala", font=("Arial", 10, "bold"),
-                                            bg="Orange", fg="white", width=20, height=1, borderwidth=0,
-                                            command=self.edit_type)
+        self.btn_edit_type_manage = tk.Button(self.frame_tvw_type_button, text="Editar Tipo de Escala",
+                                              font=("Arial", 10, "bold"),
+                                              bg="Orange", fg="white", width=20, height=1, borderwidth=0,
+                                              command=self.edit_type)
         self.btn_edit_type_manage.grid(row=0, column=1, padx=10, pady=10)
 
-        self.btn_delete_type_manage = tk.Button(self.frame_tvw_type_button, text="Excluir Tipo de Escala", font=("Arial", 10, "bold"),
-                                             bg="#E1523F", fg="white", width=20, height=1, borderwidth=0,
-                                             command=self.delete_type_manage)
+        self.btn_delete_type_manage = tk.Button(self.frame_tvw_type_button, text="Excluir Tipo de Escala",
+                                                font=("Arial", 10, "bold"),
+                                                bg="#E1523F", fg="white", width=20, height=1, borderwidth=0,
+                                                command=self.delete_user)
         self.btn_delete_type_manage.grid(row=0, column=2, padx=10, pady=10)
 
-        self.btn_back_type_manage = tk.Button(self.frame_tvw_type_button, text="Voltar", font=("Arial", 10, "bold"), bg="#FFF",
-                                             fg="#000", width=20, height=1, borderwidth=0, command=self.type_manage_close)
+        self.btn_back_type_manage = tk.Button(self.frame_tvw_type_button, text="Voltar", font=("Arial", 10, "bold"),
+                                              bg="#FFF",
+                                              fg="#000", width=20, height=1, borderwidth=0,
+                                              command=self.type_manage_close)
         self.btn_back_type_manage.grid(row=0, column=3, padx=10, pady=10)
 
     def update_tvw_type_manage(self):
@@ -1244,6 +1297,47 @@ class Screens:
         dados = bd.consultar(query)
         for tupla in dados:
             self.tvw_type_manage.insert('', tk.END, values=tupla)
+        self.cbx_cargo_type.set("")
+        self.entry_search_type.delete(0, "end")
+
+    def pesquisar_type_manage(self):
+        busca = self.entry_search_type.get()
+        for i in self.tvw_type_manage.get_children():
+            self.tvw_type_manage.delete(i)
+        if busca == '':
+            self.update_tvw_type_manage()
+        else:
+            query = f"SELECT tipo_escala_id, nome_tipo_escala, CASE WHEN finais_semana = 0 THEN 'Não' WHEN finais_semana = 1 THEN 'Sim' END AS finais_semana, CASE WHEN feriados = 0 THEN 'Não' WHEN feriados = 1 THEN 'Sim' END AS feriados, CASE WHEN escala_mutua = 0 THEN 'Não' WHEN escala_mutua = 1 THEN 'Sim' END AS escala_mutua FROM tipo_escala WHERE nome_tipo_escala LIKE '{busca}%';"
+            dados = bd.consultar(query)
+            for tupla in dados:
+                self.tvw_usuario.insert('', tk.END, values=tupla)
+
+    def filtro_tvw_type_manage(self):
+        busca = self.cbx_cargo_type.get()
+        for i in self.tvw_type_manage.get_children():
+            self.tvw_type_manage.delete(i)
+        if busca == '':
+            self.update_tvw_type_manage()
+        elif busca == "Nome do Tipo de Escala":
+            query = f"SELECT tipo_escala_id, nome_tipo_escala, CASE WHEN finais_semana = 0 THEN 'Não' WHEN finais_semana = 1 THEN 'Sim' END AS finais_semana, CASE WHEN feriados = 0 THEN 'Não' WHEN feriados = 1 THEN 'Sim' END AS feriados, CASE WHEN escala_mutua = 0 THEN 'Não' WHEN escala_mutua = 1 THEN 'Sim' END AS escala_mutua FROM tipo_escala ORDER BY nome_tipo_escala"
+            dados = bd.consultar(query)
+            for tupla in dados:
+                self.tvw_type_manage.insert('', tk.END, values=tupla)
+        elif busca == "Finais de Semana":
+            query = f"SELECT tipo_escala_id, nome_tipo_escala, CASE WHEN finais_semana = 0 THEN 'Não' WHEN finais_semana = 1 THEN 'Sim' END AS finais_semana, CASE WHEN feriados = 0 THEN 'Não' WHEN feriados = 1 THEN 'Sim' END AS feriados, CASE WHEN escala_mutua = 0 THEN 'Não' WHEN escala_mutua = 1 THEN 'Sim' END AS escala_mutua FROM tipo_escala ORDER BY finais_semana"
+            dados = bd.consultar(query)
+            for tupla in dados:
+                self.tvw_type_manage.insert('', tk.END, values=tupla)
+        elif busca == "Feriados":
+            query = f"SELECT tipo_escala_id, nome_tipo_escala, CASE WHEN finais_semana = 0 THEN 'Não' WHEN finais_semana = 1 THEN 'Sim' END AS finais_semana, CASE WHEN feriados = 0 THEN 'Não' WHEN feriados = 1 THEN 'Sim' END AS feriados, CASE WHEN escala_mutua = 0 THEN 'Não' WHEN escala_mutua = 1 THEN 'Sim' END AS escala_mutua FROM tipo_escala ORDER BY feriados"
+            dados = bd.consultar(query)
+            for tupla in dados:
+                self.tvw_type_manage.insert('', tk.END, values=tupla)
+        else:
+            query = f"SELECT tipo_escala_id, nome_tipo_escala, CASE WHEN finais_semana = 0 THEN 'Não' WHEN finais_semana = 1 THEN 'Sim' END AS finais_semana, CASE WHEN feriados = 0 THEN 'Não' WHEN feriados = 1 THEN 'Sim' END AS feriados, CASE WHEN escala_mutua = 0 THEN 'Não' WHEN escala_mutua = 1 THEN 'Sim' END AS escala_mutua FROM tipo_escala ORDER BY escala_mutua"
+            dados = bd.consultar(query)
+            for tupla in dados:
+                self.tvw_type_manage.insert('', tk.END, values=tupla)
 
     def CreateTypeScreen(self):
         self.create_screen = tk.Toplevel()
@@ -1571,17 +1665,64 @@ class Screens:
         self.roster_manage.resizable(False, False)
         self.roster_manage.protocol("WM_DELETE_WINDOW", self.voltar_manage)
 
-        self.lbl_01 = tk.Label(self.roster_manage, text='GERENCIAR ESCALAS', font=('Inter', 18, 'bold'), fg='#0B0B0B',bg='#D9D9D9')
+        self.frame_top_02 = tk.Frame(self.roster_manage, bg='#94939B')
+        self.frame_top_02.pack(side=tk.TOP, padx=10, fill=tk.X, pady=(10, 0))
+
+        self.lbl_01 = tk.Label(self.frame_top_02, text='GERENCIAR ESCALAS', font=('Inter', 18, 'bold'), fg='#0B0B0B',
+                               bg='#94939B')
         self.lbl_01.pack(side=tk.TOP, pady=(20))
 
+        self.lbl_filtro_type = tk.Label(self.frame_top_02, text='Filtro:', font=('Inter', 12, 'bold'), fg='#0B0B0B',
+                                        bg='#94939B')
+        self.lbl_filtro_type.pack(side=tk.LEFT, pady=5, padx=(10, 5))
+
+        self.cbx_cargo_type = ttk.Combobox(self.frame_top_02, text='ID', values=("Nome da Escala", "Tipo de Escala", "Data de início", "Data de fim", "Dias da escala"), state="readonly")
+        self.cbx_cargo_type.pack(side=tk.LEFT, expand=True, fill=tk.X, padx=(5, 10), pady=2)
+
+        self.image_pesquisa_filtro = tk.PhotoImage(file="images/lupa.png")
+        self.bttn_pesquisa_filtro = tk.Button(self.frame_top_02, text="O", image=self.image_pesquisa_filtro, width=16,
+                                              command=self.filtro_tvw_roster_manage)
+        self.bttn_pesquisa_filtro.pack(side=tk.LEFT, pady=5, fill=tk.X)
+
+        self.none = tk.Label(self.frame_top_02, text="", width=1, bg="#94939B")
+        self.none.pack(side=tk.LEFT, pady=5, fill=tk.X)
+
+        self.image_refresh_filtro = tk.PhotoImage(file="images/refresh.png")
+        self.bttn_refresh_filtro = tk.Button(self.frame_top_02, text="O", image=self.image_refresh_filtro, width=16,
+                                             command=self.update_tvw_roster)
+        self.bttn_refresh_filtro.pack(side=tk.LEFT, pady=5, fill=tk.X)
+
+        self.lbl_opt_type = tk.Label(self.frame_top_02, text='Pesquisar:', font=('Inter', 12, 'bold'), fg='#0B0B0B',
+                                     bg='#94939B')
+        self.lbl_opt_type.pack(side=tk.LEFT, pady=5, padx=(10, 5))
+
+        self.entry_search_roster = tk.Entry(self.frame_top_02)
+        self.entry_search_roster.pack(side=tk.LEFT, expand=True, fill=tk.X, padx=(5, 10), pady=5)
+
+        self.image_pesquisa = tk.PhotoImage(file="images/lupa.png")
+        self.bttn_pesquisa = tk.Button(self.frame_top_02, text="O", image=self.image_pesquisa, width=16,
+                                       command=self.pesquisar_roster_manage)
+        self.bttn_pesquisa.pack(side=tk.LEFT, pady=5, fill=tk.X)
+
+        self.none = tk.Label(self.frame_top_02, text="", width=1, bg="#94939B")
+        self.none.pack(side=tk.LEFT, pady=5, fill=tk.X)
+
+        self.image_refresh = tk.PhotoImage(file="images/refresh.png")
+        self.bttn_refresh = tk.Button(self.frame_top_02, text="O", image=self.image_refresh, width=16,
+                                      command=self.update_tvw_roster)
+        self.bttn_refresh.pack(side=tk.LEFT, pady=5, fill=tk.X)
+
+        self.none2 = tk.Label(self.frame_top_02, text="", width=1, bg="#94939B")
+        self.none2.pack(side=tk.LEFT, pady=5, fill=tk.X)
+
         self.frm_01 = tk.Frame(self.roster_manage, bg='#94939B')
-        self.frm_01.pack(pady=10, padx=10, expand=True, fill=tk.BOTH)
+        self.frm_01.pack(pady=(0, 10), padx=10, expand=True, fill=tk.BOTH)
 
         self.frame_tvw_roster = tk.Frame(self.frm_01, bg='#94939B')
-        self.frame_tvw_roster.pack(expand=True, fill=tk.BOTH,padx=8,pady=(10,8))
+        self.frame_tvw_roster.pack(expand=True, fill=tk.BOTH, padx=8, pady=(10, 8))
 
         self.tvw_escala = ttk.Treeview(self.frame_tvw_roster, columns=(
-        'id', 'nome escala', 'tipo de escala', 'data inicio', 'data fim', 'dias da escala'),show='headings')
+            'id', 'nome escala', 'tipo de escala', 'data inicio', 'data fim', 'dias da escala'), show='headings')
         self.tvw_escala.column('id', width=40)
         self.tvw_escala.column('nome escala', width=350)
         self.tvw_escala.column('tipo de escala', width=250)
@@ -1594,7 +1735,7 @@ class Screens:
         self.tvw_escala.heading('data inicio', text='Data de início')
         self.tvw_escala.heading('data fim', text='Data de fim')
         self.tvw_escala.heading('dias da escala', text='Dias da escala')
-        self.tvw_escala.pack(side=tk.LEFT, fill=tk.BOTH,expand=True)
+        self.tvw_escala.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
         self.update_tvw_roster()
 
         self.scr_escala = ttk.Scrollbar(self.frame_tvw_roster, command=self.tvw_escala.yview)
@@ -1604,16 +1745,20 @@ class Screens:
         self.frame_button = tk.Frame(self.frm_01, bg='#94939B')
         self.frame_button.pack(side=tk.BOTTOM)
 
-        self.btn_create = tk.Button(self.frame_button,text="Criar Escala", font=("Arial", 10, "bold"), bg="#3CB371",fg="white", width=20, height=1,borderwidth=0,command=self.create_roster)
+        self.btn_create = tk.Button(self.frame_button, text="Criar Escala", font=("Arial", 10, "bold"), bg="#3CB371",
+                                    fg="white", width=20, height=1, borderwidth=0, command=self.create_roster)
         self.btn_create.grid(row=0, column=0, padx=10, pady=10)
 
-        self.btn_edit = tk.Button(self.frame_button, text="Editar Escala", font=("Arial", 10, "bold"), bg="Orange", fg="white",width=20, height=1,borderwidth=0, command=self.edit_roster)
+        self.btn_edit = tk.Button(self.frame_button, text="Editar Escala", font=("Arial", 10, "bold"), bg="Orange",
+                                  fg="white", width=20, height=1, borderwidth=0, command=self.edit_roster)
         self.btn_edit.grid(row=0, column=1, padx=10, pady=10)
 
-        self.btn_exclude = tk.Button(self.frame_button, text="Excluir Escala", font=("Arial", 10, "bold"),bg="#E1523F", fg="white", width=20, height=1, borderwidth=0, command=self.delete_roster)
+        self.btn_exclude = tk.Button(self.frame_button, text="Excluir Escala", font=("Arial", 10, "bold"), bg="#E1523F",
+                                     fg="white", width=20, height=1, borderwidth=0, command=self.delete_roster)
         self.btn_exclude.grid(row=0, column=2, padx=10, pady=10)
 
-        self.bttn_return = tk.Button(self.frame_button,text="Voltar", font=("Arial", 10, "bold"),bg="#FFF", fg="#000", width=20, height=1, borderwidth=0, command=self.voltar_manage)
+        self.bttn_return = tk.Button(self.frame_button, text="Voltar", font=("Arial", 10, "bold"), bg="#FFF", fg="#000",
+                                     width=20, height=1, borderwidth=0, command=self.voltar_manage)
         self.bttn_return.grid(row=0, column=3, padx=10, pady=10)
 
     def update_tvw_roster(self):
@@ -1623,6 +1768,52 @@ class Screens:
         dados = bd.consultar(query)
         for tupla in dados:
             self.tvw_escala.insert('', tk.END, values=tupla)
+        self.entry_search_roster.delete(0, "end")
+        self.cbx_cargo_type.set("")
+
+    def pesquisar_roster_manage(self):
+        busca = self.entry_search_roster.get()
+        for i in self.tvw_escala.get_children():
+            self.tvw_escala.delete(i)
+        if busca == '':
+            self.update_tvw_roster()
+        else:
+            query = f"SELECT escala_id, nome_escala, nome_tipo_escala, data_inicio_escala, data_fim_escala, dias_escala FROM tipo_escala as te, escala as e WHERE te.tipo_escala_id = e.tipo_escala_id AND nome_escala LIKE '{busca}%';"
+            dados = bd.consultar(query)
+            for tupla in dados:
+                self.tvw_escala.insert('', tk.END, values=tupla)
+
+    def filtro_tvw_roster_manage(self):
+        busca = self.cbx_cargo_type.get()
+        for i in self.tvw_escala.get_children():
+            self.tvw_escala.delete(i)
+        if busca == '':
+            self.update_tvw_type_manage()
+        elif busca == "Nome da Escala":
+            query = f"SELECT escala_id, nome_escala, nome_tipo_escala, data_inicio_escala, data_fim_escala, dias_escala FROM tipo_escala as te, escala as e WHERE te.tipo_escala_id = e.tipo_escala_id ORDER BY nome_escala"
+            dados = bd.consultar(query)
+            for tupla in dados:
+                self.tvw_escala.insert('', tk.END, values=tupla)
+        elif busca == "Nome do Tipo de Escala":
+            query = f"SELECT escala_id, nome_escala, nome_tipo_escala, data_inicio_escala, data_fim_escala, dias_escala FROM tipo_escala as te, escala as e WHERE te.tipo_escala_id = e.tipo_escala_id ORDER BY nome_tipo_escala"
+            dados = bd.consultar(query)
+            for tupla in dados:
+                self.tvw_escala.insert('', tk.END, values=tupla)
+        elif busca == "Data de início":
+            query = f"SELECT escala_id, nome_escala, nome_tipo_escala, data_inicio_escala, data_fim_escala, dias_escala FROM tipo_escala as te, escala as e WHERE te.tipo_escala_id = e.tipo_escala_id ORDER BY data_inicio_escala"
+            dados = bd.consultar(query)
+            for tupla in dados:
+                self.tvw_escala.insert('', tk.END, values=tupla)
+        elif busca == "Data de fim":
+            query = f"SELECT escala_id, nome_escala, nome_tipo_escala, data_inicio_escala, data_fim_escala, dias_escala FROM tipo_escala as te, escala as e WHERE te.tipo_escala_id = e.tipo_escala_id ORDER BY data_fim_escala"
+            dados = bd.consultar(query)
+            for tupla in dados:
+                self.tvw_escala.insert('', tk.END, values=tupla)
+        else:
+            query = f"SELECT escala_id, nome_escala, nome_tipo_escala, data_inicio_escala, data_fim_escala, dias_escala FROM tipo_escala as te, escala as e WHERE te.tipo_escala_id = e.tipo_escala_id ORDER BY dias_escala"
+            dados = bd.consultar(query)
+            for tupla in dados:
+                self.tvw_escala.insert('', tk.END, values=tupla)
 
     def CreateRoster(self):
         self.create_roster_screen = tk.Tk()
