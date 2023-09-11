@@ -415,30 +415,28 @@ class Screens:
         self.frame_pesquisa = tk.Frame(self.frame_right,bg='#94939B')
         self.frame_pesquisa.pack(fill=tk.Y, expand=True, padx=20, pady=10,side=tk.TOP)
 
-        self.entry_pesquisa = tk.Entry(self.frame_pesquisa,width=60,font=('Inter', 10 , 'bold'), fg='#94939B')
+        self.entry_pesquisa = tk.Entry(self.frame_pesquisa,width=49,font=('Inter', 10 , 'bold'), fg='#94939B')
         self.entry_pesquisa.pack(side=tk.LEFT,pady=10,fill=tk.X)
         self.entry_pesquisa.insert(0, "Pesquisar")
 
         self.entry_pesquisa.bind("<FocusIn>", self.limpar_entry_entry_pesquisa)
         self.entry_pesquisa.bind("<FocusOut>", self.restaurar_entry_pesquisa)
 
+        self.none1 = tk.Label(self.frame_pesquisa, text="", width=1, bg="#94939B")
+        self.none1.pack(side=tk.LEFT, pady=5, fill=tk.X)
+
         self.image_pesquisa = tk.PhotoImage(file="images/lupa.png")
         self.bttn_pesquisa = tk.Button(self.frame_pesquisa, text="O", image=self.image_pesquisa, width=16,
                                   command=self.pesquisar_tree_users)
         self.bttn_pesquisa.pack(side=tk.LEFT,pady=10,fill=tk.X)
 
+        self.none = tk.Label(self.frame_pesquisa, text="", width=1, bg="#94939B")
+        self.none.pack(side=tk.LEFT, pady=5, fill=tk.X)
+
         self.image_refresh = tk.PhotoImage(file="images/refresh.png")
         self.bttn_refresh = tk.Button(self.frame_pesquisa, text="O", image=self.image_refresh, width=16,
                                   command=self.atualizar_tree_users)
         self.bttn_refresh.pack(side=tk.LEFT,pady=10,fill=tk.X)
-        # self.imagem_refresh_eleicao = tk.PhotoImage(file="imgs/refresh.png")
-        # self.btn_refresh_eleicao = tk.Button(self.frm_pesq, image=self.imagem_refresh_eleicao,
-        #                                      width=16,
-        #                                      command=self.atualizar_tvw_eleicao)
-        # self.btn_refresh_eleicao.grid(column=3, row=0, padx=3)
-
-        #self.bttn_pesquisa = tk.Button(self.frame_pesquisa,command='',borderwidth=0)
-        #self.bttn_pesquisa.pack(side=tk.LEFT,pady=10,fill=tk.X)
 
         self.frame_tvw_usuario_01 = tk.Frame(self.frame_right,bg='#94939B')
         self.frame_tvw_usuario_01.pack(side=tk.TOP, expand=True,fill=tk.Y)
@@ -478,7 +476,7 @@ class Screens:
         query = 'SELECT nome_completo FROM usuario;'
         dados = bd.consultar(query)
         for tupla in dados:
-            self.tree.insert('', tk.END, values=(tupla[0]))
+            self.tree.insert('', tk.END, values=tupla)
 
     def Aualizações_Atribuir(self, event):
         query = f'SELECT dias_escala FROM escala Where nome_escala Like "{self.combo_box.get()}";'
@@ -489,10 +487,10 @@ class Screens:
 
         self.tree.delete(*self.tree.get_children())
 
-        query = 'SELECT nome_completo, nome_usuario FROM usuario;'
+        query = 'SELECT nome_completo FROM usuario;'
         dados = bd.consultar(query)
         for tupla in dados:
-            self.tree.insert('', tk.END, values=(tupla[0], tupla[1],))
+            self.tree.insert('', tk.END, values=tupla)
 
     def limpar_entry_entry_pesquisa(self, event):
         entry = event.widget
@@ -814,16 +812,64 @@ class Screens:
         self.user_screen.resizable(False, False)
         self.user_screen.protocol("WM_DELETE_WINDOW", self.voltar_user)
 
-        self.lbl_name = tk.Label(self.user_screen, text='GERENCIAR USUÁRIOS', font=('Inter', 18, 'bold'), fg='#0B0B0B',bg='#D9D9D9')
-        self.lbl_name.pack(side=tk.TOP, pady=(20, 5))
+        self.frame_top = tk.Frame(self.user_screen, bg='#94939B')
+        self.frame_top.pack(side=tk.TOP, padx=10, fill=tk.X, pady=(10, 0))
+
+        self.lbl_name = tk.Label(self.frame_top, text='GERENCIAR USUÁRIOS', font=('Inter', 18, 'bold'), fg='#0B0B0B',
+                                 bg='#94939B')
+        self.lbl_name.pack(side=tk.TOP, pady=(20, 10))
+
+        self.lbl_filtro = tk.Label(self.frame_top, text='Filtro:', font=('Inter', 12, 'bold'), fg='#0B0B0B',
+                                   bg='#94939B')
+        self.lbl_filtro.pack(side=tk.LEFT, pady=5, padx=(20, 5))
+
+        self.cbx_cargo = ttk.Combobox(self.frame_top, text='ID', values=("Nome", "Nome de Usuário", "Super usuário",), state="readonly")
+        self.cbx_cargo.pack(side=tk.LEFT, expand=True, fill=tk.X, padx=(5, 10), pady=2)
+
+        self.image_pesquisa_filtro = tk.PhotoImage(file="images/lupa.png")
+        self.bttn_pesquisa_filtro = tk.Button(self.frame_top, text="O", image=self.image_pesquisa_filtro, width=16,
+                                       command=self.filtro_tvw_users)
+        self.bttn_pesquisa_filtro.pack(side=tk.LEFT, pady=5, fill=tk.X)
+
+        self.none = tk.Label(self.frame_top, text="", width=1, bg="#94939B")
+        self.none.pack(side=tk.LEFT, pady=5, fill=tk.X)
+
+        self.image_refresh_filtro = tk.PhotoImage(file="images/refresh.png")
+        self.bttn_refresh_filtro = tk.Button(self.frame_top, text="O", image=self.image_refresh_filtro, width=16,
+                                      command=self.update_tvw_user)
+        self.bttn_refresh_filtro.pack(side=tk.LEFT, pady=5, fill=tk.X)
+
+        self.lbl_opt = tk.Label(self.frame_top, text='Pesquisar:', font=('Inter', 12, 'bold'), fg='#0B0B0B',
+                                bg='#94939B')
+        self.lbl_opt.pack(side=tk.LEFT, pady=5, padx=(10, 5))
+
+        self.entry_search = tk.Entry(self.frame_top)
+        self.entry_search.pack(side=tk.LEFT, expand=True, fill=tk.X, padx=(5, 10), pady=5)
+
+        self.image_pesquisa = tk.PhotoImage(file="images/lupa.png")
+        self.bttn_pesquisa = tk.Button(self.frame_top, text="O", image=self.image_pesquisa, width=16,
+                                       command=self.pesquisar_tvw_users)
+        self.bttn_pesquisa.pack(side=tk.LEFT, pady=5, fill=tk.X)
+
+        self.none = tk.Label(self.frame_top, text="", width=1, bg="#94939B")
+        self.none.pack(side=tk.LEFT, pady=5, fill=tk.X)
+
+        self.image_refresh = tk.PhotoImage(file="images/refresh.png")
+        self.bttn_refresh = tk.Button(self.frame_top, text="O", image=self.image_refresh, width=16,
+                                      command=self.update_tvw_user)
+        self.bttn_refresh.pack(side=tk.LEFT, pady=5, fill=tk.X)
+
+        self.none2 = tk.Label(self.frame_top, text="", width=1, bg="#94939B")
+        self.none2.pack(side=tk.LEFT, pady=5, fill=tk.X)
 
         self.frm = tk.Frame(self.user_screen, bg='#94939B')
-        self.frm.pack(pady=10, padx=10,expand=True,fill=tk.BOTH)
+        self.frm.pack(side=tk.TOP, pady=(0, 10), padx=10, expand=True, fill=tk.BOTH)
 
         self.frame_tvw_usuario = tk.Frame(self.frm, bg='#94939B')
-        self.frame_tvw_usuario.pack(pady=20, padx=20,expand=True, fill=tk.BOTH)
+        self.frame_tvw_usuario.pack(pady=20, padx=20, expand=True, fill=tk.BOTH)
 
-        self.tvw_usuario = ttk.Treeview(self.frame_tvw_usuario, columns=('id', 'nome', 'nome de usuario', 'tipo'),show='headings')
+        self.tvw_usuario = ttk.Treeview(self.frame_tvw_usuario, columns=('id', 'nome', 'nome de usuario', 'tipo'),
+                                        show='headings')
         self.tvw_usuario.column('id', width=40)
         self.tvw_usuario.column('nome', width=250)
         self.tvw_usuario.column('nome de usuario', width=150)
@@ -832,7 +878,7 @@ class Screens:
         self.tvw_usuario.heading('nome', text='Nome')
         self.tvw_usuario.heading('nome de usuario', text='Nome de Usuário')
         self.tvw_usuario.heading('tipo', text='Super usuário')
-        self.tvw_usuario.pack(side=tk.LEFT,fill=tk.BOTH,expand=True)
+        self.tvw_usuario.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
         self.update_tvw_user()
 
@@ -843,17 +889,59 @@ class Screens:
         self.frame_tvw_button = tk.Frame(self.frm, bg='#94939B')
         self.frame_tvw_button.pack(side=tk.BOTTOM)
 
-        self.btn_cadastrar_usuario = tk.Button(self.frame_tvw_button, text="Criar Usuário", font=("Arial", 10, "bold"), bg="#3CB371",fg="white", width=20, height=1,borderwidth=0,command=self.open_create_user)
-        self.btn_cadastrar_usuario.grid(row=0,column=0,padx=10,pady=10)
+        self.btn_cadastrar_usuario = tk.Button(self.frame_tvw_button, text="Criar Usuário", font=("Arial", 10, "bold"),
+                                               bg="#3CB371", fg="white", width=20, height=1, borderwidth=0,
+                                               command=self.open_create_user)
+        self.btn_cadastrar_usuario.grid(row=0, column=0, padx=10, pady=10)
 
-        self.btn_editar_usuario = tk.Button(self.frame_tvw_button, text="Editar Usuário", font=("Arial", 10, "bold"), bg="Orange", fg="white",width=20, height=1,borderwidth=0,command=self.open_edit_user)
-        self.btn_editar_usuario.grid(row=0,column=1,padx=10,pady=10)
+        self.btn_editar_usuario = tk.Button(self.frame_tvw_button, text="Editar Usuário", font=("Arial", 10, "bold"),
+                                            bg="Orange", fg="white", width=20, height=1, borderwidth=0,
+                                            command=self.open_edit_user)
+        self.btn_editar_usuario.grid(row=0, column=1, padx=10, pady=10)
 
-        self.btn_excluir_usuario = tk.Button(self.frame_tvw_button, text="Excluir Usuário", font=("Arial", 10, "bold"), bg="#E1523F",fg="white", width=20, height=1,borderwidth=0,command=self.delete_user)
-        self.btn_excluir_usuario.grid(row=0,column=2,padx=10,pady=10)
+        self.btn_excluir_usuario = tk.Button(self.frame_tvw_button, text="Excluir Usuário", font=("Arial", 10, "bold"),
+                                             bg="#E1523F", fg="white", width=20, height=1, borderwidth=0,
+                                             command=self.delete_user)
+        self.btn_excluir_usuario.grid(row=0, column=2, padx=10, pady=10)
 
-        self.btn_excluir_usuario = tk.Button(self.frame_tvw_button, text="Voltar", font=("Arial", 10, "bold"),bg="#FFF", fg="#000", width=20, height=1, borderwidth=0, command=self.voltar_user)
+        self.btn_excluir_usuario = tk.Button(self.frame_tvw_button, text="Voltar", font=("Arial", 10, "bold"),
+                                             bg="#FFF", fg="#000", width=20, height=1, borderwidth=0,
+                                             command=self.voltar_user)
         self.btn_excluir_usuario.grid(row=0, column=3, padx=10, pady=10)
+
+    def filtro_tvw_users(self):
+        busca = self.cbx_cargo.get()
+        for i in self.tvw_usuario.get_children():
+            self.tvw_usuario.delete(i)
+        if busca == '':
+            self.update_tvw_user()
+        elif busca == "Super usuário":
+            query = f"SELECT usuario_id, nome_completo, nome_usuario, CASE WHEN super_usuario = 0 THEN 'Não' WHEN super_usuario = 1 THEN 'Sim' END AS super_usuario FROM usuario ORDER BY super_usuario"
+            dados = bd.consultar(query)
+            for tupla in dados:
+                self.tvw_usuario.insert('', tk.END, values=tupla)
+        elif busca == "Nome":
+            query = f"SELECT usuario_id, nome_completo, nome_usuario, CASE WHEN super_usuario = 0 THEN 'Não' WHEN super_usuario = 1 THEN 'Sim' END AS super_usuario FROM usuario ORDER BY nome_completo"
+            dados = bd.consultar(query)
+            for tupla in dados:
+                self.tvw_usuario.insert('', tk.END, values=tupla)
+        else:
+            query = f"SELECT usuario_id, nome_completo, nome_usuario, CASE WHEN super_usuario = 0 THEN 'Não' WHEN super_usuario = 1 THEN 'Sim' END AS super_usuario FROM usuario ORDER BY nome_usuario"
+            dados = bd.consultar(query)
+            for tupla in dados:
+                self.tvw_usuario.insert('', tk.END, values=tupla)
+
+    def pesquisar_tvw_users(self):
+        busca = self.entry_search.get()
+        for i in self.tvw_usuario.get_children():
+            self.tvw_usuario.delete(i)
+        if busca == '':
+            self.update_tvw_user()
+        else:
+            query = f"SELECT usuario_id, nome_completo, nome_usuario, CASE WHEN super_usuario = 0 THEN 'Não' WHEN super_usuario = 1 THEN 'Sim' END AS super_usuario FROM usuario WHERE nome_completo LIKE '{busca}%';"
+            dados = bd.consultar(query)
+            for tupla in dados:
+                self.tvw_usuario.insert('', tk.END, values=tupla)
 
     def update_tvw_user(self):
         for i in self.tvw_usuario.get_children():
@@ -862,6 +950,7 @@ class Screens:
         dados = bd.consultar(query)
         for tupla in dados:
             self.tvw_usuario.insert('', tk.END, values=tupla)
+        self.cbx_cargo.set("")
 
     def CreateUserScreen(self):
         self.create_user = tk.Tk()
