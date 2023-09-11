@@ -1,6 +1,6 @@
 import tkinter as tk
 from calendar import monthrange
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 ##from tkinter import PhotoImage, ttk, messagebox,RAISED, RIDGE
 from tkinter import messagebox, ttk
 
@@ -192,12 +192,14 @@ class Screens:
         self.CreateUserScreen()
 
     def open_edit_user(self):
-        self.user_screen.iconify()
-        self.EditUserScreen()
+        selecionado = self.tvw_usuario.selection()
+        if selecionado != ():
+            self.user_screen.iconify()
+            self.EditUserScreen()
 
     def voltar_create_user(self):
         self.create_user.destroy()
-        self.UserScreen()
+        self.user_screen.deiconify()
 
     def voltar_edit_user(self):
         self.edit_user.destroy()
@@ -851,16 +853,23 @@ class Screens:
         tk.Label(self.center_frame_04, text="Tipo de usuário:", bg='#94939B',font=('Inter', 18, 'bold')).pack(side=tk.TOP,pady=10,padx=20)
 
         self.user_type_var = tk.StringVar()
-        self.user_type_combobox = ttk.Combobox(self.center_frame_04, textvariable=self.user_type_var,values=["Administrador", "Usuário Comum"])
+        self.user_type_combobox = ttk.Combobox(self.center_frame_04, textvariable=self.user_type_var,values=["Super Usuário", "Usuário Comum"])
         self.user_type_combobox.pack(side=tk.TOP,pady=10,padx=40,fill=tk.BOTH)
-        self.user_type_combobox.set("Usuário Comum")
+        self.user_type_combobox["state"] = "readonly"
 
         self.frm_bttn_03 = tk.Frame(self.center_frame_04, bg='#94939B')
         self.frm_bttn_03.pack(side=tk.BOTTOM, expand=True, padx=10, pady=10)
 
         self.btn_conf  = tk.Button(self.frm_bttn_03, text="Confirmar", command=self.confirm_create_user,font=("Arial", 10, "bold"), bg="#3CB371",fg="white", width=10, height=1,borderwidth=0).pack(side='left', padx=15,pady=10)
-        self.btn_limp = tk.Button(self.frm_bttn_03, text="Limpar", command="", font=("Arial", 10, "bold"), bg="Orange", fg="white",width=10, height=1,borderwidth=0).pack(side='left', padx=15,pady=10)
+        self.btn_limp = tk.Button(self.frm_bttn_03, text="Limpar", command=self.clear_create_user, font=("Arial", 10, "bold"), bg="Orange", fg="white",width=10, height=1,borderwidth=0).pack(side='left', padx=15,pady=10)
         self.btn_cancel = tk.Button(self.frm_bttn_03, text="Cancelar", command=self.voltar_create_user, font=("Arial", 10, "bold"), bg="#E1523F",fg="white", width=10, height=1,borderwidth=0).pack(side='left', padx=15, pady=10)
+
+    def clear_create_user(self):
+        self.full_name_entry.delete(0, tk.END)
+        self.username_entry.delete(0, tk.END)
+        self.password_entry.delete(0, tk.END)
+        self.confirm_password_entry.delete(0, tk.END)
+        self.user_type_combobox.set("")
 
     def confirm_create_user(self):
         full_name = self.full_name_entry.get()
@@ -947,34 +956,31 @@ class Screens:
             self.full_name_entry.pack(side=tk.TOP,pady=10,padx=40,fill=tk.BOTH)
             self.full_name_entry.insert(0, self.lista[1])
 
-            tk.Label(self.center_frame_05, text="Nome de usuário:", bg='#94939B',font=('Inter', 18, 'bold')).pack(side=tk.TOP,pady=10,padx=20)
+            tk.Label(self.center_frame_05, text="Nome de usuário:", bg='#94939B', font=('Inter', 18, 'bold')).pack(side=tk.TOP,pady=10,padx=20)
             self.username_entry = tk.Entry(self.center_frame_05)
             self.username_entry.pack(side=tk.TOP,pady=10,padx=40,fill=tk.BOTH)
             self.username_entry.insert(0, self.lista[2])
 
-            #tk.Label(self.center_frame_05, text="Senha:", bg='#94939B',font=('Inter', 18, 'bold')).pack(side=tk.TOP,pady=10,padx=20)
-
-            #self.password_entry = tk.Entry(self.center_frame_05, show='*', bg="Grey")
-            #self.password_entry.pack(side=tk.TOP,pady=10,padx=40,fill=tk.BOTH)
-            #self.password_entry.config(state='disabled', bg='grey')
-
-            #tk.Label(self.center_frame_05, text="Confirmar senha:", bg='#94939B',font=('Inter', 18, 'bold')).pack(side=tk.TOP,pady=10,padx=20)
-
-            #self.confirm_password_entry = tk.Entry(self.center_frame_05, show='*')
-            #self.confirm_password_entry.pack(side=tk.TOP,pady=10,padx=40,fill=tk.BOTH)
-
-            tk.Label(self.center_frame_05, text="Tipo de usuário:", bg='#94939B',font=('Inter', 18, 'bold')).pack(side=tk.TOP,pady=10,padx=20)
+            tk.Label(self.center_frame_05, text="Tipo de usuário:", bg='#94939B', font=('Inter', 18, 'bold')).pack(side=tk.TOP,pady=10,padx=20)
             self.user_type_var = tk.StringVar()
-            self.user_type_combobox = ttk.Combobox(self.center_frame_05, textvariable=self.user_type_var,values=["Administrador", "Usuário Comum"])
-            self.user_type_combobox.pack(side=tk.TOP,pady=10,padx=40,fill=tk.BOTH)
+            self.user_type_combobox = ttk.Combobox(self.center_frame_05, textvariable=self.user_type_var,values=["Usuário Comum", "Super Usuário"])
+            self.user_type_combobox.pack(side=tk.TOP, pady=10, padx=40, fill=tk.BOTH)
+            self.user_type_combobox["state"] = "readonly"
             self.user_type_combobox.current(self.lista[4])
 
             self.frm_bttn_02 = tk.Frame(self.center_frame_05,bg='#94939B')
             self.frm_bttn_02.pack(side=tk.BOTTOM,expand=True,padx=10,pady=10)
 
             self.btn_conf  = tk.Button(self.frm_bttn_02, text="Confirmar", command=self.confirm_edit_user,font=("Arial", 10, "bold"), bg="#3CB371",fg="white", width=10, height=1,borderwidth=0).pack(side='left', padx=15,pady=10)
-            self.btn_limp = tk.Button(self.frm_bttn_02, text="Limpar", command="", font=("Arial", 10, "bold"), bg="Orange", fg="white",width=10, height=1,borderwidth=0).pack(side='left', padx=15,pady=10)
+            self.btn_limp = tk.Button(self.frm_bttn_02, text="Refazer", command=self.clear_edit_user, font=("Arial", 10, "bold"), bg="Orange", fg="white",width=10, height=1,borderwidth=0).pack(side='left', padx=15,pady=10)
             self.btn_cancel = tk.Button(self.frm_bttn_02, text="Cancelar", command=self.voltar_edit_user, font=("Arial", 10, "bold"), bg="#E1523F",fg="white", width=10, height=1,borderwidth=0).pack(side='left', padx=15, pady=10)
+
+    def clear_edit_user(self):
+        self.full_name_entry.delete(0, tk.END)
+        self.full_name_entry.insert(0, self.lista[1])
+        self.username_entry.delete(0, tk.END)
+        self.username_entry.insert(0, self.lista[2])
+        self.user_type_combobox.current(self.lista[4])
 
     def confirm_edit_user(self):
         self.selecionado = self.tvw_usuario.selection()
@@ -1181,17 +1187,23 @@ class Screens:
         self.frame_button = tk.Frame(self.center_frame, bg='#94939B')
         self.frame_button.pack(fill=tk.Y, padx=10, pady=10, side=tk.TOP)
 
-        self.bttn_criar = tk.Button(self.frame_button, text='CRIAR', font=('Inter', 10, 'bold'), fg='#FFF',
+        self.bttn_criar = tk.Button(self.frame_button, text='Criar', font=('Inter', 10, 'bold'), fg='#FFF',
                                     bg='#3CB371', command=self.confirm_create_type_manage, borderwidth=0, width=10)
         self.bttn_criar.pack(side=tk.LEFT, pady=5, padx=10)
 
-        self.bttn_clean = tk.Button(self.frame_button, text='LIMPAR', font=('Inter', 10, 'bold'), fg='#605F5F',
-                                    bg='#FFFFFF', command='', borderwidth=0, width=10)
+        self.bttn_clean = tk.Button(self.frame_button, text='Limpar', font=('Inter', 10, 'bold'), fg='#FFF',
+                                    bg='Orange', command=self.clear_create_type_screen, borderwidth=0, width=10)
         self.bttn_clean.pack(side=tk.LEFT, pady=5, padx=10)
 
-        self.bttn_voltar = tk.Button(self.frame_button, text='VOLTAR', font=("Arial", 10, "bold"), bg="#E1523F",
+        self.bttn_voltar = tk.Button(self.frame_button, text='Voltar', font=("Arial", 10, "bold"), bg="#E1523F",
                                      fg="white", borderwidth=0, command=self.type_close, width=10)
         self.bttn_voltar.pack(side=tk.LEFT, pady=5, padx=10)
+
+    def clear_create_type_screen(self):
+        self.entry_nome_escala.delete(0, "end")
+        self.int_var_finais_semana.set(0)
+        self.int_var_feriados.set(0)
+        self.int_var_escala_mutua.set(0)
 
     def confirm_create_type_manage(self):
         nome_escala = self.entry_nome_escala.get()
@@ -1334,17 +1346,36 @@ class Screens:
             self.frame_button = tk.Frame(self.center_frame, bg='#94939B')
             self.frame_button.pack(fill=tk.Y, padx=10, pady=10, side=tk.TOP)
 
-            self.bttn_criar = tk.Button(self.frame_button, text='EDITAR', font=('Inter', 10, 'bold'), fg='#FFF',
+            self.bttn_criar = tk.Button(self.frame_button, text='Editar', font=('Inter', 10, 'bold'), fg='#FFF',
                                         bg='#3CB371', command=self.confirm_edit_type_manage, borderwidth=0, width=10)
             self.bttn_criar.pack(side=tk.LEFT, pady=5, padx=10)
 
-            self.bttn_clean = tk.Button(self.frame_button, text='LIMPAR', font=('Inter', 10, 'bold'), fg='#605F5F',
-                                        bg='#FFFFFF', command='', borderwidth=0, width=10)
+            self.bttn_clean = tk.Button(self.frame_button, text='Refazer', font=('Inter', 10, 'bold'), fg='#FFF',
+                                        bg='Orange', command=self.clear_edit_type_screen, borderwidth=0, width=10)
             self.bttn_clean.pack(side=tk.LEFT, pady=5, padx=10)
 
-            self.bttn_voltar = tk.Button(self.frame_button, text='VOLTAR', font=("Arial", 10, "bold"), bg="#E1523F",
+            self.bttn_voltar = tk.Button(self.frame_button, text='Voltar', font=("Arial", 10, "bold"), bg="#E1523F",
                                          fg="white", borderwidth=0, command=self.type_edit_close, width=10)
             self.bttn_voltar.pack(side=tk.LEFT, pady=5, padx=10)
+
+    def clear_edit_type_screen(self):
+        self.entry_nome_escala.delete(0, "end")
+        self.entry_nome_escala.insert(0, self.lista[1])
+
+        if self.lista[2] == 1:
+            self.int_var_finais_semana.set(1)
+        else:
+            self.int_var_finais_semana.set(0)
+
+        if self.lista[3] == 1:
+            self.int_var_feriados.set(1)
+        else:
+            self.int_var_feriados.set(0)
+
+        if self.lista[4] == 1:
+            self.int_var_escala_mutua.set(1)
+        else:
+            self.int_var_escala_mutua.set(0)
 
     def confirm_edit_type_manage(self):
         selecionado = self.tvw_type_manage.selection()
@@ -1492,18 +1523,22 @@ class Screens:
         self.roster_type_var = tk.StringVar()
         self.roster_type_combobox = ttk.Combobox(self.center_frame_06, textvariable=self.roster_type_var,values=self.tipo_escala)
         self.roster_type_combobox.pack(side=tk.TOP, pady=10, padx=40, fill=tk.BOTH)
+        self.roster_type_combobox["state"] = "readonly"
 
         self.lbl_data_inicio = tk.Label(self.center_frame_06, text="Data de início da escala",bg='#94939B',font=('Inter', 18, 'bold'))
         self.lbl_data_inicio.pack(side=tk.TOP,pady=10,padx=20)
 
         self.cal_data_inicio = DateEntry(self.center_frame_06, locale='pt_BR', date_pattern='dd/MM/yyyy')
         self.cal_data_inicio.pack(side=tk.TOP, pady=10, padx=40, fill=tk.BOTH)
+        #self.cal_data_inicio["state"] = "readonly"
+
 
         self.lbl_data_final = tk.Label(self.center_frame_06, text="Data de Termino da escala", bg='#94939B',font=('Inter', 18, 'bold'))
         self.lbl_data_final.pack(side=tk.TOP, pady=10, padx=20)
 
         self.cal_data_final = DateEntry(self.center_frame_06, locale='pt_BR', date_pattern='dd/MM/yyyy')
         self.cal_data_final.pack(side=tk.TOP, pady=10, padx=40, fill=tk.BOTH)
+        #self.cal_data_final["state"] = "readonly"
 
         self.lbl_days= tk.Label(self.center_frame_06, text='Quantos dias', bg='#94939B', font=('Inter', 18, 'bold'))
         self.lbl_days.pack(side=tk.TOP, pady=10, padx=20)
@@ -1517,11 +1552,18 @@ class Screens:
         self.bttn_confirmar = tk.Button(self.frm_bttn,text="Confirmar", command=self.cofirm_create_roster,font=("Arial", 10, "bold"), bg="#3CB371",fg="white", width=10, height=1,borderwidth=0)
         self.bttn_confirmar.pack(side=tk.LEFT,padx=15,pady=10)
 
-        self.bttn_limpar = tk.Button(self.frm_bttn, text="Limpar", command="", font=("Arial", 10, "bold"), bg="Orange", fg="white",width=10, height=1,borderwidth=0)
+        self.bttn_limpar = tk.Button(self.frm_bttn, text="Limpar", command=self.clear_create_roster, font=("Arial", 10, "bold"), bg="Orange", fg="white",width=10, height=1,borderwidth=0)
         self.bttn_limpar.pack(side=tk.LEFT,padx=15,pady=10)
 
         self.btn_cancelar = tk.Button(self.frm_bttn, text="Cancelar", command=self.voltar_create_roster, font=("Arial", 10, "bold"),bg="#E1523F", fg="white", width=10, height=1, borderwidth=0)
         self.btn_cancelar.pack(side=tk.LEFT,padx=15,pady=10)
+
+    def clear_create_roster(self):
+        self.roster_name_entry.delete(0, "end")
+        self.cal_data_inicio.set_date(date.today())
+        self.cal_data_final.set_date(date.today())
+        self.roster_type_combobox.set("")
+        self.entry_days.delete(0, "end")
 
     def cofirm_create_roster(self):
         nome_escala = self.roster_name_entry.get()
@@ -1637,11 +1679,27 @@ class Screens:
             self.bttn_confirmar_edit = tk.Button(self.frm_bttn_04, text="Confirmar", command=self.confirm_roster_edit, font=("Arial", 10, "bold"), bg="#3CB371",fg="white", width=10, height=1, borderwidth=0)
             self.bttn_confirmar_edit.pack(side=tk.LEFT, padx=15, pady=10)
 
-            self.bttn_limpar_edit = tk.Button(self.frm_bttn_04, text="Limpar", command="", font=("Arial", 10, "bold"), bg="Orange",fg="white", width=10, height=1, borderwidth=0)
+            self.bttn_limpar_edit = tk.Button(self.frm_bttn_04, text="Refazer", command=self.clear_edit_roster, font=("Arial", 10, "bold"), bg="Orange",fg="white", width=10, height=1, borderwidth=0)
             self.bttn_limpar_edit.pack(side=tk.LEFT, padx=15, pady=10)
 
             self.btn_cancelar_edit = tk.Button(self.frm_bttn_04, text="Cancelar", command=self.voltar_edit_roster, font=("Arial", 10, "bold"),bg="#E1523F", fg="white", width=10, height=1, borderwidth=0)
             self.btn_cancelar_edit.pack(side=tk.LEFT, padx=15, pady=10)
+
+    def clear_edit_roster(self):
+        self.roster_name_entry_edit.delete(0, "end")
+        self.roster_name_entry_edit.insert(0, self.lista[1])
+
+        self.cal_data_inicio_edit.delete(0, tk.END)
+        self.cal_data_inicio_edit.insert(0, self.lista[3])
+
+        self.cal_data_final_edit.delete(0, tk.END)
+        self.cal_data_final_edit.insert(0, self.lista[4])
+
+        self.roster_type_var_edit.set(self.lista[2])
+        self.roster_type_combobox_edit.current(self.tipo_escala.index(self.roster_type_var_edit.get()))
+
+        self.entry_days_edit.delete(0, "end")
+        self.entry_days_edit.insert(0, self.lista[5])
 
     def confirm_roster_edit(self):
         selecionado = self.tvw_escala.selection()
