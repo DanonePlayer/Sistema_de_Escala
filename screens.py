@@ -479,6 +479,7 @@ class Screens:
             self.tree.insert('', tk.END, values=tupla)
 
     def Aualizações_Atribuir(self, event):
+        self.cal_atrib.calevent_remove("all")
         query = f'SELECT dias_escala FROM escala Where nome_escala Like "{self.combo_box.get()}";'
         dados = bd.consultar(query)
         for dias_escala in dados:
@@ -491,6 +492,27 @@ class Screens:
         dados = bd.consultar(query)
         for tupla in dados:
             self.tree.insert('', tk.END, values=tupla)
+
+        query = f'SELECT escala_id FROM escala Where nome_escala Like "{self.combo_box.get()}";'
+        dados = bd.consultar(query)
+        dados = dados[0]
+        id = dados[0]
+
+        query = f'SELECT data_inicio FROM usuario_escala Where escala_id = {id};'
+        datas = bd.consultar(query)
+        self.calendar_ferias(2)
+        for data in datas:
+
+            data_evento = datetime.strptime(data[0], "%d/%m/%Y")
+    
+            for cont_dias in dias_escala:
+                data_evento = data_evento + timedelta(days=cont_dias)
+                self.cal_atrib.calevent_create(data_evento , 'Dias_Das_Escalas', 'Dias_Das_Escalas')
+
+            self.cal_atrib.tag_config('Dias_Das_Escalas', background="#FFFACD", foreground='black')
+
+
+
 
     def limpar_entry_entry_pesquisa(self, event):
         entry = event.widget
