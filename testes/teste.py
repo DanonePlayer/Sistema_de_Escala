@@ -27,7 +27,9 @@ Adicionar_dias = 1
 
 data_str = "06/09/2023"
 data_evento = datetime.strptime(data_str, "%d/%m/%Y")
+
 data_evento = data_evento + timedelta(days=Adicionar_dias)
+
 cal_show.calevent_create(data_evento , 'Ferias', 'Ferias')
 cal_show.tag_config('Ferias', background="red", foreground='white')
 

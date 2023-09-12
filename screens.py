@@ -399,7 +399,7 @@ class Screens:
         self.cal_atrib = Calendar(self.calendar_frame_02, locale='pt_BR', date_pattern='dd/MM/yyyy')
         self.cal_atrib.pack(side=tk.TOP, expand=True, fill=tk.BOTH)
 
-        self.calendar_ferias(2)
+        self.calendar_ferias(2)     
 
         self.bottom_frame_02 = tk.Frame(self.center_frame_02)
         self.bottom_frame_02.pack(side=tk.TOP,pady=10)
@@ -458,6 +458,7 @@ class Screens:
 
         self.btt_add = tk.Button(self.frame_btn,text='ATRIBUIR',font=('Inter', 10, 'bold'), fg='#070707',bg='#D9D9D9',command=self.Atribuir,borderwidth=0)
         self.btt_add.pack(side=tk.TOP)
+        self.Aualizações_Atribuir(1)
 
     def pesquisar_tree_users(self):
         busca = self.entry_pesquisa.get()
