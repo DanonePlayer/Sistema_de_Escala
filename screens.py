@@ -507,8 +507,11 @@ class Screens:
         for data in datas:
             data_evento = datetime.strptime(data[0], "%d/%m/%Y")
 
-            for cont_dias in range(dias_escala[0] +1):
-                data_evento = data_evento + timedelta(days=cont_dias)
+            for cont_dias in range(dias_escala[0]):
+                if cont_dias == 0:
+                    data_evento = data_evento + timedelta(days=0)
+                else:
+                    data_evento = data_evento + timedelta(days=1)
                 print(data_evento)
                 self.cal_atrib.calevent_create(data_evento , 'Dias_Das_Escalas', 'Dias_Das_Escalas')
 
