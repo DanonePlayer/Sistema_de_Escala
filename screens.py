@@ -469,7 +469,7 @@ class Screens:
             query = f"SELECT nome_completo FROM usuario WHERE nome_completo LIKE '{busca}%';"
             dados = bd.consultar(query)
             for tupla in dados:
-                self.tree.insert('', tk.END, values=(tupla[0]))
+                self.tree.insert('', tk.END, values=tupla)
 
     def atualizar_tree_users(self):
         for i in self.tree.get_children():
@@ -1333,7 +1333,7 @@ class Screens:
             query = f"SELECT tipo_escala_id, nome_tipo_escala, CASE WHEN finais_semana = 0 THEN 'Não' WHEN finais_semana = 1 THEN 'Sim' END AS finais_semana, CASE WHEN feriados = 0 THEN 'Não' WHEN feriados = 1 THEN 'Sim' END AS feriados, CASE WHEN escala_mutua = 0 THEN 'Não' WHEN escala_mutua = 1 THEN 'Sim' END AS escala_mutua FROM tipo_escala WHERE nome_tipo_escala LIKE '{busca}%';"
             dados = bd.consultar(query)
             for tupla in dados:
-                self.tvw_usuario.insert('', tk.END, values=tupla)
+                self.tvw_type_manage.insert('', tk.END, values=tupla)
 
     def filtro_tvw_type_manage(self):
         busca = self.cbx_cargo_type.get()
