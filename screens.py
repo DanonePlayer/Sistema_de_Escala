@@ -549,6 +549,9 @@ class Screens:
                 começo = 0
 
             self.cal_atrib.tag_config('Dias_Das_Escalas', background="#FFFACD", foreground='black')
+        
+        if feriados != 1:
+            self.calendar_ferias(2)
 
 
     def limpar_entry_entry_pesquisa(self, event):
