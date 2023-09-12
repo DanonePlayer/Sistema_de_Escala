@@ -530,15 +530,7 @@ class Screens:
             começo = 1
             cont_dias = dias_escala[0]
             while cont_dias != 0:
-                
-                data = date(data_evento.year, data_evento.month, data_evento.day)
-                indice_da_semana = data.weekday()
-                dia_da_semana = self.DIAS[indice_da_semana]
-                numero_do_dia_da_semana = data.isoweekday()
-                if(numero_do_dia_da_semana == 6 or numero_do_dia_da_semana == 7 ):
-                    cont_dias += 1
-                    self.cal_atrib.calevent_create(data_evento , 'Cor_padrão', 'Cor_padrão')
-                    self.cal_atrib.tag_config("Cor_padrão", background="#cccccc", foreground='black')
+
                 if começo == 1:
                     data_evento = data_evento + timedelta(days=0)
                 else:
@@ -547,6 +539,15 @@ class Screens:
                 # print(cont_dias)
                 cont_dias -= 1
                 começo = 0
+                if finais_semana != 1:
+                    data = date(data_evento.year, data_evento.month, data_evento.day)
+                    indice_da_semana = data.weekday()
+                    dia_da_semana = self.DIAS[indice_da_semana]
+                    numero_do_dia_da_semana = data.isoweekday()
+                    if(numero_do_dia_da_semana == 6 or numero_do_dia_da_semana == 7 ):
+                        cont_dias += 1
+                        self.cal_atrib.calevent_create(data_evento , 'Cor_padrão', 'Cor_padrão')
+                        self.cal_atrib.tag_config("Cor_padrão", background="#cccccc", foreground='black')
 
             self.cal_atrib.tag_config('Dias_Das_Escalas', background="#FFFACD", foreground='black')
         
