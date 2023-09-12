@@ -524,13 +524,13 @@ class Screens:
         finais_semana = dados[0]
         feriados = dados[1]
         
-        cont_dias = dias_escala[0]
-        
-        for data in datas[0]:
-            data_evento = datetime.strptime(data, "%d/%m/%Y")
-
+        for data in datas:
+            data_evento = datetime.strptime(data[0], "%d/%m/%Y")
+            # print(data_evento)
+            começo = 1
+            cont_dias = dias_escala[0]
             while cont_dias != 0:
-
+                
                 data = date(data_evento.year, data_evento.month, data_evento.day)
                 indice_da_semana = data.weekday()
                 dia_da_semana = self.DIAS[indice_da_semana]
@@ -539,14 +539,14 @@ class Screens:
                     cont_dias += 1
                     self.cal_atrib.calevent_create(data_evento , 'Cor_padrão', 'Cor_padrão')
                     self.cal_atrib.tag_config("Cor_padrão", background="#cccccc", foreground='black')
-
-                if cont_dias == 0:
+                if começo == 1:
                     data_evento = data_evento + timedelta(days=0)
                 else:
                     data_evento = data_evento + timedelta(days=1)
-                self.cal_atrib.calevent_create(data_evento , 'Dias_Das_Escalas', 'Dias_Das_Escalas')
-                print(cont_dias)
+                self.cal_atrib.calevent_create(data_evento , f'Dias_Das_Escalas', f'Dias_Das_Escalas')
+                # print(cont_dias)
                 cont_dias -= 1
+                começo = 0
 
             self.cal_atrib.tag_config('Dias_Das_Escalas', background="#FFFACD", foreground='black')
 
