@@ -503,12 +503,13 @@ class Screens:
         query = f'SELECT data_inicio FROM usuario_escala Where escala_id = {id};'
         datas = bd.consultar(query)
         self.calendar_ferias(2)
-        for data in datas:
 
+        for data in datas:
             data_evento = datetime.strptime(data[0], "%d/%m/%Y")
-    
-            for cont_dias in dias_escala:
+
+            for cont_dias in range(dias_escala[0] +1):
                 data_evento = data_evento + timedelta(days=cont_dias)
+                print(data_evento)
                 self.cal_atrib.calevent_create(data_evento , 'Dias_Das_Escalas', 'Dias_Das_Escalas')
 
             self.cal_atrib.tag_config('Dias_Das_Escalas', background="#FFFACD", foreground='black')
