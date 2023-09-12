@@ -67,6 +67,15 @@ class Screens:
         self.bttn_help.pack(fill=tk.BOTH)
         self.bttn_help.config()
         self.verifica_termino_escalas()
+        self.DIAS = [
+        'Segunda-feira',
+        'Terça-feira',
+        'Quarta-feira',
+        'Quinta-Feira',
+        'Sexta-feira',
+        'Sábado',
+        'Domingo'
+        ]
 
     def confirm_login(self):
         nome = self.entry_nome.get()
@@ -504,20 +513,42 @@ class Screens:
         datas = bd.consultar(query)
         self.calendar_ferias(2)
 
-        for data in datas:
-            data_evento = datetime.strptime(data[0], "%d/%m/%Y")
+        query = f'SELECT tipo_escala_id FROM escala Where escala_id = {id};'
+        dados = bd.consultar(query)
+        dados = dados [0]
+        id_tipo_escala = dados[0]
+        query = f'SELECT finais_semana, feriados FROM tipo_escala Where tipo_escala_id = {id_tipo_escala};'
+        dados = bd.consultar(query)
+        dados = dados[0]
 
-            for cont_dias in range(dias_escala[0]):
+        finais_semana = dados[0]
+        feriados = dados[1]
+        
+        cont_dias = dias_escala[0]
+        
+        for data in datas[0]:
+            data_evento = datetime.strptime(data, "%d/%m/%Y")
+
+            while cont_dias != 0:
+
+                data = date(data_evento.year, data_evento.month, data_evento.day)
+                indice_da_semana = data.weekday()
+                dia_da_semana = self.DIAS[indice_da_semana]
+                numero_do_dia_da_semana = data.isoweekday()
+                if(numero_do_dia_da_semana == 6 or numero_do_dia_da_semana == 7 ):
+                    cont_dias += 1
+                    self.cal_atrib.calevent_create(data_evento , 'Cor_padrão', 'Cor_padrão')
+                    self.cal_atrib.tag_config("Cor_padrão", background="#cccccc", foreground='black')
+
                 if cont_dias == 0:
                     data_evento = data_evento + timedelta(days=0)
                 else:
                     data_evento = data_evento + timedelta(days=1)
-                print(data_evento)
                 self.cal_atrib.calevent_create(data_evento , 'Dias_Das_Escalas', 'Dias_Das_Escalas')
+                print(cont_dias)
+                cont_dias -= 1
 
             self.cal_atrib.tag_config('Dias_Das_Escalas', background="#FFFACD", foreground='black')
-
-
 
 
     def limpar_entry_entry_pesquisa(self, event):
@@ -696,16 +727,6 @@ class Screens:
             data_escala = str(data_escala)
             data_escala = data_escala.split("/")
 
-            DIAS = [
-            'Segunda-feira',
-            'Terça-feira',
-            'Quarta-feira',
-            'Quinta-Feira',
-            'Sexta-feira',
-            'Sábado',
-            'Domingo'
-            ]
-
             query = f'''SELECT e.dias_escala
             FROM usuario_escala ue
             JOIN escala e ON ue.escala_id = e.escala_id
@@ -767,7 +788,7 @@ class Screens:
                     # print(indice_da_semana)
 
 
-                    dia_da_semana = DIAS[indice_da_semana]
+                    dia_da_semana = self.DIAS[indice_da_semana]
                     # print(dia_da_semana)
 
                     numero_do_dia_da_semana = data.isoweekday()
