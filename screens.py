@@ -699,157 +699,216 @@ class Screens:
 
     def Aplica_Calendario(self):
         self.cal_show.calevent_remove("all")
-        query = f'''SELECT eu.usuario_escala_id
-        FROM usuario_escala eu
+        query = f'''SELECT eu.escala_usuario_id
+        FROM escala_usuario eu
         JOIN usuario u ON u.usuario_id = eu.usuario_id
         JOIN escala e ON e.escala_id = eu.escala_id
         WHERE u.nome_completo LIKE "{self.cbx_nome.get()}"
         AND e.nome_escala LIKE  "{self.cbx_cargo.get()}";'''
+
+        # query = f"SELECT escala_usuario_id FROM escala_usuario_id WHERE  "
+
         dados = bd.consultar(query)
         # print(dados)
-        self.id_usu_escala = 0
+        self.escala_usuario_id = 0
 
-        for tupla in dados:
-            for id in tupla:
-                self.id_usu_escala = id
-        # print(self.id_usu_escala)
-        self.calendar_ferias(1)
-        if self.id_usu_escala != 0:
-            # print(self.id_usu_escala)
-            query = f'SELECT data_inicio FROM usuario_escala WHERE usuario_escala_id = {self.id_usu_escala};'
-            dados = bd.consultar(query)
-            dados = dados[0]
+        self.escala_usuario_id = dados[0][0]
 
-            for data_escala in dados:
-                pass
-            data_escala = str(data_escala)
-            data_escala = data_escala.split("/")
+        query = f"SELECT data_inicio, data_fim FROM escala_usuario WHERE escala_usuario_id = {self.escala_usuario_id}"
+        dados = bd.consultar(query)
+        print(dados)
 
-            query = f'''SELECT e.dias_escala
-            FROM usuario_escala ue
-            JOIN escala e ON ue.escala_id = e.escala_id
-            WHERE ue.usuario_escala_id = {self.id_usu_escala}'''
-            dados = bd.consultar(query)
-            dados = dados[0]
-            for dias_de_escala in dados:
-                pass
-            # print(dias_de_escala)
+        if dados != [('', '')]:
+            data_inicio_escala = datetime.strptime(str(dados[0][0]), '%d/%m/%Y')
+            data_fim_escala = datetime.strptime(str(dados[0][1]), '%d/%m/%Y')
 
-            query = f''' 
-                    
-                    '''
+            # # Calcule o número de dias totais na escala
+            dias_totais = (data_fim_escala - data_inicio_escala).days + 1
+            data_evento = datetime.strptime(dados[0][0], "%d/%m/%Y").date()
 
-            query = f'''SELECT ts.feriados, ts.finais_semana
-            FROM usuario_escala AS ue
-            JOIN escala AS e ON ue.escala_id = e.escala_id
-            JOIN tipo_escala AS ts ON e.tipo_escala_id = ts.tipo_escala_id
-            WHERE ue.usuario_escala_id = {self.id_usu_escala}'''
-            dados = bd.consultar(query)
-            for contar_finais_semana, conta_feriados in dados:
-                pass
-            print(conta_feriados)
-            print(contar_finais_semana)
+            dias_totais_variavel = dias_totais
 
-            mes_escolha = int(data_escala[1])
-            ano_escolha = int(data_escala[2])
-            dia_escolha = int(data_escala[0])
-            cor_escolhida_escala = "#FFFACD"
-            vetor_dias_corridos_na_escala = []
-            vetor_finais_semana = []
-            dia_cont = dia_escolha
+            while dias_totais_variavel != 0:
 
-            procura_final_semana = dias_de_escala
-            
-            year = ano_escolha
-            month = mes_escolha
+                data_evento = data_evento + timedelta(days=1)
 
-            if contar_finais_semana == 0:
-                while procura_final_semana > 0:
-                    day = dia_cont
-                    # print(dia_cont)
-
-                    # print(year, month, day)
-                    data_ = datetime(year, month, day)
-                    # monthrange retorna o último dia do mês, basta setá-lo na data e pronto
-                    Ultimo_dia_mes = data_.replace(day=monthrange(data_.year, data_.month)[1])
-
-                    data_ = datetime(year, 12, day)
-                    # monthrange retorna o último dia do mês, basta setá-lo na data e pronto
-                    Ultimo_dia_ano = data_.replace(day=monthrange(data_.year, data_.month)[1])
-
-
-                    data = datetime(year, month, day)
-                    # print(data)   
-
-
-                    indice_da_semana = data.weekday()
-                    # print(indice_da_semana)
-
-
-                    dia_da_semana = self.DIAS[indice_da_semana]
-                    # print(dia_da_semana)
-
-                    numero_do_dia_da_semana = data.isoweekday()
-                    # print(numero_do_dia_da_semana)
+                print(data_evento)
+                self.cal_show.calevent_create(data_evento, f'Dias_Das_Escalas', f'Dias_Das_Escalas')
                 
-                    if(numero_do_dia_da_semana == 6 or numero_do_dia_da_semana == 7 ):
-                        # print("Final de semana")
-                        vetor_finais_semana.append(data)
-                        dias_de_escala += 1
-                        procura_final_semana +=1
-                        # print(data)
 
-                    if dia_cont == 28 or dia_cont == 29 or dia_cont == 30 or dia_cont == 31 or dia_cont == 32:
-                        if dia_cont == Ultimo_dia_mes.day:
-                            month += 1
-                            dia_cont = 0
-                        if Ultimo_dia_ano.day > year:
-                            year +=1
+                dias_totais_variavel -= 1
+            self.cal_show.tag_config('Dias_Das_Escalas', background="#FFFACD", foreground='black')
+
+        #     data_evento = datetime.strptime(data[0], "%d/%m/%Y")
+        #     # print(data_evento)
+        #     começo = 1
+        #     cont_dias = dias_escala[0]
+        #     while cont_dias != 0:
+
+        #         if começo == 1:
+        #             data_evento = data_evento + timedelta(days=0)
+        #         else:
+        #             data_evento = data_evento + timedelta(days=1)
+        #         self.cal_show.calevent_create(data_evento , f'Dias_Das_Escalas', f'Dias_Das_Escalas')
+        #         # print(cont_dias)
+        #         cont_dias -= 1
+        #         começo = 0
+        #         if finais_semana != 1:
+        #             data = date(data_evento.year, data_evento.month, data_evento.day)
+        #             indice_da_semana = data.weekday()
+        #             dia_da_semana = self.DIAS[indice_da_semana]
+        #             numero_do_dia_da_semana = data.isoweekday()
+        #             if(numero_do_dia_da_semana == 6 or numero_do_dia_da_semana == 7 ):
+        #                 cont_dias += 1
+        #                 self.cal_show.calevent_create(data_evento , 'Cor_padrão', 'Cor_padrão')
+        #                 self.cal_show.tag_config("Cor_padrão", background="#cccccc", foreground='black')
+
+        #     self.cal_show.tag_config('Dias_Das_Escalas', background="#FFFACD", foreground='black')
+        
+        # if feriados != 1:
+        #     self.calendar_ferias(2)
+
+
+
+
+        # # print(self.id_usu_escala)
+        # self.calendar_ferias(1)
+        # if self.id_usu_escala != 0:
+        #     # print(self.id_usu_escala)
+        #     query = f'SELECT data_inicio FROM usuario_escala WHERE usuario_escala_id = {self.id_usu_escala};'
+        #     dados = bd.consultar(query)
+        #     dados = dados[0]
+
+        #     for data_escala in dados:
+        #         pass
+        #     data_escala = str(data_escala)
+        #     data_escala = data_escala.split("/")
+
+        #     query = f'''SELECT e.dias_escala
+        #     FROM usuario_escala ue
+        #     JOIN escala e ON ue.escala_id = e.escala_id
+        #     WHERE ue.usuario_escala_id = {self.id_usu_escala}'''
+        #     dados = bd.consultar(query)
+        #     dados = dados[0]
+        #     for dias_de_escala in dados:
+        #         pass
+        #     # print(dias_de_escala)
+
+        #     query = f''' 
+                    
+        #             '''
+
+        #     query = f'''SELECT ts.feriados, ts.finais_semana
+        #     FROM usuario_escala AS ue
+        #     JOIN escala AS e ON ue.escala_id = e.escala_id
+        #     JOIN tipo_escala AS ts ON e.tipo_escala_id = ts.tipo_escala_id
+        #     WHERE ue.usuario_escala_id = {self.id_usu_escala}'''
+        #     dados = bd.consultar(query)
+        #     for contar_finais_semana, conta_feriados in dados:
+        #         pass
+        #     print(conta_feriados)
+        #     print(contar_finais_semana)
+
+        #     mes_escolha = int(data_escala[1])
+        #     ano_escolha = int(data_escala[2])
+        #     dia_escolha = int(data_escala[0])
+        #     cor_escolhida_escala = "#FFFACD"
+        #     vetor_dias_corridos_na_escala = []
+        #     vetor_finais_semana = []
+        #     dia_cont = dia_escolha
+
+        #     procura_final_semana = dias_de_escala
+            
+        #     year = ano_escolha
+        #     month = mes_escolha
+
+        #     if contar_finais_semana == 0:
+        #         while procura_final_semana > 0:
+        #             day = dia_cont
+        #             # print(dia_cont)
+
+        #             # print(year, month, day)
+        #             data_ = datetime(year, month, day)
+        #             # monthrange retorna o último dia do mês, basta setá-lo na data e pronto
+        #             Ultimo_dia_mes = data_.replace(day=monthrange(data_.year, data_.month)[1])
+
+        #             data_ = datetime(year, 12, day)
+        #             # monthrange retorna o último dia do mês, basta setá-lo na data e pronto
+        #             Ultimo_dia_ano = data_.replace(day=monthrange(data_.year, data_.month)[1])
+
+
+        #             data = datetime(year, month, day)
+        #             # print(data)   
+
+
+        #             indice_da_semana = data.weekday()
+        #             # print(indice_da_semana)
+
+
+        #             dia_da_semana = self.DIAS[indice_da_semana]
+        #             # print(dia_da_semana)
+
+        #             numero_do_dia_da_semana = data.isoweekday()
+        #             # print(numero_do_dia_da_semana)
+                
+        #             if(numero_do_dia_da_semana == 6 or numero_do_dia_da_semana == 7 ):
+        #                 # print("Final de semana")
+        #                 vetor_finais_semana.append(data)
+        #                 dias_de_escala += 1
+        #                 procura_final_semana +=1
+        #                 # print(data)
+
+        #             if dia_cont == 28 or dia_cont == 29 or dia_cont == 30 or dia_cont == 31 or dia_cont == 32:
+        #                 if dia_cont == Ultimo_dia_mes.day:
+        #                     month += 1
+        #                     dia_cont = 0
+        #                 if Ultimo_dia_ano.day > year:
+        #                     year +=1
                         
 
-                    dia_cont += 1
-                    procura_final_semana -=1
+        #             dia_cont += 1
+        #             procura_final_semana -=1
 
 
-            #data atual =  date = cal.datetime.today()
+        #     #data atual =  date = cal.datetime.today()
 
-            escala_ecolha_dia = self.cal_show.datetime(ano_escolha, mes_escolha, dia_escolha)
-            #print(escala_ecolha_dia)
+        #     escala_ecolha_dia = self.cal_show.datetime(ano_escolha, mes_escolha, dia_escolha)
+        #     #print(escala_ecolha_dia)
 
-            #pegando todos os dias escolhidos na escala para comparar depois com as ferias
-            dias = 0
-            aux_dias_de_escala = dias_de_escala
-            while dias < aux_dias_de_escala:
-                # print(dia_escolha + dias)
-                data_ = datetime(ano_escolha, mes_escolha, dia_escolha + dias)
-                # monthrange retorna o último dia do mês, basta setá-lo na data e pronto
-                Ultimo_dia_mes = data_.replace(day=monthrange(data_.year, data_.month)[1])
-                if dia_escolha + dias == Ultimo_dia_mes.day:
-                    mes_escolha += 1
-                    dia_escolha = 1
+        #     #pegando todos os dias escolhidos na escala para comparar depois com as ferias
+        #     dias = 0
+        #     aux_dias_de_escala = dias_de_escala
+        #     while dias < aux_dias_de_escala:
+        #         # print(dia_escolha + dias)
+        #         data_ = datetime(ano_escolha, mes_escolha, dia_escolha + dias)
+        #         # monthrange retorna o último dia do mês, basta setá-lo na data e pronto
+        #         Ultimo_dia_mes = data_.replace(day=monthrange(data_.year, data_.month)[1])
+        #         if dia_escolha + dias == Ultimo_dia_mes.day:
+        #             mes_escolha += 1
+        #             dia_escolha = 1
 
-                dias_corridos_na_escala = self.cal_show.datetime(ano_escolha, mes_escolha, dia_escolha + dias)
-                #print(dias_corridos_na_escala)
-                vetor_dias_corridos_na_escala.append(dias_corridos_na_escala)
+        #         dias_corridos_na_escala = self.cal_show.datetime(ano_escolha, mes_escolha, dia_escolha + dias)
+        #         #print(dias_corridos_na_escala)
+        #         vetor_dias_corridos_na_escala.append(dias_corridos_na_escala)
 
-                aux_dias_de_escala -=1
-                dias +=1
+        #         aux_dias_de_escala -=1
+        #         dias +=1
 
-            for i in range(0, dias_de_escala):
-                self.cal_show.calevent_create(escala_ecolha_dia + self.cal_show.timedelta(days=i), 'escalas', 'escala')
+        #     for i in range(0, dias_de_escala):
+        #         self.cal_show.calevent_create(escala_ecolha_dia + self.cal_show.timedelta(days=i), 'escalas', 'escala')
 
-            if conta_feriados == 0:
-                self.calendar_ferias(1)
+        #     if conta_feriados == 0:
+        #         self.calendar_ferias(1)
 
-            for final_semana in vetor_finais_semana:
-                self.cal_show.calevent_create(final_semana, "final_semana", "final_semana")
+        #     for final_semana in vetor_finais_semana:
+        #         self.cal_show.calevent_create(final_semana, "final_semana", "final_semana")
             
             
-            self.cal_show.tag_config('escala', background=cor_escolhida_escala, foreground='black')
-            self.cal_show.tag_config("final_semana", background="#cccccc", foreground='black')
+        #     self.cal_show.tag_config('escala', background=cor_escolhida_escala, foreground='black')
+        #     self.cal_show.tag_config("final_semana", background="#cccccc", foreground='black')
             
             
-            # print(dia_escolha, ano_escolha, mes_escolha, dias_de_escala)
+        #     # print(dia_escolha, ano_escolha, mes_escolha, dias_de_escala)
 
     def UserScreen(self):
         self.user_screen = tk.Tk()
@@ -2222,7 +2281,7 @@ class Screens:
 
             self.btn_escalar = tk.Button(self.bottom_frame, text="ESCALAR", font=('Inter', 10, 'bold'), fg='#070707',
                                         bg='#D9D9D9',
-                                        command="", borderwidth=0)
+                                        command=self.Escalar_Usuarios, borderwidth=0)
             self.btn_escalar.pack(side=tk.TOP)
 
             self.calendar_frame_02 = tk.Frame(self.bottom_frame)
@@ -2234,6 +2293,94 @@ class Screens:
             self.btn_voltar = tk.Button(self.calendar_frame_02, text="Voltar", font=('Inter', 10, 'bold'), fg='#070707',bg='#D9D9D9',
                                         command="", borderwidth=0)
             self.btn_voltar.pack(side=tk.LEFT)
+
+
+
+    def Escalar_Usuarios(self):
+        query = f"SELECT data_inicio_escala, data_fim_escala FROM escala Where escala_id = {self.id_escala};"
+        dados = bd.consultar(query)
+        datas = dados[0]
+        # print(datas[0], datas[1])
+
+        data_inicio_escala = datetime.strptime(str(datas[0]), '%d/%m/%Y')
+        data_fim_escala = datetime.strptime(str(datas[1]), '%d/%m/%Y')
+
+        # # Calcule o número de dias totais na escala
+        dias_totais = (data_fim_escala - data_inicio_escala).days + 1
+        # print(f"Dias totais da escala: {dias_totais}")
+        all_items = []
+        for item_id in self.tvw_tree_02.get_children():
+            item_values = self.tvw_tree_02.item(item_id, "values")
+            all_items.append(item_values)
+        
+        funcionarios = all_items
+
+        # print(len(funcionarios))
+        # Calcule a quantidade de dias que cada funcionário deve ter inicialmente
+        dias_por_funcionario = dias_totais // len(funcionarios)
+
+        print(f"Dias por funcionario: {dias_por_funcionario}")
+
+        # Distribua os dias da escala entre os funcionários
+        dias_restantes = dias_totais
+
+        for funcionario in funcionarios:
+            if dias_restantes > 0:
+                dias_atribuidos = min(dias_por_funcionario, dias_restantes)
+                data_inicio = data_inicio_escala + timedelta(days=dias_totais - dias_restantes)
+                data_fim = data_inicio + timedelta(days=dias_atribuidos - 1)
+                # print(funcionario[1])
+                # print(f"\nData inicio: {data_inicio}")
+                # print(f"\nData fim: {data_fim}")
+                print("-----------------------------------------------------")
+                data_inicio = data_inicio.strftime('%d/%m/%Y')
+                data_fim = data_fim.strftime('%d/%m/%Y')
+                print(data_inicio, data_fim)
+                query = f"SELECT usuario_id FROM usuario Where nome_completo LIKE '{funcionario[1]}';"
+                dados = bd.consultar(query)
+                query = f"UPDATE escala_usuario SET data_inicio = '{data_inicio}', data_fim = '{data_fim}' WHERE usuario_id = {dados[0][0]} and escala_id = {self.id_escala}"
+                bd.atualizar(query)
+                # self.cal_atrib
+
+                
+                dias_restantes -= dias_atribuidos
+
+        print(f"Dias que sobraram: {dias_restantes}")
+
+
+
+        # for data in datas:
+        #     data_evento = datetime.strptime(data[0], "%d/%m/%Y")
+        #     # print(data_evento)
+        #     começo = 1
+        #     cont_dias = dias_escala[0]
+        #     while cont_dias != 0:
+
+        #         if começo == 1:
+        #             data_evento = data_evento + timedelta(days=0)
+        #         else:
+        #             data_evento = data_evento + timedelta(days=1)
+        #         self.cal_atrib.calevent_create(data_evento , f'Dias_Das_Escalas', f'Dias_Das_Escalas')
+        #         # print(cont_dias)
+        #         cont_dias -= 1
+        #         começo = 0
+        #         if finais_semana != 1:
+        #             data = date(data_evento.year, data_evento.month, data_evento.day)
+        #             indice_da_semana = data.weekday()
+        #             dia_da_semana = self.DIAS[indice_da_semana]
+        #             numero_do_dia_da_semana = data.isoweekday()
+        #             if(numero_do_dia_da_semana == 6 or numero_do_dia_da_semana == 7 ):
+        #                 cont_dias += 1
+        #                 self.cal_atrib.calevent_create(data_evento , 'Cor_padrão', 'Cor_padrão')
+        #                 self.cal_atrib.tag_config("Cor_padrão", background="#cccccc", foreground='black')
+
+        #     self.cal_atrib.tag_config('Dias_Das_Escalas', background="#FFFACD", foreground='black')
+        
+        # if feriados != 1:
+        #     self.calendar_ferias(2)
+
+
+
 
     def atualizar_tree(self):
         for i in self.tvw_tree.get_children():

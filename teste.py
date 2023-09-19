@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 
 # Recupere os dados da escala e dos funcionários
 escala = bd.consultar_usuarios("SELECT * FROM escala WHERE escala_id = 4;")
-print(escala)
+print(escala[3], escala[4])
 
 funcionarios = bd.consultar("SELECT * FROM usuario;")
 
@@ -29,9 +29,10 @@ for funcionario in funcionarios:
         dias_atribuidos = min(dias_por_funcionario, dias_restantes)
         data_inicio = data_inicio_escala + timedelta(days=dias_totais - dias_restantes)
         data_fim = data_inicio + timedelta(days=dias_atribuidos - 1)
+        print(funcionario[1])
         print(f"\nData inicio: {data_inicio}")
         print(f"\nData fim: {data_fim}")
-
+        print("-----------------------------------------------------")
         # Insira os dados na tabela ESCALA_USUARIO
         # cursor.execute(
         #     "INSERT INTO ESCALA_USUARIO (id_usuario, id_escala, atribuido, prioridade, data_inicio_servico, data_fim_servico) VALUES (?, ?, ?, ?, ?, ?);",
