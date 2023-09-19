@@ -167,8 +167,8 @@ class Screens:
             (self.img_calendar, "Calendário", self.calendar),
             (self.img_reports, "Relatórios", self.reports),
             (self.img_user, "Usuários", self.user),
-            (self.img_roster, "Atribuir", self.roster),
-            (self.img_roster_02, "Tipos", self.type_manage),
+            # (self.img_roster, "Atribuir", self.roster),
+            (self.img_roster_02, "Tipos de Escalas", self.type_manage),
             (self.img_edit, "Escalas", self.manage)
         ]
         button_width = max(img.width() for img, _, _ in button_images)
