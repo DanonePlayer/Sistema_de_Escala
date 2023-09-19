@@ -1810,9 +1810,13 @@ class Screens:
                                      fg="white", width=20, height=1, borderwidth=0, command=self.delete_roster)
         self.btn_exclude.grid(row=0, column=2, padx=10, pady=10)
 
+        self.bttn_atribuir = tk.Button(self.frame_button, text="Atribuir", font=("Arial", 10, "bold"), bg="#000", fg="#FFF",
+                                     width=20, height=1, borderwidth=0, command=self.Escalas)
+        self.bttn_atribuir.grid(row=0, column=3, padx=10, pady=10)
+
         self.bttn_return = tk.Button(self.frame_button, text="Voltar", font=("Arial", 10, "bold"), bg="#FFF", fg="#000",
                                      width=20, height=1, borderwidth=0, command=self.voltar_manage)
-        self.bttn_return.grid(row=0, column=3, padx=10, pady=10)
+        self.bttn_return.grid(row=0, column=4, padx=10, pady=10)
 
     def update_tvw_roster(self):
         for i in self.tvw_escala.get_children():
@@ -2143,146 +2147,154 @@ class Screens:
         self.report_screen.protocol("WM_DELETE_WINDOW", self.voltar_report)
 
     def Escalas(self):
-        self.roster_screen = tk.Tk()
-        self.roster_screen.title("Escalas")
-        self.roster_screen.geometry('1000x800')
-        self.roster_screen.configure(bg='#D9D9D9')
-        self.roster_screen.resizable(False, False)
-        #self.roster_screen.protocol("WM_DELETE_WINDOW", self.voltar_roster)
+        selecionado = self.tvw_escala.selection()
+        tupla = self.tvw_escala.item(selecionado, "values")
+        if selecionado != ():
+            query = f"SELECT escala_id FROM escala WHERE nome_escala = '{tupla[1]}';"
+            dados = bd.consultar_usuarios(query)
+            self.id_escala = dados[0]
 
-        self.top_frame = tk.Frame(self.roster_screen, bg='#94939B')
-        self.top_frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=10)
+            self.roster_screen = tk.Tk()
+            self.roster_screen.title("Escalas")
+            self.roster_screen.geometry('1000x800')
+            self.roster_screen.configure(bg='#D9D9D9')
+            self.roster_screen.resizable(False, False)
+            #self.roster_screen.protocol("WM_DELETE_WINDOW", self.voltar_roster)
 
-        self.top_top_frame = tk.Frame(self.top_frame, bg='#94939B')
-        self.top_top_frame.pack(side=tk.TOP, fill=tk.BOTH)
+            self.top_frame = tk.Frame(self.roster_screen, bg='#94939B')
+            self.top_frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=10)
 
-        self.top_lbl_04 = tk.Label(self.top_top_frame, text='ESCALA', font=('Inter', 12, 'bold'),
-                                   fg='#0B0B0B', bg='#94939B')
-        self.top_lbl_04.pack(side=tk.TOP, pady=10, padx=10)
+            self.top_top_frame = tk.Frame(self.top_frame, bg='#94939B')
+            self.top_top_frame.pack(side=tk.TOP, fill=tk.BOTH)
 
-        self.frame_left = tk.Frame(self.top_frame, bg='#94939B')
-        self.frame_left.pack(fill=tk.BOTH, expand=True, padx=20, pady=20, side=tk.LEFT)
-
-        self.frame_right = tk.Frame(self.top_frame, bg='#94939B')
-        self.frame_right.pack(fill=tk.BOTH, expand=True, padx=20, pady=20, side=tk.RIGHT)
-
-        self.label_atribuir = tk.Label(self.frame_left, text='Atribuir usuário', font=('Inter', 18, 'bold'),
+            self.top_lbl_04 = tk.Label(self.top_top_frame, text='ESCALA', font=('Inter', 12, 'bold'),
                                        fg='#0B0B0B', bg='#94939B')
-        self.label_atribuir.pack(side=tk.TOP, pady=10, padx=10)
+            self.top_lbl_04.pack(side=tk.TOP, pady=10, padx=10)
 
-        self.label_atribuido = tk.Label(self.frame_right, text='Usuários atribuídos', font=('Inter', 18, 'bold'),
-                                       fg='#0B0B0B', bg='#94939B')
-        self.label_atribuido.pack(side=tk.TOP, pady=10, padx=10)
+            self.frame_left = tk.Frame(self.top_frame, bg='#94939B')
+            self.frame_left.pack(fill=tk.BOTH, expand=True, padx=20, pady=20, side=tk.LEFT)
 
-        self.frame_tvw_usuario_01 = tk.Frame(self.frame_left, bg='#94939B')
-        self.frame_tvw_usuario_01.pack(side=tk.TOP, expand=True, fill=tk.Y)
+            self.frame_right = tk.Frame(self.top_frame, bg='#94939B')
+            self.frame_right.pack(fill=tk.BOTH, expand=True, padx=20, pady=20, side=tk.RIGHT)
 
-        self.tree = ttk.Treeview(self.frame_tvw_usuario_01, columns=("Nome"), show="headings")
-        self.tree.column('Nome', width=400)
-        self.tree.heading("Nome", text="Nome Completo")
-        self.tree.pack(side=tk.LEFT, fill=tk.BOTH, pady=10, expand=True)
+            self.label_atribuir = tk.Label(self.frame_left, text='Atribuir usuário', font=('Inter', 18, 'bold'),
+                                           fg='#0B0B0B', bg='#94939B')
+            self.label_atribuir.pack(side=tk.TOP, pady=10, padx=10)
 
-        self.atualizar_tree()
+            self.label_atribuido = tk.Label(self.frame_right, text='Usuários atribuídos', font=('Inter', 18, 'bold'),
+                                           fg='#0B0B0B', bg='#94939B')
+            self.label_atribuido.pack(side=tk.TOP, pady=10, padx=10)
 
-        self.scrollbar = ttk.Scrollbar(self.frame_tvw_usuario_01, orient="vertical", command=self.tree.yview)
-        self.scrollbar.pack(side=tk.LEFT, fill=tk.BOTH, pady=10)
-        self.tree.configure(yscrollcommand=self.scrollbar.set)
+            self.frame_tvw_usuario_01 = tk.Frame(self.frame_left, bg='#94939B')
+            self.frame_tvw_usuario_01.pack(side=tk.TOP, expand=True, fill=tk.Y)
 
-        self.btn_atribuir = tk.Button(self.frame_left, text="Atribuir", font=('Inter', 10, 'bold'), fg='#070707',bg='#D9D9D9',
-                                    command=self.atribuir_escala, borderwidth=0, height=2, width=10)
-        self.btn_atribuir.pack(side=tk.LEFT, padx=175)
+            self.tvw_tree = ttk.Treeview(self.frame_tvw_usuario_01, columns=("Nome"), show="headings")
+            self.tvw_tree.column('Nome', width=400)
+            self.tvw_tree.heading("Nome", text="Nome Completo")
+            self.tvw_tree.pack(side=tk.LEFT, fill=tk.BOTH, pady=10, expand=True)
+
+            self.atualizar_tree()
+
+            self.scrollbar = ttk.Scrollbar(self.frame_tvw_usuario_01, orient="vertical", command=self.tvw_tree.yview)
+            self.scrollbar.pack(side=tk.LEFT, fill=tk.BOTH, pady=10)
+            self.tvw_tree.configure(yscrollcommand=self.scrollbar.set)
+
+            self.btn_atribuir = tk.Button(self.frame_left, text="Atribuir", font=('Inter', 10, 'bold'), fg='#070707',bg='#D9D9D9',
+                                        command=self.atribuir_escala, borderwidth=0, height=2, width=10)
+            self.btn_atribuir.pack(side=tk.LEFT, padx=175)
 
 
-        self.frame_tvw_usuario_02 = tk.Frame(self.frame_right, bg='#94939B')
-        self.frame_tvw_usuario_02.pack(side=tk.TOP, expand=True, fill=tk.Y)
+            self.frame_tvw_usuario_02 = tk.Frame(self.frame_right, bg='#94939B')
+            self.frame_tvw_usuario_02.pack(side=tk.TOP, expand=True, fill=tk.Y)
 
-        self.tree_02 = ttk.Treeview(self.frame_tvw_usuario_02, columns=("Prioridade","Nome"), show="headings")
-        self.tree_02.column('Prioridade', width=65)
-        self.tree_02.column('Nome', width=300)
-        self.tree_02.heading("Nome", text="Nome completo")
-        self.tree_02.heading("Prioridade", text="Prioridade")
-        self.tree_02.pack(side=tk.LEFT, fill=tk.BOTH, pady=10, expand=True)
+            self.tvw_tree_02 = ttk.Treeview(self.frame_tvw_usuario_02, columns=("Prioridade","Nome"), show="headings")
+            self.tvw_tree_02.column('Prioridade', width=65)
+            self.tvw_tree_02.column('Nome', width=300)
+            self.tvw_tree_02.heading("Nome", text="Nome completo")
+            self.tvw_tree_02.heading("Prioridade", text="Prioridade")
+            self.tvw_tree_02.pack(side=tk.LEFT, fill=tk.BOTH, pady=10, expand=True)
 
-        self.scrollbar_02 = ttk.Scrollbar(self.frame_tvw_usuario_02, orient="vertical", command=self.tree.yview)
-        self.scrollbar_02.pack(side=tk.LEFT, fill=tk.BOTH, pady=10)
-        self.tree_02.configure(yscrollcommand=self.scrollbar_02.set)
+            self.scrollbar_02 = ttk.Scrollbar(self.frame_tvw_usuario_02, orient="vertical", command=self.tvw_tree.yview)
+            self.scrollbar_02.pack(side=tk.LEFT, fill=tk.BOTH, pady=10)
+            self.tvw_tree_02.configure(yscrollcommand=self.scrollbar_02.set)
 
-        self.atualizar_tree_02()
+            self.atualizar_tree_02()
 
-        self.btn_remover = tk.Button(self.frame_right, text="Remover", font=('Inter', 10, 'bold'), fg='#070707',
-                                      bg='#D9D9D9',
-                                      command=self.remover_escala, borderwidth=0, height=2, width=10)
-        self.btn_remover.pack(side=tk.LEFT)
+            self.btn_remover = tk.Button(self.frame_right, text="Remover", font=('Inter', 10, 'bold'), fg='#070707',
+                                          bg='#D9D9D9',
+                                          command=self.remover_escala, borderwidth=0, height=2, width=10)
+            self.btn_remover.pack(side=tk.LEFT)
 
-        self.btn_up = tk.Button(self.frame_right, text=f"/\\", font=('Inter', 10, 'bold'), fg='#070707',
-                                      bg='#D9D9D9',
-                                      command="", borderwidth=0, width=15, height=2)
-        self.btn_up.pack(side=tk.LEFT, padx=10)
+            self.btn_up = tk.Button(self.frame_right, text=f"/\\", font=('Inter', 10, 'bold'), fg='#070707',
+                                          bg='#D9D9D9',
+                                          command="", borderwidth=0, width=15, height=2)
+            self.btn_up.pack(side=tk.LEFT, padx=10)
 
-        self.btn_down = tk.Button(self.frame_right, text=f"\\/", font=('Inter', 10, 'bold'), fg='#070707',
-                                bg='#D9D9D9',
-                                command=self.down_prioridade, borderwidth=0, width=15, height=2)
-        self.btn_down.pack(side=tk.LEFT)
-
-        self.top_center_frame = tk.Frame(self.top_frame, bg='#94939B')
-        self.top_center_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=20, side=tk.LEFT)
-
-        self.bottom_frame = tk.Frame(self.roster_screen, bg='#94939B')
-        self.bottom_frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=10)
-
-        self.btn_escalar = tk.Button(self.bottom_frame, text="ESCALAR", font=('Inter', 10, 'bold'), fg='#070707',
+            self.btn_down = tk.Button(self.frame_right, text=f"\\/", font=('Inter', 10, 'bold'), fg='#070707',
                                     bg='#D9D9D9',
-                                    command="", borderwidth=0)
-        self.btn_escalar.pack(side=tk.TOP)
+                                    command=self.down_prioridade, borderwidth=0, width=15, height=2)
+            self.btn_down.pack(side=tk.LEFT)
 
-        self.calendar_frame_02 = tk.Frame(self.bottom_frame)
-        self.calendar_frame_02.pack(side=tk.TOP, expand=True, fill=tk.BOTH)
+            self.top_center_frame = tk.Frame(self.top_frame, bg='#94939B')
+            self.top_center_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=20, side=tk.LEFT)
 
-        self.cal_atrib = Calendar(self.calendar_frame_02, locale='pt_BR', date_pattern='dd/MM/yyyy')
-        self.cal_atrib.pack(side=tk.TOP, expand=True)
+            self.bottom_frame = tk.Frame(self.roster_screen, bg='#94939B')
+            self.bottom_frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=10)
 
-        self.btn_voltar = tk.Button(self.calendar_frame_02, text="Voltar", font=('Inter', 10, 'bold'), fg='#070707',bg='#D9D9D9',
-                                    command="", borderwidth=0)
-        self.btn_voltar.pack(side=tk.LEFT)
+            self.btn_escalar = tk.Button(self.bottom_frame, text="ESCALAR", font=('Inter', 10, 'bold'), fg='#070707',
+                                        bg='#D9D9D9',
+                                        command="", borderwidth=0)
+            self.btn_escalar.pack(side=tk.TOP)
+
+            self.calendar_frame_02 = tk.Frame(self.bottom_frame)
+            self.calendar_frame_02.pack(side=tk.TOP, expand=True, fill=tk.BOTH)
+
+            self.cal_atrib = Calendar(self.calendar_frame_02, locale='pt_BR', date_pattern='dd/MM/yyyy')
+            self.cal_atrib.pack(side=tk.TOP, expand=True)
+
+            self.btn_voltar = tk.Button(self.calendar_frame_02, text="Voltar", font=('Inter', 10, 'bold'), fg='#070707',bg='#D9D9D9',
+                                        command="", borderwidth=0)
+            self.btn_voltar.pack(side=tk.LEFT)
 
     def atualizar_tree(self):
-        for i in self.tree.get_children():
-            self.tree.delete(i)
-        query = "SELECT u.nome_completo FROM usuario AS u INNER JOIN escala_usuario AS eu ON u.usuario_id = eu.usuario_id WHERE eu.atribuido = 0;"
+        for i in self.tvw_tree.get_children():
+            self.tvw_tree.delete(i)
+        query = f"SELECT u.nome_completo FROM usuario AS u INNER JOIN escala_usuario AS eu ON u.usuario_id = eu.usuario_id WHERE eu.atribuido = 0 AND eu.escala_id = {self.id_escala};"
+
         dados = bd.consultar(query)
         for tupla in dados:
-            self.tree.insert('', tk.END, values=tupla)
+            self.tvw_tree.insert('', tk.END, values=tupla)
 
     def atualizar_tree_02(self):
-        for i in self.tree_02.get_children():
-            self.tree_02.delete(i)
-        query = "SELECT eu.prioridade, u.nome_completo FROM usuario AS u INNER JOIN escala_usuario AS eu ON u.usuario_id = eu.usuario_id WHERE eu.atribuido = 1 ORDER BY eu.prioridade;"
+        for i in self.tvw_tree_02.get_children():
+            self.tvw_tree_02.delete(i)
+        query = f"SELECT eu.prioridade, u.nome_completo FROM usuario AS u INNER JOIN escala_usuario AS eu ON u.usuario_id = eu.usuario_id WHERE eu.atribuido = 1 AND eu.escala_id = {self.id_escala} ORDER BY eu.prioridade;"
         dados = bd.consultar(query)
         for tupla in dados:
-            self.tree_02.insert('', tk.END, values=tupla)
+            self.tvw_tree_02.insert('', tk.END, values=tupla)
 
     def atribuir_escala(self):
-        selecionado = self.tree.selection()
-        tupla = self.tree.item(selecionado, "values")
+        selecionado = self.tvw_tree.selection()
+        tupla = self.tvw_tree.item(selecionado, "values")
         if selecionado != ():
-            query = f"UPDATE escala_usuario SET atribuido = '1' WHERE usuario_id = (SELECT usuario_id FROM usuario WHERE nome_completo = '{tupla[0]}');"
+            query = f"UPDATE escala_usuario SET atribuido = '1' WHERE escala_id = {self.id_escala} AND usuario_id = (SELECT usuario_id FROM usuario WHERE nome_completo = '{tupla[0]}');"
             bd.atualizar(query)
         self.atualizar_tree()
         self.atualizar_tree_02()
 
     def remover_escala(self):
-        selecionado = self.tree_02.selection()
-        tupla = self.tree_02.item(selecionado, "values")
+        selecionado = self.tvw_tree_02.selection()
+        tupla = self.tvw_tree_02.item(selecionado, "values")
         if selecionado != ():
-            query = f"UPDATE escala_usuario SET atribuido = '0' WHERE usuario_id = (SELECT usuario_id FROM usuario WHERE nome_completo = '{tupla[1]}');"
+            query = f"UPDATE escala_usuario SET atribuido = '0' WHERE escala_id = {self.id_escala} AND usuario_id = (SELECT usuario_id FROM usuario WHERE nome_completo = '{tupla[1]}');"
             bd.atualizar(query)
         self.atualizar_tree()
         self.atualizar_tree_02()
 
     def down_prioridade(self):
-        selecionado = self.tree_02.selection()
-        tupla = self.tree_02.item(selecionado, "values")
-        query = "SELECT COUNT(*) FROM escala_usuario WHERE escala_id = 4;"
+        selecionado = self.tvw_tree_02.selection()
+        tupla = self.tvw_tree_02.item(selecionado, "values")
+        query = f"SELECT COUNT(*) FROM escala_usuario WHERE escala_id = {self.id_escala};"
         dados = bd.consultar_usuarios(query)
 
         if selecionado != () and int(tupla[0]) != int(dados[0]):
