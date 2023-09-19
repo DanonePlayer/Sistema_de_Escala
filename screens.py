@@ -2153,7 +2153,7 @@ class Screens:
         self.top_frame = tk.Frame(self.roster_screen, bg='#94939B')
         self.top_frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=10)
 
-        self.top_top_frame = tk.Frame(self.top_frame, bg='#000000')
+        self.top_top_frame = tk.Frame(self.top_frame, bg='#94939B')
         self.top_top_frame.pack(side=tk.TOP, fill=tk.BOTH)
 
         self.top_lbl_04 = tk.Label(self.top_top_frame, text='ESCALA', font=('Inter', 12, 'bold'),
@@ -2224,11 +2224,16 @@ class Screens:
                                 command=self.down_prioridade, borderwidth=0, width=15, height=2)
         self.btn_down.pack(side=tk.LEFT)
 
-        self.top_center_frame = tk.Frame(self.top_frame, bg='#0f0f0f')
+        self.top_center_frame = tk.Frame(self.top_frame, bg='#94939B')
         self.top_center_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=20, side=tk.LEFT)
 
-        self.bottom_frame = tk.Frame(self.roster_screen, bg='#0f0f0f')
+        self.bottom_frame = tk.Frame(self.roster_screen, bg='#94939B')
         self.bottom_frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=10)
+
+        self.btn_escalar = tk.Button(self.bottom_frame, text="ESCALAR", font=('Inter', 10, 'bold'), fg='#070707',
+                                    bg='#D9D9D9',
+                                    command="", borderwidth=0)
+        self.btn_escalar.pack(side=tk.TOP)
 
         self.calendar_frame_02 = tk.Frame(self.bottom_frame)
         self.calendar_frame_02.pack(side=tk.TOP, expand=True, fill=tk.BOTH)
@@ -2279,11 +2284,10 @@ class Screens:
         tupla = self.tree_02.item(selecionado, "values")
         query = "SELECT COUNT(*) FROM escala_usuario WHERE escala_id = 4;"
         dados = bd.consultar_usuarios(query)
+
         if selecionado != () and int(tupla[0]) != int(dados[0]):
-            print("entrou")
-            query = f"UPDATE escala_usuario SET prioridade = '{tupla[0]-1}' WHERE usuario_id = (SELECT usuario_id FROM usuario WHERE nome_completo = '{tupla[1]}');"
-            #bd.atualizar(query)
-            
+            query = f"UPDATE escala_usuario SET prioridade = '{tupla[0]+1}' WHERE usuario_id = (SELECT usuario_id FROM usuario WHERE nome_completo = '{tupla[1]}');"
+
     def verifica_termino_escalas(self):
         chave_mes = 0
         chave_ano = 0 #OUTRO DIA FAÇO ESSE PQP
