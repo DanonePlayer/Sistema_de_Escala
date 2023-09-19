@@ -284,7 +284,9 @@ class Screens:
     def voltar_roster(self):
         self.roster_screen.destroy()
         self.MainScreen()
-
+    def voltar_escala(self):
+        self.roster_screen.destroy()
+        self.RosterManage()
     def calendar(self):
         self.main_screen.destroy()
         self.CalendarScreen()
@@ -2198,10 +2200,10 @@ class Screens:
             self.roster_manage.iconify()
             self.roster_screen = tk.Tk()
             self.roster_screen.title("Escalas")
-            self.roster_screen.geometry('1000x800')
+            self.roster_screen.geometry('900x700')
             self.roster_screen.configure(bg='#D9D9D9')
             self.roster_screen.resizable(False, False)
-            self.roster_screen.protocol("WM_DELETE_WINDOW", self.voltar_roster)
+            self.roster_screen.protocol("WM_DELETE_WINDOW", self.voltar_escala)
 
             self.top_frame = tk.Frame(self.roster_screen, bg='#94939B')
             self.top_frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=10)
