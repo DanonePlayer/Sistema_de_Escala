@@ -305,6 +305,10 @@ class Screens:
         self.report_screen.destroy()
         self.MainScreen()
 
+    def voltar_escala(self):
+            self.roster_screen.destroy()
+            self.roster_manage.deiconify()
+
     def Atribuir_Escala(self, event):
         # print(self.text1.get())
 
@@ -716,7 +720,7 @@ class Screens:
 
         query = f"SELECT data_inicio, data_fim FROM escala_usuario WHERE escala_usuario_id = {self.escala_usuario_id}"
         dados = bd.consultar(query)
-        print(dados)
+        # print(dados)
 
         if dados != [('', '')]:
             data_inicio_escala = datetime.strptime(str(dados[0][0]), '%d/%m/%Y')
@@ -735,7 +739,6 @@ class Screens:
                 print(data_evento)
                 self.cal_show.calevent_create(data_evento, f'Dias_Das_Escalas', f'Dias_Das_Escalas')
                 
-
                 dias_totais_variavel -= 1
             self.cal_show.tag_config('Dias_Das_Escalas', background="#FFFACD", foreground='black')
 
@@ -2192,12 +2195,13 @@ class Screens:
                     query = f"INSERT INTO escala_usuario (escala_id, usuario_id, atribuido) VALUES ({self.id_escala}, {usuario}, 0);"
                     bd.inserir(query)
 
+            self.roster_manage.iconify()
             self.roster_screen = tk.Tk()
             self.roster_screen.title("Escalas")
             self.roster_screen.geometry('1000x800')
             self.roster_screen.configure(bg='#D9D9D9')
             self.roster_screen.resizable(False, False)
-            #self.roster_screen.protocol("WM_DELETE_WINDOW", self.voltar_roster)
+            self.roster_screen.protocol("WM_DELETE_WINDOW", self.voltar_roster)
 
             self.top_frame = tk.Frame(self.roster_screen, bg='#94939B')
             self.top_frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=10)
@@ -2282,18 +2286,61 @@ class Screens:
             self.btn_escalar = tk.Button(self.bottom_frame, text="ESCALAR", font=('Inter', 10, 'bold'), fg='#070707',
                                         bg='#D9D9D9',
                                         command=self.Escalar_Usuarios, borderwidth=0)
-            self.btn_escalar.pack(side=tk.TOP)
+            self.btn_escalar.pack(side=tk.TOP, pady=10)
 
-            self.calendar_frame_02 = tk.Frame(self.bottom_frame)
+            self.calendar_frame_02 = tk.Frame(self.bottom_frame, bg='#94939B')
             self.calendar_frame_02.pack(side=tk.TOP, expand=True, fill=tk.BOTH)
 
             self.cal_atrib = Calendar(self.calendar_frame_02, locale='pt_BR', date_pattern='dd/MM/yyyy')
             self.cal_atrib.pack(side=tk.TOP, expand=True)
 
-            self.btn_voltar = tk.Button(self.calendar_frame_02, text="Voltar", font=('Inter', 10, 'bold'), fg='#070707',bg='#D9D9D9',
-                                        command="", borderwidth=0)
-            self.btn_voltar.pack(side=tk.LEFT)
+            self.btn_voltar = tk.Button(self.calendar_frame_02, text="Voltar", font=('Inter', 10, 'bold'), fg='#000',bg='#FFF',
+                                        command=self.voltar_escala, borderwidth=0, width=20)
+            self.btn_voltar.pack(side=tk.LEFT, pady=5, padx=5)
+            self.atuliza_calendario_atribuir()
 
+    def atuliza_calendario_atribuir(self):
+        for item_id in self.tvw_tree_02.get_children():
+            item_values = self.tvw_tree_02.item(item_id, "values")
+            print(item_values)
+
+            query = f'''SELECT eu.escala_usuario_id
+            FROM escala_usuario eu
+            JOIN usuario u ON u.usuario_id = eu.usuario_id
+            WHERE u.nome_completo LIKE "{item_values[1]}"
+            AND eu.escala_id = {self.id_escala};'''
+
+        # # # query = f"SELECT escala_usuario_id FROM escala_usuario_id WHERE  "
+
+            dados = bd.consultar(query)
+            print(dados)
+            self.escala_usuario_id = 0
+
+            self.escala_usuario_id = dados[0][0]
+
+            query = f"SELECT data_inicio, data_fim FROM escala_usuario WHERE escala_usuario_id = {self.escala_usuario_id}"
+            dados = bd.consultar(query)
+            # print(dados)
+
+            if dados != [('', '')]:
+                data_inicio_escala = datetime.strptime(str(dados[0][0]), '%d/%m/%Y')
+                data_fim_escala = datetime.strptime(str(dados[0][1]), '%d/%m/%Y')
+
+                # # Calcule o número de dias totais na escala
+                dias_totais = (data_fim_escala - data_inicio_escala).days + 1
+                data_evento = datetime.strptime(dados[0][0], "%d/%m/%Y").date()
+
+                dias_totais_variavel = dias_totais
+
+                while dias_totais_variavel != 0:
+
+                    data_evento = data_evento + timedelta(days=1)
+
+                    print(data_evento)
+                    self.cal_atrib.calevent_create(data_evento, f'Dias_Das_Escalas', f'Dias_Das_Escalas')
+                    
+                    dias_totais_variavel -= 1
+                self.cal_atrib.tag_config('Dias_Das_Escalas', background="#FFFACD", foreground='black')
 
 
     def Escalar_Usuarios(self):
