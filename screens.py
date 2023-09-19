@@ -61,12 +61,12 @@ class Screens:
         self.entry_senha.pack(side=tk.TOP, pady=20, padx=20)
 
         self.bttn_login = tk.Button(self.right_lbl, font=('Inter', 24, 'bold'), fg='#FFFFFF', text="ENTRAR", bg='#6A6666', command=self.confirm_login, borderwidth=0)
-        self.bttn_login.pack(side=tk.BOTTOM, pady=20, padx=100)
+        self.bttn_login.pack(side=tk.TOP, pady=10, padx=100)
 
-        self.bttn_help = tk.Button(self.right_lbl, font=('Inter', 20, 'bold'), fg='#6A6666', text=" Escalas ", bg='#94939B', borderwidth=0,command=self.Escalas)
-        self.bttn_help.pack(fill=tk.BOTH)
-        self.bttn_help.config()
-        self.verifica_termino_escalas()
+        # self.bttn_help = tk.Button(self.right_lbl, font=('Inter', 20, 'bold'), fg='#6A6666', text=" Escalas ", bg='#94939B', borderwidth=0,command=self.Escalas)
+        # self.bttn_help.pack(fill=tk.BOTH)
+        # self.bttn_help.config()
+        #self.verifica_termino_escalas()
         self.DIAS = [
         'Segunda-feira',
         'Terça-feira',
@@ -386,12 +386,6 @@ class Screens:
         self.combo_box.current(0)
 
         self.entry_dias_var = tk.StringVar()
-
-        query = f'SELECT dias_escala FROM escala Where nome_escala Like "{self.combo_box.get()}";'
-        dados = bd.consultar(query)
-        for dias_escala in dados:
-            pass
-        self.entry_dias_var.set(dias_escala[0])
 
         self.middle_label = tk.Label(self.middle_frame, text='DIAS', font=('Inter', 10, 'bold'), fg='#FFF',bg='#94939B')
         self.middle_label.pack(side=tk.LEFT, pady=10, padx=10,)
@@ -1729,7 +1723,7 @@ class Screens:
                                         bg='#94939B')
         self.lbl_filtro_type.pack(side=tk.LEFT, pady=5, padx=(10, 5))
 
-        self.cbx_cargo_type = ttk.Combobox(self.frame_top_02, text='ID', values=("Nome da Escala", "Tipo de Escala", "Data de início", "Data de fim", "Dias da escala"), state="readonly")
+        self.cbx_cargo_type = ttk.Combobox(self.frame_top_02, text='ID', values=("Nome da Escala", "Tipo de Escala", "Data de início", "Data de fim"), state="readonly")
         self.cbx_cargo_type.pack(side=tk.LEFT, expand=True, fill=tk.X, padx=(5, 10), pady=2)
 
         self.image_pesquisa_filtro = tk.PhotoImage(file="images/lupa.png")
@@ -1775,19 +1769,17 @@ class Screens:
         self.frame_tvw_roster.pack(expand=True, fill=tk.BOTH, padx=8, pady=(10, 8))
 
         self.tvw_escala = ttk.Treeview(self.frame_tvw_roster, columns=(
-            'id', 'nome escala', 'tipo de escala', 'data inicio', 'data fim', 'dias da escala'), show='headings')
+            'id', 'nome escala', 'tipo de escala', 'data inicio', 'data fim'), show='headings')
         self.tvw_escala.column('id', width=40)
         self.tvw_escala.column('nome escala', width=350)
         self.tvw_escala.column('tipo de escala', width=250)
         self.tvw_escala.column('data inicio', width=100)
         self.tvw_escala.column('data fim', width=100)
-        self.tvw_escala.column('dias da escala', width=100)
         self.tvw_escala.heading('id', text='Id')
         self.tvw_escala.heading('nome escala', text='Nome da Escala')
         self.tvw_escala.heading('tipo de escala', text='Tipo de Escala')
         self.tvw_escala.heading('data inicio', text='Data de início')
         self.tvw_escala.heading('data fim', text='Data de fim')
-        self.tvw_escala.heading('dias da escala', text='Dias da escala')
         self.tvw_escala.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
         self.update_tvw_roster()
 
@@ -1821,7 +1813,7 @@ class Screens:
     def update_tvw_roster(self):
         for i in self.tvw_escala.get_children():
             self.tvw_escala.delete(i)
-        query = 'SELECT escala_id, nome_escala, nome_tipo_escala, data_inicio_escala, data_fim_escala, dias_escala FROM tipo_escala as te, escala as e WHERE te.tipo_escala_id = e.tipo_escala_id;'
+        query = 'SELECT escala_id, nome_escala, nome_tipo_escala, data_inicio_escala, data_fim_escala FROM tipo_escala as te, escala as e WHERE te.tipo_escala_id = e.tipo_escala_id;'
         dados = bd.consultar(query)
         for tupla in dados:
             self.tvw_escala.insert('', tk.END, values=tupla)
@@ -1835,7 +1827,7 @@ class Screens:
         if busca == '':
             self.update_tvw_roster()
         else:
-            query = f"SELECT escala_id, nome_escala, nome_tipo_escala, data_inicio_escala, data_fim_escala, dias_escala FROM tipo_escala as te, escala as e WHERE te.tipo_escala_id = e.tipo_escala_id AND nome_escala LIKE '{busca}%';"
+            query = f"SELECT escala_id, nome_escala, nome_tipo_escala, data_inicio_escala, data_fim_escala FROM tipo_escala as te, escala as e WHERE te.tipo_escala_id = e.tipo_escala_id AND nome_escala LIKE '{busca}%';"
             dados = bd.consultar(query)
             for tupla in dados:
                 self.tvw_escala.insert('', tk.END, values=tupla)
@@ -1847,27 +1839,22 @@ class Screens:
         if busca == '':
             self.update_tvw_type_manage()
         elif busca == "Nome da Escala":
-            query = f"SELECT escala_id, nome_escala, nome_tipo_escala, data_inicio_escala, data_fim_escala, dias_escala FROM tipo_escala as te, escala as e WHERE te.tipo_escala_id = e.tipo_escala_id ORDER BY nome_escala"
+            query = f"SELECT escala_id, nome_escala, nome_tipo_escala, data_inicio_escala, data_fim_escala FROM tipo_escala as te, escala as e WHERE te.tipo_escala_id = e.tipo_escala_id ORDER BY nome_escala"
             dados = bd.consultar(query)
             for tupla in dados:
                 self.tvw_escala.insert('', tk.END, values=tupla)
         elif busca == "Nome do Tipo de Escala":
-            query = f"SELECT escala_id, nome_escala, nome_tipo_escala, data_inicio_escala, data_fim_escala, dias_escala FROM tipo_escala as te, escala as e WHERE te.tipo_escala_id = e.tipo_escala_id ORDER BY nome_tipo_escala"
+            query = f"SELECT escala_id, nome_escala, nome_tipo_escala, data_inicio_escala, data_fim_escala FROM tipo_escala as te, escala as e WHERE te.tipo_escala_id = e.tipo_escala_id ORDER BY nome_tipo_escala"
             dados = bd.consultar(query)
             for tupla in dados:
                 self.tvw_escala.insert('', tk.END, values=tupla)
         elif busca == "Data de início":
-            query = f"SELECT escala_id, nome_escala, nome_tipo_escala, data_inicio_escala, data_fim_escala, dias_escala FROM tipo_escala as te, escala as e WHERE te.tipo_escala_id = e.tipo_escala_id ORDER BY data_inicio_escala"
+            query = f"SELECT escala_id, nome_escala, nome_tipo_escala, data_inicio_escala, data_fim_escala FROM tipo_escala as te, escala as e WHERE te.tipo_escala_id = e.tipo_escala_id ORDER BY data_inicio_escala"
             dados = bd.consultar(query)
             for tupla in dados:
                 self.tvw_escala.insert('', tk.END, values=tupla)
         elif busca == "Data de fim":
-            query = f"SELECT escala_id, nome_escala, nome_tipo_escala, data_inicio_escala, data_fim_escala, dias_escala FROM tipo_escala as te, escala as e WHERE te.tipo_escala_id = e.tipo_escala_id ORDER BY data_fim_escala"
-            dados = bd.consultar(query)
-            for tupla in dados:
-                self.tvw_escala.insert('', tk.END, values=tupla)
-        else:
-            query = f"SELECT escala_id, nome_escala, nome_tipo_escala, data_inicio_escala, data_fim_escala, dias_escala FROM tipo_escala as te, escala as e WHERE te.tipo_escala_id = e.tipo_escala_id ORDER BY dias_escala"
+            query = f"SELECT escala_id, nome_escala, nome_tipo_escala, data_inicio_escala, data_fim_escala FROM tipo_escala as te, escala as e WHERE te.tipo_escala_id = e.tipo_escala_id ORDER BY data_fim_escala"
             dados = bd.consultar(query)
             for tupla in dados:
                 self.tvw_escala.insert('', tk.END, values=tupla)
@@ -1922,12 +1909,6 @@ class Screens:
         self.cal_data_final.pack(side=tk.TOP, pady=10, padx=40, fill=tk.BOTH)
         #self.cal_data_final["state"] = "readonly"
 
-        self.lbl_days= tk.Label(self.center_frame_06, text='Quantos dias', bg='#94939B', font=('Inter', 18, 'bold'))
-        self.lbl_days.pack(side=tk.TOP, pady=10, padx=20)
-
-        self.entry_days = tk.Entry(self.center_frame_06)
-        self.entry_days.pack(side=tk.TOP,pady=10,padx=40,fill=tk.BOTH)
-
         self.frm_bttn = tk.Frame(self.center_frame_06,bg='#94939B')
         self.frm_bttn.pack(side=tk.BOTTOM,pady=10,padx=10,expand=True)
 
@@ -1945,14 +1926,12 @@ class Screens:
         self.cal_data_inicio.set_date(date.today())
         self.cal_data_final.set_date(date.today())
         self.roster_type_combobox.set("")
-        self.entry_days.delete(0, "end")
 
     def cofirm_create_roster(self):
         nome_escala = self.roster_name_entry.get()
         tipo_escala = self.roster_type_combobox.get()
         data_inicio = self.cal_data_inicio.get_date().strftime('%d/%m/%Y')
         data_fim = self.cal_data_final.get_date().strftime('%d/%m/%Y')
-        dias = self.entry_days.get()
 
         if nome_escala == "":
             messagebox.showinfo("Insira um nome completo", "O campo nome da escala está incorreto!")
@@ -1977,7 +1956,7 @@ class Screens:
             if not confirmar:
                 query = f"SELECT tipo_escala_id FROM tipo_escala WHERE '{tipo_escala}' LIKE nome_tipo_escala;"
                 dados = bd.consultar_usuarios(query)
-                query = f'INSERT INTO escala ("nome_escala", "tipo_escala_id", "data_inicio_escala", "data_fim_escala", "dias_escala") VALUES ("{nome_escala}", {dados[0]}, "{data_inicio}", "{data_fim}", {dias});'
+                query = f'INSERT INTO escala ("nome_escala", "tipo_escala_id", "data_inicio_escala", "data_fim_escala") VALUES ("{nome_escala}", {dados[0]}, "{data_inicio}", "{data_fim}", {dias});'
                 bd.inserir(query)
                 self.update_tvw_roster()
                 messagebox.showinfo("SUCESSO!", "Escala criada com sucesso!")
@@ -2048,13 +2027,6 @@ class Screens:
             self.cal_data_final_edit.delete(0, tk.END)
             self.cal_data_final_edit.insert(0, self.lista[4])
 
-            self.lbl_days_edit = tk.Label(self.center_frame_07, text='Quantos dias', bg='#94939B', font=('Inter', 18, 'bold'))
-            self.lbl_days_edit.pack(side=tk.TOP, pady=10, padx=20)
-
-            self.entry_days_edit = tk.Entry(self.center_frame_07)
-            self.entry_days_edit.pack(side=tk.TOP, pady=10, padx=40, fill=tk.BOTH)
-            self.entry_days_edit.insert(0, self.lista[5])
-
             self.frm_bttn_04 = tk.Frame(self.center_frame_07, bg='#94939B')
             self.frm_bttn_04.pack(side=tk.BOTTOM, pady=10, padx=10, expand=True)
 
@@ -2080,9 +2052,6 @@ class Screens:
         self.roster_type_var_edit.set(self.lista[2])
         self.roster_type_combobox_edit.current(self.tipo_escala.index(self.roster_type_var_edit.get()))
 
-        self.entry_days_edit.delete(0, "end")
-        self.entry_days_edit.insert(0, self.lista[5])
-
     def confirm_roster_edit(self):
         selecionado = self.tvw_escala.selection()
         lista = self.tvw_escala.item(selecionado, "values")
@@ -2091,7 +2060,6 @@ class Screens:
             tipo_escala = self.roster_type_combobox_edit.get()
             data_inicio = self.cal_data_inicio_edit.get_date().strftime('%d/%m/%Y')
             data_fim = self.cal_data_final_edit.get_date().strftime('%d/%m/%Y')
-            dias = self.entry_days_edit.get()
 
             if nome_escala == "":
                 messagebox.showinfo("Insira um nome completo", "O campo nome da escala está incorreto!")
@@ -2116,7 +2084,7 @@ class Screens:
                 if not confirmar:
                     query = f"SELECT tipo_escala_id FROM tipo_escala WHERE '{tipo_escala}' LIKE nome_tipo_escala;"
                     dados = bd.consultar_usuarios(query)
-                    query = f'UPDATE escala SET nome_escala="{nome_escala}", tipo_escala_id={dados[0]}, data_inicio_escala="{data_inicio}", data_fim_escala="{data_fim}", dias_escala={dias} WHERE escala_id={lista[0]};'
+                    query = f'UPDATE escala SET nome_escala="{nome_escala}", tipo_escala_id={dados[0]}, data_inicio_escala="{data_inicio}", data_fim_escala="{data_fim}" WHERE escala_id={lista[0]};'
                     bd.atualizar(query)
                     messagebox.showinfo("SUCESSO!", "Escala editada com sucesso!")
                     self.update_tvw_roster()
@@ -2153,6 +2121,17 @@ class Screens:
             query = f"SELECT escala_id FROM escala WHERE nome_escala = '{tupla[1]}';"
             dados = bd.consultar_usuarios(query)
             self.id_escala = dados[0]
+
+            query = f"SELECT * FROM escala_usuario WHERE escala_id = {self.id_escala};"
+            dados = bd.consultar_usuarios(query)
+
+            if not dados:
+                query = f"SELECT usuario_id FROM usuario;"
+                dados = bd.consultar_usuarios(query)
+
+                for usuario in dados:
+                    query = f"INSERT INTO escala_usuario (escala_id, usuario_id, atribuido) VALUES ({self.id_escala}, {usuario}, 0);"
+                    bd.inserir(query)
 
             self.roster_screen = tk.Tk()
             self.roster_screen.title("Escalas")
@@ -2223,17 +2202,17 @@ class Screens:
             self.btn_remover = tk.Button(self.frame_right, text="Remover", font=('Inter', 10, 'bold'), fg='#070707',
                                           bg='#D9D9D9',
                                           command=self.remover_escala, borderwidth=0, height=2, width=10)
-            self.btn_remover.pack(side=tk.LEFT)
+            self.btn_remover.pack(side=tk.LEFT, padx=10)
 
-            self.btn_up = tk.Button(self.frame_right, text=f"/\\", font=('Inter', 10, 'bold'), fg='#070707',
-                                          bg='#D9D9D9',
-                                          command="", borderwidth=0, width=15, height=2)
-            self.btn_up.pack(side=tk.LEFT, padx=10)
-
-            self.btn_down = tk.Button(self.frame_right, text=f"\\/", font=('Inter', 10, 'bold'), fg='#070707',
-                                    bg='#D9D9D9',
-                                    command=self.down_prioridade, borderwidth=0, width=15, height=2)
-            self.btn_down.pack(side=tk.LEFT)
+            # self.btn_up = tk.Button(self.frame_right, text=f"/\\", font=('Inter', 10, 'bold'), fg='#070707',
+            #                               bg='#D9D9D9',
+            #                               command="", borderwidth=0, width=15, height=2)
+            # self.btn_up.pack(side=tk.LEFT, padx=10)
+            #
+            # self.btn_down = tk.Button(self.frame_right, text=f"\\/", font=('Inter', 10, 'bold'), fg='#070707',
+            #                         bg='#D9D9D9',
+            #                         command=self.down_prioridade, borderwidth=0, width=15, height=2)
+            # self.btn_down.pack(side=tk.LEFT)
 
             self.top_center_frame = tk.Frame(self.top_frame, bg='#94939B')
             self.top_center_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=20, side=tk.LEFT)
@@ -2273,11 +2252,25 @@ class Screens:
         for tupla in dados:
             self.tvw_tree_02.insert('', tk.END, values=tupla)
 
+    def get_all_items(self, tree):
+        items = []
+        for item in tree.get_children():
+            items.append(tree.item(item)["values"])
+        return items
+
     def atribuir_escala(self):
         selecionado = self.tvw_tree.selection()
         tupla = self.tvw_tree.item(selecionado, "values")
+
+        valores_arvore_02 = self.get_all_items(self.tvw_tree_02)
+
+        if not valores_arvore_02:
+            prioridade = 1
+        else:
+            prioridade = len(valores_arvore_02) + 1
+
         if selecionado != ():
-            query = f"UPDATE escala_usuario SET atribuido = '1' WHERE escala_id = {self.id_escala} AND usuario_id = (SELECT usuario_id FROM usuario WHERE nome_completo = '{tupla[0]}');"
+            query = f"UPDATE escala_usuario SET atribuido = '1', prioridade = {prioridade} WHERE escala_id = {self.id_escala} AND usuario_id = (SELECT usuario_id FROM usuario WHERE nome_completo = '{tupla[0]}');"
             bd.atualizar(query)
         self.atualizar_tree()
         self.atualizar_tree_02()
@@ -2285,52 +2278,62 @@ class Screens:
     def remover_escala(self):
         selecionado = self.tvw_tree_02.selection()
         tupla = self.tvw_tree_02.item(selecionado, "values")
+
         if selecionado != ():
-            query = f"UPDATE escala_usuario SET atribuido = '0' WHERE escala_id = {self.id_escala} AND usuario_id = (SELECT usuario_id FROM usuario WHERE nome_completo = '{tupla[1]}');"
+            query = f"UPDATE escala_usuario SET atribuido = '0', prioridade='0' WHERE escala_id = {self.id_escala} AND usuario_id = (SELECT usuario_id FROM usuario WHERE nome_completo = '{tupla[1]}');"
             bd.atualizar(query)
+
+            query = f"SELECT * FROM escala_usuario AS eu WHERE atribuido = 1 AND escala_id = {self.id_escala} ORDER BY eu.prioridade;"
+            dados = bd.consultar(query)
+            prioridade = 0
+            for dado in dados:
+                prioridade += 1
+                query = f"UPDATE escala_usuario SET atribuido = '1', prioridade='{prioridade}' WHERE escala_id = {self.id_escala} AND usuario_id = {dado[2]} ;"
+                bd.atualizar(query)
+
         self.atualizar_tree()
         self.atualizar_tree_02()
 
     def down_prioridade(self):
         selecionado = self.tvw_tree_02.selection()
         tupla = self.tvw_tree_02.item(selecionado, "values")
-        query = f"SELECT COUNT(*) FROM escala_usuario WHERE escala_id = {self.id_escala};"
-        dados = bd.consultar_usuarios(query)
+        #query = f"SELECT COUNT(*) FROM escala_usuario WHERE escala_id = {self.id_escala};"
+        #dados = bd.consultar_usuarios(query)
 
-        if selecionado != () and int(tupla[0]) != int(dados[0]):
-            query = f"UPDATE escala_usuario SET prioridade = '{tupla[0]+1}' WHERE usuario_id = (SELECT usuario_id FROM usuario WHERE nome_completo = '{tupla[1]}');"
+        valores_arvore_02 = self.get_all_items(self.tvw_tree_02)
 
-    def verifica_termino_escalas(self):
-        chave_mes = 0
-        chave_ano = 0 #OUTRO DIA FAÇO ESSE PQP
-        data_atual = datetime.now()
-        data_completa = data_atual.strftime("%d/%m/%Y")#%H:%M:%S
+        num_usuarios = len(valores_arvore_02)
 
-        # print("O dia atual é:", data_completa)
+        if selecionado != () and int(tupla[0]) != num_usuarios:
+            query = f"UPDATE escala_usuario SET prioridade = '{tupla[0]}' WHERE usuario_id = (SELECT usuario_id FROM usuario WHERE nome_completo = '{tupla[1]}');"
 
-        query = f"SELECT escala_id, data_inicio FROM usuario_escala;"
-        dados = bd.consultar_usuarios(query)
-
-        if dados != []:
-            
-            pares = [(dados[i], dados[i + 1]) for i in range(0, len(dados), 2)]
-            print(pares)
-            for dados in pares:
-                id = dados[0]
-
-                query = f"SELECT dias_escala FROM escala WHERE escala_id = {id};"
-                dias_escala = bd.consultar_usuarios(query)
-                # print(dias_escala)
-
-                data = dados[1]
-                
-                data = datetime.strptime(data, "%d/%m/%Y")
-
-                Ultimo_dia_mes = data.replace(day=monthrange(data.year, data.month)[1])
-
-                data = str(dados[1])
-                data = data.split("/")
-                # print(data)
+    # def verifica_termino_escalas(self):
+    #     chave_mes = 0
+    #     chave_ano = 0 #OUTRO DIA FAÇO ESSE PQP
+    #     data_atual = datetime.now()
+    #     data_completa = data_atual.strftime("%d/%m/%Y")#%H:%M:%S
+    #
+    #     # print("O dia atual é:", data_completa)
+    #
+    #     query = f"SELECT escala_id, data_inicio FROM usuario_escala;"
+    #     dados = bd.consultar_usuarios(query)
+    #
+    #     if dados != []:
+    #
+    #         #pares = [(dados[i], dados[i + 1]) for i in range(0, len(dados), 2)]
+    #         #print(pares)
+    #         #for dados in pares:
+    #             id = dados[0]
+    #
+    #             data = dados[1]
+    #
+    #             data = datetime.strptime(data, "%d/%m/%Y")
+    #
+    #             Ultimo_dia_mes = data.replace(day=monthrange(data.year, data.month)[1])
+    #
+    #             data = str(dados[1])
+    #             data = data.split("/")
+    #             # print(data)
 
 
 
